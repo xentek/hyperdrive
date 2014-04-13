@@ -7,6 +7,10 @@ group :development do
   gem 'gem-release', require: false
 end
 
+platforms :rbx do
+  gem 'rubinius-coverage', require: false
+end
+
 group :test, :rake do
   gem 'bundler'
 end

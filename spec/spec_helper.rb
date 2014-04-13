@@ -7,6 +7,7 @@ lib_path = File.expand_path('../lib', __FILE__)
 
 # test coverage
 require 'coveralls'
+require 'rubinius/coverage' if RUBY_ENBGINE == 'rubinius'
 Coveralls.wear!
 
 # require dependencies

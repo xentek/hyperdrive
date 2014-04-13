@@ -20,18 +20,30 @@ Or install it yourself as:
 
 Proposed Syntax (WIP):
 
-    hyperdrive(:deal) do
-      name 'Deals'
-      desc 'Exclusive offers and coupons'
+```ruby
+hyperdrive do
+  resource(:thing) do
+    name 'Thing Resource'
+    desc 'Description of Thing Resource'
 
-      param :name, '50 Chars or less', required: true
-      param :start_date, 'Format: YYYY-MM-DD'
-      param :end_date, 'Format: YYYY-MM-DD'
+    # Register the params you want to allow in POST, PUT, PATCH,
+    # and DELETE requests. The :id param is auto-registered
+    # and is allowed for all requests but only required for PUT,
+    # PATCH, and DELETE requests
+    param :name, '50 Chars or less' # params are required by default
+    param :start_date, 'Format: YYYY-MM-DD', required: false
+    param :end_date, 'Format: YYYY-MM-DD', required: false
 
-      filter :start_date
-      filter :end_date
-      filter :partner_id, required: true
-    end
+    # Filters only apply to GET, HEAD and OPTIONS requests
+    # Like allowed params, :id is registered by default. Requests without an ID
+    # should return an array of 1 or more resources (that match any filters
+    # applied). Unlike allowed params, filters are not required by default.
+    filter :start_date, 'Format: YYYY-MM-DD'
+    filter :end_date, 'Format: YYYY-MM-DD'
+    filter :parent_id, 'Parent ID of Thing", required: true
+  end
+end
+```
 
 ## Project Status
 

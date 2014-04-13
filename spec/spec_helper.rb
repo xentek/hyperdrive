@@ -7,6 +7,9 @@ lib_path = File.expand_path('../lib', __FILE__)
 require 'bundler'
 Bundler.setup(:default, ENV['RACK_ENV'])
 
+# test subject
+require 'hyperdrive'
+
 # BDD Stack
 require 'minitest/autorun'
 require "minitest-spec-context"

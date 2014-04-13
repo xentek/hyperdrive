@@ -1,6 +1,10 @@
 source 'https://rubygems.org'
 gemspec
 
+group :development do
+  gem 'gem-release', require: false
+end
+
 group :test, :rake do
   gem 'bundler'
 end

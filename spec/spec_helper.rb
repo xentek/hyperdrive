@@ -4,13 +4,19 @@
 ENV['RACK_ENV'] = 'test'
 lib_path = File.expand_path('../lib', __FILE__)
 ($:.unshift lib_path) unless ($:.include? lib_path)
+
+# test coverage
+require 'coveralls'
+Coveralls.wear!
+
+# require dependencies
 require 'bundler'
 Bundler.setup(:default, ENV['RACK_ENV'])
 
-# test subject
+# our humble test subject
 require 'hyperdrive'
 
-# BDD Stack
+# Fire up the BDD Stack
 require 'minitest/autorun'
 require "minitest-spec-context"
 require 'minitest/reporters'

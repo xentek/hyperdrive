@@ -1,14 +1,16 @@
 source 'https://rubygems.org'
 gemspec
 
-gem 'coveralls', require: false
+if ENV['TRAVIS']
+  gem 'coveralls', require: false
+
+  platforms :rbx do
+    gem 'rubinius-coverage', require: false
+  end
+end
 
 group :development do
   gem 'gem-release', require: false
-end
-
-platforms :rbx do
-  gem 'rubinius-coverage', require: false
 end
 
 group :test, :rake do

@@ -32,7 +32,7 @@ describe Hyperdrive::Resource do
 
   it "auto-registers the :id filter" do
     @resource.filters[:id][:desc].must_equal 'Resource Identifier'
-    @resource.filters[:id][:required].must_equal false 
+    @resource.filters[:id][:required].must_equal false
   end
 
   it "registers a filter" do

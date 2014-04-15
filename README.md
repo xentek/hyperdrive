@@ -40,7 +40,7 @@ hyperdrive do
     # applied). Unlike allowed params, filters are not required by default.
     filter :start_date, 'Format: YYYY-MM-DD'
     filter :end_date, 'Format: YYYY-MM-DD'
-    filter :parent_id, 'Parent ID of Thing", required: true
+    filter :parent_id, 'Parent ID of Thing', required: true
   end
 end
 ```

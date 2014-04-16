@@ -11,6 +11,7 @@ end
 
 group :development do
   gem 'gem-release', require: false
+  gem 'pry', require: false
 end
 
 group :test, :rake do

@@ -3,7 +3,7 @@ ENV['RACK_ENV'] ||= 'development'
 # load path
 lib_path = File.expand_path('../../lib', __FILE__)
 ($:.unshift lib_path) unless ($:.include? lib_path)
-p lib_path
+
 # require farm
 require 'bundler'
 Bundler.require(:default, ENV['RACK_ENV'])

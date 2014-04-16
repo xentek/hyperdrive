@@ -9,6 +9,14 @@ module Hyperdrive
         instance_eval(&block) if block_given?
       end
 
+      def name(name)
+        resource.name = name
+      end
+
+      def desc(description)
+        resource.desc = description
+      end
+
       def param(*args)
         resource.register_param(*args)
       end

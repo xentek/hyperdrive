@@ -6,7 +6,7 @@ describe Hyperdrive::Resource do
   end
 
   it "creates a new resource" do
-    @resource.resource.must_equal :thing
+    @resource.key.must_equal :thing
   end
 
   it "has a name" do

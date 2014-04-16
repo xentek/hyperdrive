@@ -2,11 +2,11 @@
 
 module Hyperdrive
   class Resource
-    attr_reader :resource, :allowed_params, :filters
+    attr_reader :key, :allowed_params, :filters
     attr_accessor :name, :desc
 
-    def initialize(resource)
-      @resource = resource
+    def initialize(key)
+      @key = key
       @allowed_params = default_allowed_params
       @filters = default_filters
     end

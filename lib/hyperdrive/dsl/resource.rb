@@ -4,8 +4,8 @@ module Hyperdrive
   module DSL
     class Resource
       attr_reader :resource
-      def initialize(name, &block)
-        @resource = ::Hyperdrive::Resource.new(name)
+      def initialize(key, &block)
+        @resource = ::Hyperdrive::Resource.new(key)
         instance_eval(&block) if block_given?
       end
 

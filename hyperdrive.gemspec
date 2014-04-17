@@ -9,12 +9,12 @@ Gem::Specification.new do |gem|
   gem.authors       = ['StyleSeek Engineering']
   gem.email         = ['engineering@styleseek.com']
   gem.summary       = %q{Hypermedia State Machine}
-  gem.description   = %q{Ruby DSL for defining self-documenting, HATEOS™ complaint, Hypermedia API endpoints.}
+  gem.description   = %q{Ruby DSL for defining self-documenting, HATEOAS™ complaint, Hypermedia API endpoints.}
   gem.homepage      = "https://github.com/styleseek/hyperdrive"
   gem.license       = "MIT"
 
   gem.files         = `git ls-files -z`.split("\x0")
-  gem.executables   = gem.files.grep(%r{^bin/}) { |f| File.basename(f) } # TODO: ensure we don't ship bin/console with the gem
+  gem.executables   = ['bin/hyperdrive']
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
   

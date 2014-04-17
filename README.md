@@ -1,6 +1,6 @@
 # Hyperdrive
 
-Ruby DSL for defining self-documenting, HATEOS™ complaint, Hypermedia endpoints.
+Ruby DSL for defining self-documenting, HATEOAS™ complaint, Hypermedia endpoints.
 
 ## Installation
 

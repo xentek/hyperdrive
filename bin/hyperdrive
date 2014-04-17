@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+ENV['RACK_ENV'] ||= 'development'
+# load path
+lib_path = File.expand_path('../../lib', __FILE__)
+($:.unshift lib_path) unless ($:.include? lib_path)
+
+require 'thor'
+require 'hyperdrive'
+
+
+class Generate < Thor::Group
+  include Thor::Actions
+  desc "generates docs for resources"
+  def docs
+    @docs = ""
+    hyperdrive.resources.each do |resource|
+      @docs += header(resource.name,2)
+    end
+
+    #create_file(output, @docs)
+    say "Done!"
+  end
+  # def generate_doc_file
+  #   create_file "../doc.md" unless File.exists?('doc')
+  # end
+
+  def add_doc_content
+    Hyperdrive::DSL::Main.instance.resources.each_value do |resource|
+      @doc_content = "Resource: #{resource.name}"
+    end
+  end
+
+
+  private
+
+  def hyperdrive
+    Hyperdrive::DSL::Main.instance
+  end/
+
+  def header(string, level = 1)
+    header = '#' * level
+    header += string
+    "#{header}\n\n"
+  end
+
+end
+
+Generate.start
+

@@ -20,6 +20,8 @@ module Hyperdrive
         @docs += paragraph(resource.desc)
         @docs += "##Params\n\n"
         @docs += params(resource.allowed_params)
+        @docs += "##Filters\n\n"
+        @docs += params(resource.filters)
 
       end
       p @docs

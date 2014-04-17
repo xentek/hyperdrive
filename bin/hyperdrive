@@ -51,7 +51,7 @@ module Hyperdrive
     def params(params)
       params_list = ""
       params.each do |k, v|
-        params_list += "**#{k}**#{print_required(v[:required])}- #{v[:desc]}\n\n"
+        params_list += "- **#{k}**#{print_required(v[:required])}- #{v[:desc]}\n\n"
       end
       params_list
     end

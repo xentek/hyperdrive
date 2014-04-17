@@ -5,10 +5,6 @@ describe Hyperdrive::Resource do
     @resource = Hyperdrive::Resource.new(:thing)
   end
 
-  it "creates a new resource" do
-    @resource.key.must_equal :thing
-  end
-
   it "has a name" do
     @resource.name = 'Thing'
     @resource.name.must_equal 'Thing'
@@ -17,6 +13,10 @@ describe Hyperdrive::Resource do
   it "has a description" do
     @resource.desc = 'Description of Thing Resource'
     @resource.desc.must_equal 'Description of Thing Resource'
+  end
+
+  it "has an endpoint" do
+    @resource.endpoint.must_equal '/things'
   end
 
   it "auto-registers the :id param" do

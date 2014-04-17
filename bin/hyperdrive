@@ -16,13 +16,12 @@ module Hyperdrive
       require_file(file)
       @docs = ""
       resources.each_value do |resource|
-        @docs += header(resource.name, 2)
+        @docs += header(resource.name)
         @docs += paragraph(resource.desc)
-        @docs += "##Params\n\n"
+        @docs += header("Params", 2)
         @docs += params(resource.allowed_params)
-        @docs += "##Filters\n\n"
+        @docs += header("Filter", 2)
         @docs += params(resource.filters)
-
       end
       p @docs
       #create_file(output, @docs)
@@ -42,8 +41,8 @@ module Hyperdrive
 
     def header(string, level = 1)
       header = "#" * level
-      header += string
-      "#{header}\n\n"
+      header += string.capitalize
+      "\n#{header}\n\n"
     end
 
     def paragraph(string)
@@ -53,13 +52,31 @@ module Hyperdrive
     def params(params)
       params_list = ""
       params.each do |k, v|
-        params_list += "- **#{k}**#{print_required(v[:required])}- #{v[:desc]}\n\n"
+        params_list += "- **#{k}** \- #{v[:desc]}\n\n#{print_required(v[:required])}\n"
       end
       params_list
     end
 
-    def print_required(required_opt)
-      required_opt ? "(required)" : ""
+    def print_required(required_opts)
+      default_opts = ["GET", "HEAD", "OPTIONS", "POST", "PUT", "PATCH", "DELETE"]
+
+      if array?(required_opts)
+        create_requirements(required_opts)
+      elsif required_opts == true
+        create_requirements(default_opts)
+      else
+        string = ""
+      end
+    end
+
+    def array?(required_opt)
+      required_opt.class == Array
+    end
+
+    def create_requirements(opts)
+      string = "\n - **Required**: "
+      opts.each { |opt| string += " #{opt}, "}
+      string
     end
   end
 end

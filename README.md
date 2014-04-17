@@ -49,8 +49,6 @@ end
 run Hyperdrive::Server
 ```
 
-
-
 ## Project Status
 
 - Version: [![Gem Version](https://badge.fury.io/rb/hyperdrive.png)](http://badge.fury.io/rb/hyperdrive)

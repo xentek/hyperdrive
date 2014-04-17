@@ -6,42 +6,67 @@ lib_path = File.expand_path('../../lib', __FILE__)
 
 require 'thor'
 require 'hyperdrive'
+# require 'api'
 
 module Hyperdrive
-  class CLI < Thor::Group
-    include Thor::Actions
-    desc "generates docs for resources"
-    def docs
-      @docs = ""
-      hyperdrive.resources.each do |resource|
-        @docs += header(resource.name,2)
-      end
+  class CLI < Thor
 
+    desc "docs FILE", "generates docs for hyperdrive resources"
+    def docs(file)
+      require_file(file)
+      @docs = ""
+      resources.each_value do |resource|
+        @docs += header(resource.name, 2)
+        @docs += paragraph(resource.desc)
+        @docs += "##Params\n\n"
+        @docs += params(resource.allowed_params)
+
+      end
+      p @docs
       #create_file(output, @docs)
       say "Done!"
     end
-    # def generate_doc_file
-    #   create_file "../doc.md" unless File.exists?('doc')
-    # end
-
-    def add_doc_content
-      Hyperdrive::DSL::Main.instance.resources.each_value do |resource|
-        @doc_content = "Resource: #{resource.name}"
-      end
-    end
-
 
     private
 
-    def hyperdrive
-      Hyperdrive::DSL::Main.instance
-    end/
+
+    def resources
+      Hyperdrive::DSL::Main.instance.resources
+    end
+
+    def require_file(file)
+      require "./#{file}"
+    end
 
     def header(string, level = 1)
-      header = '#' * level
+      header = "#" * level
       header += string
       "#{header}\n\n"
+    end
+
+    def paragraph(string)
+      "#{string}\n"
+    end
+
+    def params(params)
+      params_list = ""
+      params.each do |k, v|
+        params_list += "**#{k}**#{print_required(v[:required])}- #{v[:desc]}\n\n"
+      end
+      params_list
+    end
+
+    def print_required(required_opt)
+      required_opt ? "(required)" : ""
     end
   end
 end
 Hyperdrive::CLI.start
+
+
+
+
+
+
+
+

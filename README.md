@@ -21,6 +21,7 @@ Or install it yourself as:
 Proposed Syntax (WIP):
 
 ```ruby
+# api.rb
 hyperdrive do
   resource(:thing) do
     name 'Thing Resource'
@@ -43,6 +44,9 @@ hyperdrive do
     filter :parent_id, 'Parent ID of Thing', required: true
   end
 end
+
+# config.ru
+run Hyperdrive::Server
 ```
 
 

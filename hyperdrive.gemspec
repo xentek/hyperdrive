@@ -17,6 +17,8 @@ Gem::Specification.new do |gem|
   gem.executables   = gem.files.grep(%r{^bin/}) { |f| File.basename(f) } # TODO: ensure we don't ship bin/console with the gem
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
+  
+  gem.add_dependency 'thor'
 
   #gem.add_development_dependency "bundler", "~> 1.5"
   #gem.add_development_dependency "rake"

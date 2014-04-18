@@ -34,6 +34,8 @@ module Hyperdrive
       resources.each_value do |resource|
         docs += header(resource.name)
         docs += paragraph(resource.desc)
+        docs += header("Endpoint URLS", 2)
+        docs += "  - #{resource.endpoint}\n"
         docs += header("Params", 2)
         docs += params(resource.allowed_params)
         docs += header("Filter", 2)

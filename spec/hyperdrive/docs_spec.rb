@@ -50,7 +50,7 @@ describe Hyperdrive::Docs do
   end
 
   it 'formats param names' do
-    @docs.param_name('id').must_equal '  - __id__ - '
+    @docs.param_name('id').must_equal '  - __id__: '
   end
 
   it 'formats param descriptions' do
@@ -63,6 +63,6 @@ describe Hyperdrive::Docs do
 
   it 'generates param' do
     params = @docs.resources[:thing].allowed_params
-    @docs.params(params).must_equal "  - __id__ - Resource Identifier\n\n    - __Required__: `PUT` `PATCH` `DELETE` \n\n  - __name__ - 50 Chars or less\n\n    - __Required__: `GET` `HEAD` `OPTIONS` `POST` `PUT` `PATCH` `DELETE` \n\n  - __start_date__ - Format: YYYY-MM-DD\n  - __end_date__ - Format: YYYY-MM-DD\n" 
+    @docs.params(params).must_equal "  - __id__: Resource Identifier\n\n    - __Required__: `PUT` `PATCH` `DELETE` \n\n  - __name__: 50 Chars or less\n\n    - __Required__: `GET` `HEAD` `OPTIONS` `POST` `PUT` `PATCH` `DELETE` \n\n  - __start_date__: Format: YYYY-MM-DD\n  - __end_date__: Format: YYYY-MM-DD\n" 
   end
 end

@@ -47,7 +47,7 @@ module Hyperdrive
     end
 
     def param_name(name)
-      "#{bullet(bold(name), 2)} - "
+      "#{bullet(bold(name), 2)}: "
     end
 
     def param_desc(desc)
@@ -90,6 +90,6 @@ module Hyperdrive
       end
       @docs
     end
-    
-  end 
+
+  end
 end

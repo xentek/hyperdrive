@@ -65,4 +65,8 @@ describe Hyperdrive::Docs do
     params = @docs.resources[:thing].allowed_params
     @docs.params(params).must_equal "  - __id__: Resource Identifier\n\n    - __Required__: `PUT` `PATCH` `DELETE` \n\n  - __name__: 50 Chars or less\n\n    - __Required__: `GET` `HEAD` `OPTIONS` `POST` `PUT` `PATCH` `DELETE` \n\n  - __start_date__: Format: YYYY-MM-DD\n  - __end_date__: Format: YYYY-MM-DD\n" 
   end
+
+  it 'outputs a string of the completed doc' do
+    @docs.output.must_be_kind_of String
+  end
 end

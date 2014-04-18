@@ -71,7 +71,7 @@ module Hyperdrive
 
     def generate_requirements_docs(opts)
       string = "\n#{bullet(bold('Required'), 4)}: "
-      opts.each { |opt| string += " #{code(opt)} "}
+      opts.each { |opt| string += "#{code(opt)} "}
       "#{string}\n\n"
     end
 

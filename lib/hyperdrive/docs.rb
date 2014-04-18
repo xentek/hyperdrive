@@ -81,7 +81,7 @@ module Hyperdrive
       resources.each_value do |resource|
         @docs += header(resource.name)
         @docs += paragraph(resource.desc)
-        @docs += header("Endpoint URLS", 2)
+        @docs += header("Endpoint URL", 2)
         @docs += endpoint(resource.endpoint)
         @docs += header("Params", 2)
         @docs += params(resource.allowed_params)

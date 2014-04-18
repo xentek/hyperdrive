@@ -32,7 +32,7 @@ module Hyperdrive
       "#{nest}- #{string}"
     end
 
-    def endpoints(endpoint)
+    def endpoint(endpoint)
       paragraph(bullet(code(endpoint), 2))
     end
 
@@ -82,7 +82,7 @@ module Hyperdrive
         @docs += header(resource.name)
         @docs += paragraph(resource.desc)
         @docs += header("Endpoint URLS", 2)
-        @docs += "  - `#{resource.endpoint}`\n"
+        @docs += endpoint(resource.endpoint)
         @docs += header("Params", 2)
         @docs += params(resource.allowed_params)
         @docs += header("Filter", 2)
@@ -90,8 +90,6 @@ module Hyperdrive
       end
       @docs
     end
-
-
-
+    
   end 
 end

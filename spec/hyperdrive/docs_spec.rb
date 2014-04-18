@@ -8,8 +8,6 @@ describe Hyperdrive::Docs do
     @docs = Hyperdrive::Docs.new(hyperdrive.resources)
   end
 
-
-
   it 'generates a header with size 1 as default' do
     @docs.header('Thing Resource').must_equal "\n# Thing Resource\n\n"
   end
@@ -47,8 +45,8 @@ describe Hyperdrive::Docs do
     @docs.bullet('__id__', 4).must_equal '    - __id__'
   end
 
-  it 'formats endpoints' do
-    @docs.endpoints('/thing').must_equal "  - `/thing`\n"
+  it 'formats endpoint' do
+    @docs.endpoint('/thing').must_equal "  - `/thing`\n"
   end
 
   it 'formats param names' do
@@ -67,10 +65,4 @@ describe Hyperdrive::Docs do
     params = @docs.resources[:thing].allowed_params
     @docs.params(params).must_equal "  - __id__ - Resource Identifier\n\n    - __Required__: `PUT` `PATCH` `DELETE` \n\n  - __name__ - 50 Chars or less\n\n    - __Required__: `GET` `HEAD` `OPTIONS` `POST` `PUT` `PATCH` `DELETE` \n\n  - __start_date__ - Format: YYYY-MM-DD\n  - __end_date__ - Format: YYYY-MM-DD\n" 
   end
-
-
-
-  # it 'returns an output string of the complete doc' do
-  #   p @docs.output
-  # end
 end

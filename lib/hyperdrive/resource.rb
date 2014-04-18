@@ -2,11 +2,12 @@
 
 module Hyperdrive
   class Resource
-    attr_reader :key, :allowed_params, :filters
+    attr_reader :endpoint, :allowed_params, :filters
     attr_accessor :name, :desc
 
     def initialize(key)
       @key = key
+      @endpoint = "/#{@key.to_s.en.plural}"
       @allowed_params = default_allowed_params
       @filters = default_filters
     end

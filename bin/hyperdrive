@@ -13,11 +13,12 @@ module Hyperdrive
   class CLI < Thor
     include Thor::Actions
 
-    desc "docs", "Generate docs in markdown based on your resources"
-    method_option :input, :aliases => "-i", :type => :string, 
-                  :desc => "specify the file or directory to generate docs for"
+    desc "docs", "Generate docs in markdown based on your resources."
+
+    method_option :input, :aliases => "-i", :type => :string,
+                  :desc => "Specify the directory or file to generate docs for."
     method_option :output, :aliases => "-o", :type => :string, 
-                  :default => "docs/api.md", :desc => "specify the location of the docs"
+                  :default => "docs/api.md", :desc => "Specify the destination of the docs."
 
     def docs
       input = File.expand_path(options[:input])
@@ -35,7 +36,7 @@ module Hyperdrive
         docs += header(resource.name)
         docs += paragraph(resource.desc)
         docs += header("Endpoint URLS", 2)
-        docs += "  - #{resource.endpoint}\n"
+        docs += "  - `#{resource.endpoint}`\n"
         docs += header("Params", 2)
         docs += params(resource.allowed_params)
         docs += header("Filter", 2)
@@ -90,7 +91,7 @@ module Hyperdrive
 
     def create_requirements(opts)
       string = "\n   - **Required**: "
-      opts.each { |opt| string += " #{opt}, "}
+      opts.each { |opt| string += " `#{opt}`, "}
       string
     end
   end

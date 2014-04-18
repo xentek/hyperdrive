@@ -47,6 +47,10 @@ describe Hyperdrive::Docs do
     @docs.bullet('__id__', 4).must_equal '    - __id__'
   end
 
+  it 'formats endpoints' do
+    @docs.endpoints('/thing').must_equal "  - `/thing`\n"
+  end
+
   it 'formats param names' do
     @docs.param_name('id').must_equal '  - __id__ - '
   end
@@ -66,7 +70,7 @@ describe Hyperdrive::Docs do
 
 
 
-  it 'returns an output string of the complete doc' do
-    skip
-  end
+  # it 'returns an output string of the complete doc' do
+  #   p @docs.output
+  # end
 end

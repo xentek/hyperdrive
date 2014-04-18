@@ -9,9 +9,6 @@ module Hyperdrive
       @docs = ""
     end
 
-
-
-
     def header(string, level = 1)
       raise ArgumentError, "Header level must be between 1 and 6." unless (1..6).cover?(level)
       header = "#" * level
@@ -35,6 +32,10 @@ module Hyperdrive
       "#{nest}- #{string}"
     end
 
+    def endpoints(endpoint)
+      paragraph(bullet(code(endpoint), 2))
+    end
+
     def params(params)
       params_list = ""
       params.each do |k, v|
@@ -50,7 +51,7 @@ module Hyperdrive
     end
 
     def param_desc(desc)
-      "#{paragraph(desc)}"
+      paragraph(desc)
     end
 
     def required(required_opts)
@@ -76,7 +77,18 @@ module Hyperdrive
     end
 
     def output
-      "# Hyperdrive API"
+      @docs += "# HYPERDRIVE API\n"
+      resources.each_value do |resource|
+        @docs += header(resource.name)
+        @docs += paragraph(resource.desc)
+        @docs += header("Endpoint URLS", 2)
+        @docs += "  - `#{resource.endpoint}`\n"
+        @docs += header("Params", 2)
+        @docs += params(resource.allowed_params)
+        @docs += header("Filter", 2)
+        @docs += params(resource.filters)
+      end
+      @docs
     end
 
 

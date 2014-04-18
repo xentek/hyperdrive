@@ -4,45 +4,58 @@ ENV['RACK_ENV'] ||= 'development'
 lib_path = File.expand_path('../../lib', __FILE__)
 ($:.unshift lib_path) unless ($:.include? lib_path)
 
+
+
 require 'thor'
 require 'hyperdrive'
-# require 'api'
 
 module Hyperdrive
   class CLI < Thor
+    include Thor::Actions
 
-    desc "docs FILE", "generates docs for hyperdrive resources"
-    def docs(file)
-      require_file(file)
-      @docs = ""
-      resources.each_value do |resource|
-        @docs += header(resource.name)
-        @docs += paragraph(resource.desc)
-        @docs += header("Params", 2)
-        @docs += params(resource.allowed_params)
-        @docs += header("Filter", 2)
-        @docs += params(resource.filters)
-      end
-      p @docs
-      #create_file(output, @docs)
+    desc "docs", "Generate docs in markdown based on your resources"
+    method_option :input, :aliases => "-i", :type => :string, 
+                  :desc => "specify the file or directory to generate docs for"
+    method_option :output, :aliases => "-o", :type => :string, 
+                  :default => "docs/api.md", :desc => "specify the location of the docs"
+
+    def docs
+      input = File.expand_path(options[:input])
+      require_resources(input)
+      data = generate_docs
+      create_file(options[:output], data)
       say "Done!"
     end
 
     private
 
+    def generate_docs
+      docs = ""
+      resources.each_value do |resource|
+        docs += header(resource.name)
+        docs += paragraph(resource.desc)
+        docs += header("Params", 2)
+        docs += params(resource.allowed_params)
+        docs += header("Filter", 2)
+        docs += params(resource.filters)
+      end
+      docs
+    end
+
+    def require_resources(input)
+      input = "#{input}/*.rb" unless input =~ /.rb\z/
+      Dir.glob(input).each do |file|
+        require file
+      end
+    end
 
     def resources
       Hyperdrive::DSL::Main.instance.resources
     end
 
-    def require_file(file)
-      require "./#{file}"
-    end
-
     def header(string, level = 1)
       header = "#" * level
-      header += string.capitalize
-      "\n#{header}\n\n"
+      "\n#{header} #{string}\n\n"
     end
 
     def paragraph(string)
@@ -52,7 +65,7 @@ module Hyperdrive
     def params(params)
       params_list = ""
       params.each do |k, v|
-        params_list += "- **#{k}** \- #{v[:desc]}\n\n#{print_required(v[:required])}\n"
+        params_list += "  - **#{k}** - #{v[:desc]}#{print_required(v[:required])}\n"
       end
       params_list
     end
@@ -74,12 +87,13 @@ module Hyperdrive
     end
 
     def create_requirements(opts)
-      string = "\n - **Required**: "
+      string = "\n   - **Required**: "
       opts.each { |opt| string += " #{opt}, "}
       string
     end
   end
 end
+
 Hyperdrive::CLI.start
 
 

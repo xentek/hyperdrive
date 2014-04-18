@@ -34,77 +34,13 @@ module Hyperdrive
       
       if hyperdrive.resources.empty?
         say "This API doesn't have any resources to document", :red
+        return
       end
 
       data = Hyperdrive::Docs.new(hyperdrive.resources).output
       create_file(options[:output], data)
       say "Done!"
     end
-
-    private
-
-    def generate_docs
-      docs = ""
-      resources.each_value do |resource|
-        docs += header(resource.name)
-        docs += paragraph(resource.desc)
-        docs += header("Endpoint URLS", 2)
-        docs += "  - `#{resource.endpoint}`\n"
-        docs += header("Params", 2)
-        docs += params(resource.allowed_params)
-        docs += header("Filter", 2)
-        docs += params(resource.filters)
-      end
-      docs
-    end
-
-    # def require_resources(input)
-    #   input =  unless input =~ /.rb\z/
-
-    # end
-
-    # def resources
-    #   Hyperdrive::DSL::Main.instance.resources
-    # end
-
-    # def header(string, level = 1)
-    #   header = "#" * level
-    #   "\n#{header} #{string}\n\n"
-    # end
-
-    # def paragraph(string)
-    #   "#{string}\n"
-    # end
-
-    def params(params)
-      params_list = ""
-      params.each do |k, v|
-        params_list += "  - **#{k}** - #{v[:desc]}#{print_required(v[:required])}\n"
-      end
-      params_list
-    end
-
-    # def print_required(required_opts)
-    #   default_opts = ["GET", "HEAD", "OPTIONS", "POST", "PUT", "PATCH", "DELETE"]
-
-    #   if array?(required_opts)
-    #     create_requirements(required_opts)
-    #   elsif required_opts == true
-    #     create_requirements(default_opts)
-    #   else
-    #     string = ""
-    #   end
-    # end
-
-    # def array?(required_opt)
-    #   required_opt.kind_of? Array
-    # end
-
-    # def create_requirements(opts)
-    #   string = "\n   - **Required**: "
-    #   opts.each { |opt| string += " `#{opt}`, "}
-    #   string
-    # end
   end
 end
 

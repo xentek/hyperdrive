@@ -3,7 +3,8 @@
 module Hyperdrive
   class Docs
     attr_reader :resources
-    
+    attr_accessor :docs
+
     def initialize(resources)
       @resources = resources
       @docs = ""
@@ -77,18 +78,18 @@ module Hyperdrive
     end
 
     def output
-      @docs += "# HYPERDRIVE API\n"
+      self.docs += "# HYPERDRIVE API\n"
       resources.each_value do |resource|
-        @docs += header(resource.name)
-        @docs += paragraph(resource.desc)
-        @docs += header("Endpoint URL", 2)
-        @docs += endpoint(resource.endpoint)
-        @docs += header("Params", 2)
-        @docs += params(resource.allowed_params)
-        @docs += header("Filter", 2)
-        @docs += params(resource.filters)
+        self.docs += header(resource.name)
+        self.docs += paragraph(resource.desc)
+        self.docs += header("Endpoint URL", 2)
+        self.docs += endpoint(resource.endpoint)
+        self.docs += header("Params", 2)
+        self.docs += params(resource.allowed_params)
+        self.docs += header("Filter", 2)
+        self.docs += params(resource.filters)
       end
-      @docs
+      self.docs
     end
 
   end

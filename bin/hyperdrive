@@ -8,40 +8,35 @@ require 'thor'
 require 'hyperdrive'
 
 module Hyperdrive
-  class CLI < Thor::Group
+  class CLI < Thor
     include Thor::Actions
-    desc "generates docs for resources"
+
+    desc "docs", "Generate docs in markdown based on your resources."
+    method_option :input,  aliases: "\--in",  desc: "Specify the directory or file to generate docs for."
+    method_option :output, aliases: "\--out", desc: "Specify the destination of the docs.", default: "docs/api.md"
     def docs
-      @docs = ""
-      hyperdrive.resources.each do |resource|
-        @docs += header(resource.name,2)
+      input = File.expand_path(options[:input])
+      
+      if File.file?(input)
+        require input
+      elsif File.directory?(input)
+        Dir.glob("#{input}/*.rb").each do |file|
+          require file
+        end
+      else
+        raise ArgumentError, "Input is neither a file nor a directory"
       end
 
-      #create_file(output, @docs)
+      if hyperdrive.resources.empty?
+        say "This API doesn't have any resources to document", :red
+        return
+      end
+
+      data = Hyperdrive::Docs.new(hyperdrive.resources).output
+      create_file(options[:output], data)
       say "Done!"
-    end
-    # def generate_doc_file
-    #   create_file "../doc.md" unless File.exists?('doc')
-    # end
-
-    def add_doc_content
-      Hyperdrive::DSL::Main.instance.resources.each_value do |resource|
-        @doc_content = "Resource: #{resource.name}"
-      end
-    end
-
-
-    private
-
-    def hyperdrive
-      Hyperdrive::DSL::Main.instance
-    end/
-
-    def header(string, level = 1)
-      header = '#' * level
-      header += string
-      "#{header}\n\n"
     end
   end
 end
+
 Hyperdrive::CLI.start

@@ -55,10 +55,8 @@ module Hyperdrive
       list = ""
       params.each do |key, value|
         list += bullet(bold(key), 1)
-
         value.each do |key, value|
           list += bullet(italics(key), 2)
-
           if value.kind_of? Array
             list += bullet(code_options(value), 3)
           else

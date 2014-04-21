@@ -40,4 +40,9 @@ describe Hyperdrive::Resource do
     @resource.filters[:parent_id][:desc].must_equal 'Parent ID of Thing'
     @resource.filters[:parent_id][:required].must_equal true
   end
+
+  it "defines a request handler" do
+    @resource.define_request_handler(:get, Proc.new { return 'ok' })
+    @resource.request_handlers[:get].call.must_equal 'ok'
+  end
 end

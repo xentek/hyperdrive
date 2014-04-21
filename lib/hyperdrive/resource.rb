@@ -2,7 +2,7 @@
 
 module Hyperdrive
   class Resource
-    attr_reader :endpoint, :allowed_params, :filters
+    attr_reader :endpoint, :allowed_params, :filters, :request_handlers
     attr_accessor :name, :desc
 
     def initialize(key)
@@ -10,6 +10,7 @@ module Hyperdrive
       @endpoint = "/#{@key.to_s.en.plural}"
       @allowed_params = default_allowed_params
       @filters = default_filters
+      @request_handlers = {}
     end
 
     def register_param(key, description, options = {})
@@ -22,6 +23,10 @@ module Hyperdrive
       @filters[key] = { desc: description }.merge(options)
     end
 
+    def define_request_handler(method, block)
+      @request_handlers[method] = block
+    end
+    
     private
 
     def default_allowed_params

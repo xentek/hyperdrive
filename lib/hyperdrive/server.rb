@@ -7,7 +7,7 @@ module Hyperdrive
     end
 
     private
-    
+
     def self.server
       Rack::Builder.new do
         hyperdrive.resources.each do |key, resource|

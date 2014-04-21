@@ -14,7 +14,7 @@ module Hyperdrive
         out += header(resource.name)
         out += paragraph(resource.desc)
         out += header("Endpoint URL", 2)
-        out += paragraph(bullet(code(resource.endpoint), 2))
+        out += paragraph(bullet(code(resource.endpoint), 1))
         out += header("Params", 2)
         out += list(resource.allowed_params)
         out += header("Filter", 2)

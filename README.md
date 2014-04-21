@@ -89,6 +89,34 @@ end
 run Hyperdrive::Server
 ```
 
+## CLI
+
+### Generating Documentation
+
+`~$ hyperdrive docs <option> <parameter>`
+
+#### __`--input` Option__
+
+Use the `--input` option and specify a file or directory as a parameter to generate documentation for your API resources.
+
+  - `~$ hyperdrive docs --input api.rb`
+
+or
+
+  - `~$ hyperdrive docs --input api`
+
+`-in` can be used as an alias for `--input`
+
+#### __`--output` Option__
+
+You can also provide a `--output` option and specify a destination for your documentation to be created.
+
+  - `~$ hyperdrive docs --input api.rb --output docs/docs.md`
+
+`-out` can be used as an alias for `--output`
+
+If the `--output` option is not provided the generated documentation will be written to `docs/doc.md` by default. 
+
 ## Project Status
 
 - Version: [![Gem Version](https://badge.fury.io/rb/hyperdrive.png)](http://badge.fury.io/rb/hyperdrive)

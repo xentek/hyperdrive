@@ -12,14 +12,11 @@ module Hyperdrive
     include Thor::Actions
 
     desc "docs", "Generate docs in markdown based on your resources."
-
-    method_option :input, :aliases => "\--in", :type => :string,
-                  :desc => "Specify the directory or file to generate docs for."
-    method_option :output, :aliases => "\--out", :type => :string, 
-                  :default => "docs/api.md", :desc => "Specify the destination of the docs."
-
+    method_option :input,  aliases: "\--in",  desc: "Specify the directory or file to generate docs for."
+    method_option :output, aliases: "\--out", desc: "Specify the destination of the docs.", default: "docs/api.md"
     def docs
       input = File.expand_path(options[:input])
+      
       if File.file?(input)
         require input
       elsif File.directory?(input)
@@ -27,9 +24,9 @@ module Hyperdrive
           require file
         end
       else
-        raise "Input is neither a file nor a directory"
+        raise ArgumentError, "Input is neither a file nor a directory"
       end
-      
+
       if hyperdrive.resources.empty?
         say "This API doesn't have any resources to document", :red
         return

@@ -42,6 +42,46 @@ hyperdrive do
     filter :start_date, 'Format: YYYY-MM-DD'
     filter :end_date, 'Format: YYYY-MM-DD'
     filter :parent_id, 'Parent ID of Thing', required: true
+
+
+    # Handle API Requests
+    #
+    # - Simply return a string to be used as the body of the response. How you generate
+    #   that string is completely up to you.
+    # - Status Codes and Headers will be handled automatically.
+    # - Any unhandled requests will return a 405 "Method Not Supported" error
+
+    request(:get) do
+      # retrieve 1-N objects...
+      '{ ... }'
+    end
+
+    # Options and Head requests will be handled automatically and
+    # will use info from the GET request block you define, as needed.
+
+    # POST Requests should return the full object that was created during the request.
+    request(:post) do
+      # create the object...
+      '{ ... }'
+    end
+
+    # PUT Requests should return the full object that was updated during the request.
+    request(:put) do
+      # 'upsert' the object...
+      '{ ... }'
+    end
+
+    # PATCH requests should return the full object that was updated during the request.
+    request(:patch) do
+      # update the object...
+      '{ ... }'
+    end
+
+    # DELETE requests should return a simple response indicating success.
+    request(:delete) do
+      # delete the object...
+      '{"deleted":true}'
+    end
   end
 end
 

@@ -1,6 +1,6 @@
 module Hyperdrive
-  module Verbs
-    def self.default 
+  module Values
+    def self.request_methods
       %w(GET HEAD OPTIONS POST PUT PATCH DELETE).freeze
     end
   end

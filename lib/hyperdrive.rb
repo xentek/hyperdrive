@@ -7,7 +7,8 @@ Linguistics.use(:en)
 # prepare for hyperspace!
 require 'hyperdrive/docs'
 require 'hyperdrive/dsl'
+require 'hyperdrive/errors'
 require 'hyperdrive/resource'
 require 'hyperdrive/server'
-require 'hyperdrive/verbs'
+require 'hyperdrive/values'
 require 'hyperdrive/version'

@@ -14,7 +14,7 @@ Gem::Specification.new do |gem|
   gem.license       = "MIT"
 
   gem.files         = `git ls-files -z`.split("\x0")
-  gem.executables   = ['hyperdrive']
+  gem.executables   = ['hyperdrive', 'console']
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
   

@@ -30,7 +30,7 @@ describe Hyperdrive::Docs do
   end
 
   it 'generates a bullet with nest level of 1 as default' do
-    @docs.bullet('test').must_equal "\n  - test\n"
+    @docs.bullet('test').must_equal "  - test\n"
   end
 
   it 'generates a bullet with nest level between 1 and 3' do
@@ -39,15 +39,15 @@ describe Hyperdrive::Docs do
   end
 
   it 'generates a nested bulleted list' do
-    @docs.bullet('test', 2).must_equal "\n    - test\n"
+    @docs.bullet('test', 2).must_equal "    - test\n"
   end
 
   it 'generates a nested bullet code span' do
-    @docs.bullet('`/things`', 2).must_equal "\n    - `/things`\n"
+    @docs.bullet('`/things`', 2).must_equal "    - `/things`\n"
   end
 
   it 'generates nested bulleted bold text' do
-    @docs.bullet('__id__', 3).must_equal "\n      - __id__\n"
+    @docs.bullet('__id__', 3).must_equal "      - __id__\n"
   end
 
   it 'outputs a string of the completed doc' do

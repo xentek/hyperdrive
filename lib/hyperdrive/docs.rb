@@ -48,22 +48,23 @@ module Hyperdrive
     def bullet(string, nest = 1)
       raise ArgumentError, "Nest level must be between 1 and 3." unless (1..3).cover?(nest)
       nest = "  " * nest
-      "\n#{nest}- #{string}\n"
+      "#{nest}- #{string}\n"
     end
 
     def list(params)
       list = ""
       params.each do |key, value|
-        list += "#{bullet(bold(key), 1)}: "
-        list += paragraph(value[:desc])
-        list += "#{bullet(bold('Required'), 2)}: "
-        list += if value[:required].kind_of? Array
-                  code_options(value[:required])
-                elsif value[:required] == true
-                  code_options(Hyperdrive::Verbs.default)
-                else
-                  italics('none')
-                end
+        list += bullet(bold(key), 1)
+
+        value.each do |key, value|
+          list += bullet(italics(key), 2)
+
+          if value.kind_of? Array
+            list += bullet(code_options(value), 3)
+          else
+            list += bullet(value, 3)
+          end
+        end
       end
       list
     end

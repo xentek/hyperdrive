@@ -17,7 +17,7 @@ module Hyperdrive
         out += paragraph(bullet(code(resource.endpoint), 1))
         out += header("Params", 2)
         out += list(resource.allowed_params)
-        out += header("Filter", 2)
+        out += header("Filters", 2)
         out += list(resource.filters)
       end
       out
@@ -51,18 +51,18 @@ module Hyperdrive
       "#{nest}- #{string}\n"
     end
 
-    def list(params)
+    def list(items)
       list = ""
-      params.each do |key, value|
+      items.each do |key, value|
         list += bullet(bold(key), 1)
 
-        value.each do |key, value|
-          list += bullet(italics(key), 2)
+        value.each do |subkey, subvalue|
+          list += bullet(italics(subkey), 2)
 
-          if value.kind_of? Array
-            list += bullet(code_options(value), 3)
+          if subvalue.kind_of? Array
+            list += bullet(code_options(subvalue), 3)
           else
-            list += bullet(value, 3)
+            list += bullet(subvalue, 3)
           end
         end
       end

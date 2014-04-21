@@ -23,7 +23,20 @@ module Hyperdrive
 
       def filter(*args)
         resource.register_filter(*args)
-      end      
+      end
+
+      def request(method, &block)
+        unless definable_request_methods.include? method
+          raise Errors::DSL::UnknownArgument.new(method, 'request')
+        end
+        resource.define_request_handler(method, block)
+      end
+
+      private
+
+      def definable_request_methods
+        [:get, :post, :put, :patch, :delete].freeze
+      end
     end
   end
 end

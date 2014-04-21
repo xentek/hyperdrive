@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Hyperdrive::DSL::Resource do
-  
+
   it "sets the name of the endpoint" do
     hyperdrive do
       resource(:thing) do
@@ -20,7 +20,6 @@ describe Hyperdrive::DSL::Resource do
     end.resources[:thing].desc.must_equal 'Thing Description'
   end
 
-
   it "registers an allowed param on a resource" do
     hyperdrive do
       resource(:thing) do
@@ -35,5 +34,25 @@ describe Hyperdrive::DSL::Resource do
         filter :parent_id, "Thing's Parent ID"
       end
     end.resources[:thing].filters[:parent_id][:desc].must_equal "Thing's Parent ID"
+  end
+
+  it "defines how requests are handled" do
+    hyperdrive do
+      resource(:thing) do
+        request(:get) do
+          'ok'
+        end
+      end
+    end.resources[:thing].request_handlers[:get].call.must_equal 'ok'
+  end
+
+  it "raises an exception if request method argument is unknown" do
+    proc do
+      hyperdrive do
+        resource(:thing) do
+          request(:verb)
+        end
+      end
+    end.must_raise Hyperdrive::Errors::DSL::UnknownArgument
   end
 end

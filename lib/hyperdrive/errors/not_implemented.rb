@@ -1,6 +1,6 @@
 module Hyperdrive
   module Errors
-    class NotImplemented < RuntimeError
+    class NotImplemented < HTTPError
       def initialize(request_method)
         @request_method = request_method
       end

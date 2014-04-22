@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 # stdlib
+require 'rack'
 require 'linguistics'
 Linguistics.use(:en)
 
@@ -9,6 +10,7 @@ require 'hyperdrive/docs'
 require 'hyperdrive/dsl'
 require 'hyperdrive/errors'
 require 'hyperdrive/resource'
+require 'hyperdrive/response'
 require 'hyperdrive/server'
 require 'hyperdrive/values'
 require 'hyperdrive/version'

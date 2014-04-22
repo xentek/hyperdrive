@@ -12,7 +12,16 @@ module Hyperdrive
       Rack::Builder.new do
         hyperdrive.resources.each do |key, resource|
           map resource.endpoint do
-            run lambda { |x| [200, { "Content-Type" => "text/plain" }, ["OK"]] }
+            use Rack::Runtime
+            use Rack::Lint
+            use Rack::Head
+            run ->(env) {
+              begin
+                Hyperdrive::Response.new(env, resource).response
+              rescue Hyperdrive::Errors::HTTPError => error
+                [error.http_status_code, { 'Allow' => resource.allowed_methods.join(',') }, [error.message]]
+              end
+            }
           end
         end
       end.to_app

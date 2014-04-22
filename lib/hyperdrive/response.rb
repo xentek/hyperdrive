@@ -8,11 +8,11 @@ module Hyperdrive
       @resource = resource
       @env = env
       @http_request_method = env['REQUEST_METHOD']
-
+      
       unless request_method_supported?
         raise Errors::NotImplemented.new(http_request_method)
       end
-
+      
       unless resource.request_method_allowed?(http_request_method)
         raise Errors::MethodNotAllowed.new(http_request_method)
       end

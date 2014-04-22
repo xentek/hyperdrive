@@ -10,7 +10,7 @@ module Hyperdrive
       @endpoint = "/#{@key.to_s.en.plural}"
       @allowed_params = default_allowed_params
       @filters = default_filters
-      @request_handlers = {}
+      @request_handlers = default_request_handlers
     end
 
     def register_param(key, description, options = {})
@@ -23,10 +23,26 @@ module Hyperdrive
       @filters[key] = { desc: description }.merge(options)
     end
 
-    def define_request_handler(method, block)
-      @request_handlers[method] = block
+    def define_request_handler(request_method, block)
+      @request_handlers[request_method] = block
+      if request_method == :get
+        @request_handlers[:head] = block
+      end
     end
-    
+
+    def request_handler(http_request_method)
+      request_method = Hyperdrive::Values.request_methods_string_map[http_request_method]
+      request_handlers[request_method]      
+    end
+
+    def request_method_allowed?(http_request_method)
+      allowed_methods.include?(http_request_method)
+    end
+
+    def allowed_methods
+      Hyperdrive::Values.request_methods_symbol_map.values_at(*request_handlers.keys)
+    end
+
     private
 
     def default_allowed_params
@@ -47,6 +63,10 @@ module Hyperdrive
 
     def default_filter_options
       { required: false }.freeze
+    end
+
+    def default_request_handlers
+      { options: proc { '' } }
     end
   end
 end

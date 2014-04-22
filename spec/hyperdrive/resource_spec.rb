@@ -45,4 +45,23 @@ describe Hyperdrive::Resource do
     @resource.define_request_handler(:get, Proc.new { return 'ok' })
     @resource.request_handlers[:get].call.must_equal 'ok'
   end
+
+  it "returns the specified request handler" do
+    @resource.define_request_handler(:get, Proc.new { return 'ok' })
+    @resource.request_handler('GET').call.must_equal 'ok'
+  end
+
+  it "returns true if the request can be handled" do
+    @resource.define_request_handler(:get, Proc.new { return 'ok' })
+    @resource.request_method_allowed?('GET').must_equal true
+  end
+
+  it "returns false if the request can not be handled" do
+    @resource.request_method_allowed?('GET').must_equal false
+  end
+
+  it "returns the request methods that can handled" do
+    @resource.define_request_handler(:get, Proc.new { return 'ok' })
+    @resource.allowed_methods.must_equal ['OPTIONS','GET','HEAD']
+  end
 end

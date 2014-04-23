@@ -13,18 +13,18 @@ module Hyperdrive
         use Rack::Runtime
         use Rack::Lint
         use Rack::Head
-        
+
         map '/' do
           info = ''
           hyperdrive.resources.each do |type, resource|
-            info += %Q({"id":"#{resource.endpoint}","name":"#{resource.name}","desc":"#{resource.desc}","type":"#{type}}")
+            info += %Q({"id":"#{resource.endpoint}","name":"#{resource.name}","desc":"#{resource.desc}","type":"#{type}"})
           end
 
           run ->(env) {
-            [200, { 'Allow' => Hyperdrive::Values.request_methods.join(",") }, ["[#{info}]"]]
+            [200, { 'Content-Type' => 'application/json', 'Allow' => Hyperdrive::Values.request_methods.join(",") }, ["[#{info}]"]]
           }
         end
-        
+
         hyperdrive.resources.each do |key, resource|
           map resource.endpoint do
             run ->(env) {

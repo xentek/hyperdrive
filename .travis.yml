@@ -4,7 +4,6 @@ rvm:
 - 1.9.3
 - jruby-head
 - rbx-2.1.1
-addons:
-  code_climate:
-    repo_token:
-      secure: txHP3yqzRX1/jCc0ZAjoixtbKAB7K2tOPVSOckVhUHeO2LxyMGkjxnwWsdrq+gcyT6c3jT57g0shMTVOD57MF1F69dsqp0NOBrHCIVKf7JR4L56slYt61Bwsm3sgdOG+RdH0oKFUt71hF0qG0068Y+xNOxJ2TleoaU/yJj8YyIg=
+env:
+  global:
+    secure: vkWXxpcC56eq0fhcH7RdBDYItLihpz7vkrxi8swXHfd4QEmjXTWHpueP9Zt5r8UkAzIk/+lLwZBNlFY0W4lQK1/1+l9mDgaIMpqPx1iweNQr4ynI7Noc1BUf1HXz8KF4tcy59D4/kxX/oYeCLRIStgHGycq6P+vKEzZexPM1tG0=

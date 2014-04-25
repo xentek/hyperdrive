@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
   gem.authors       = ['StyleSeek Engineering']
   gem.email         = ['engineering@styleseek.com']
   gem.summary       = %q{Hypermedia State Machine}
-  gem.description   = %q{Ruby DSL for defining self-documenting, HATEOAS™ complaint, Hypermedia API endpoints.}
+  gem.description   = %q{Ruby DSL for defining self-documenting, HATEOAS™ compliant, Hypermedia API endpoints.}
   gem.homepage      = "https://github.com/styleseek/hyperdrive"
   gem.license       = "MIT"
 

@@ -1,6 +1,10 @@
 language: ruby
 rvm:
-  - 2.1.0  
-  - 1.9.3
-  - jruby-head
-  - rbx-2.1.1
+- 2.1.0
+- 1.9.3
+- jruby-head
+- rbx-2.1.1
+addons:
+  code_climate:
+    repo_token:
+      secure: txHP3yqzRX1/jCc0ZAjoixtbKAB7K2tOPVSOckVhUHeO2LxyMGkjxnwWsdrq+gcyT6c3jT57g0shMTVOD57MF1F69dsqp0NOBrHCIVKf7JR4L56slYt61Bwsm3sgdOG+RdH0oKFUt71hF0qG0068Y+xNOxJ2TleoaU/yJj8YyIg=

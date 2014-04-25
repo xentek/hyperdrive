@@ -23,7 +23,7 @@ module Hyperdrive
     def response
       @headers.merge({ 'Content-Type' => 'application/json' })
       status = (http_request_method == 'POST') ? 201 : 200
-      ::Rack::Response.new(resource.request_handler(http_request_method).call(env), status, headers).finish
+      ::Rack::Response.new(resource.request_handler(http_request_method).call(env, resource), status, headers).finish
     end
 
     private

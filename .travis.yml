@@ -1,9 +1,7 @@
 language: ruby
 rvm:
-- 2.1.0
-- 1.9.3
-- jruby-head
-- rbx-2.1.1
-env:
-  global:
-    secure: vkWXxpcC56eq0fhcH7RdBDYItLihpz7vkrxi8swXHfd4QEmjXTWHpueP9Zt5r8UkAzIk/+lLwZBNlFY0W4lQK1/1+l9mDgaIMpqPx1iweNQr4ynI7Noc1BUf1HXz8KF4tcy59D4/kxX/oYeCLRIStgHGycq6P+vKEzZexPM1tG0=
+  - 2.1.0
+  - 1.9.3
+  - jruby-head
+  - rbx-2.1.1
+script: CODECLIMATE_REPO_TOKEN=761b8971ba170273ddfe21cb7450523ff525af360ea491795255bdc2aeabba7c bundle exec rake

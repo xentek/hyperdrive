@@ -4,9 +4,9 @@ module Hyperdrive
   module DSL
     class Resource
       attr_reader :resource
-      def initialize(key, &block)
+      def initialize(key)
         @resource = ::Hyperdrive::Resource.new(key)
-        instance_eval(&block) if block_given?
+        instance_eval(&Proc.new) if block_given?
       end
 
       def name(name)
@@ -25,11 +25,12 @@ module Hyperdrive
         resource.register_filter(*args)
       end
 
-      def request(method, &block)
-        unless definable_request_methods.include? method
-          raise Errors::DSL::UnknownArgument.new(method, 'request')
+      def request(request_method)
+        unless definable_request_methods.include? request_method
+          raise Errors::DSL::UnknownArgument.new(request_method, 'request')
         end
-        resource.define_request_handler(method, block)
+        request_handler = Hyperdrive::RequestHandler.new(request_method, Proc.new)
+        resource.register_request_handler(request_method, request_handler)
       end
 
       private

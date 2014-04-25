@@ -43,7 +43,7 @@ describe Hyperdrive::DSL::Resource do
           'ok'
         end
       end
-    end.resources[:thing].request_handlers[:get].call.must_equal 'ok'
+    end.resources[:thing].request_handlers[:get].call(default_rack_env).must_equal 'ok'
   end
 
   it "raises an exception if request method argument is unknown" do

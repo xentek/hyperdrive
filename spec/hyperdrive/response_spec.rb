@@ -16,8 +16,8 @@ describe Hyperdrive::Response do
   end
 
   it "responds to requests" do
-    @resource.register_request_handler(:get, Proc.new { return 'ok' })
+    @resource.register_request_handler(:get, Proc.new {|env| 'ok' })
     response = Hyperdrive::Response.new({ 'REQUEST_METHOD' => 'GET' }, @resource)
-    response.response.must_equal 'ok'
+    response.response.first.must_equal 200
   end
 end

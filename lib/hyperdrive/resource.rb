@@ -23,10 +23,10 @@ module Hyperdrive
       @filters[key] = { desc: description }.merge(options)
     end
 
-    def define_request_handler(request_method, block)
-      @request_handlers[request_method] = block
+    def register_request_handler(request_method, request_handler)
+      @request_handlers[request_method] = request_handler
       if request_method == :get
-        @request_handlers[:head] = block
+        @request_handlers[:head] = request_handler
       end
     end
 

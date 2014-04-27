@@ -12,12 +12,14 @@ module Hyperdrive
       @env = env
       @resource = resource
       @request = Rack::Request.new(@env)
-      @params = @params = symbolize_keys(@request.params)
+      @params = symbolize_keys(@request.params)
+
       if [:get, :head, :options].include? request_method
         sanitize_filters!
       else
         sanitize_params!
       end
+
       instance_eval(&@block)
     end
 
@@ -33,7 +35,7 @@ module Hyperdrive
       Hash[@params.select do |key,value|
        hash.include? key
       end]
-    end      
+    end
 
     def symbolize_keys(hash)
       hash.inject({}) do |result, (key, value)|

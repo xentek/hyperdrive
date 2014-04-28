@@ -13,13 +13,14 @@ Bundler.setup(:default, ENV['RACK_ENV'])
 require 'hyperdrive'
 
 # Fire up the BDD Stack
+require 'rack/test'
 require 'minitest/autorun'
 require "minitest-spec-context"
 require 'minitest/reporters'
 
 #  all systems go
 MiniTest::Reporters.use! MiniTest::Reporters::SpecReporter.new
-#include Rack::Test::Methods
+include Rack::Test::Methods
 
 module Hyperdrive
   module TestData
@@ -31,7 +32,8 @@ module Hyperdrive
         "rack.multithread" => true,
         "rack.multiprocess" => true,
         "rack.run_once" => false,
-        'QUERY_STRING' => 'okay=player'
+        'REQUEST_METHOD' => 'GET',
+        'QUERY_STRING' => 'id=player'
       }
     end
 
@@ -49,7 +51,7 @@ module Hyperdrive
           filter :end_date, 'Format: YYYY-MM-DD'
           filter :parent_id, 'Parent ID of Thing', required: true
         end
-      end
+      end 
     end
   end
 end

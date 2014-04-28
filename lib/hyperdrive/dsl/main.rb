@@ -11,6 +11,9 @@ module Hyperdrive
         @resources = {}
       end
 
+      def cors(options = {})
+      end
+
       def resource(name)
         @resources[name] = Resource.new(name, &Proc.new).resource
       end

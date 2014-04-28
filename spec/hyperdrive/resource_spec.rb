@@ -27,18 +27,18 @@ describe Hyperdrive::Resource do
   it "registers an allowed param" do
     @resource.register_param(:name, "Thing's Name")
     @resource.allowed_params[:name][:desc].must_equal "Thing's Name"
-    @resource.allowed_params[:name][:required].must_equal true
+    @resource.allowed_params[:name][:required].must_equal %w(POST PUT PATCH)
   end
 
   it "auto-registers the :id filter" do
     @resource.filters[:id][:desc].must_equal 'Resource Identifier'
-    @resource.filters[:id][:required].must_equal false
+    @resource.filters[:id][:required].must_equal [] 
   end
 
   it "registers a filter" do
     @resource.register_filter(:parent_id, 'Parent ID of Thing', required: true)
     @resource.filters[:parent_id][:desc].must_equal 'Parent ID of Thing'
-    @resource.filters[:parent_id][:required].must_equal true
+    @resource.filters[:parent_id][:required].must_equal %w(GET HEAD) 
   end
 
   context "Request Handlers" do

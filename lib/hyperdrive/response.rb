@@ -4,9 +4,9 @@ module Hyperdrive
   class Response
     attr_reader :resource, :env, :http_request_method, :headers
 
-    def initialize(env, resource)
-      @resource = resource
+    def initialize(env)
       @env = env
+      @resource = env['hyperdrive.resource']
       @http_request_method = env['REQUEST_METHOD']
 
       unless request_method_supported?
@@ -23,7 +23,7 @@ module Hyperdrive
     def response
       @headers.merge({ 'Content-Type' => 'application/json' })
       status = (http_request_method == 'POST') ? 201 : 200
-      ::Rack::Response.new(resource.request_handler(http_request_method).call(env, resource), status, headers).finish
+      ::Rack::Response.new(resource.request_handler(http_request_method).call(env), status, headers).finish
     end
 
     private
@@ -36,7 +36,7 @@ module Hyperdrive
     end
 
     def request_method_supported?
-      Hyperdrive::Values.request_methods_string_map.key?(http_request_method)
+      Hyperdrive::Values.http_request_methods.key?(http_request_method)
     end
   end
 end

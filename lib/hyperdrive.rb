@@ -9,6 +9,9 @@ Linguistics.use(:en)
 require 'hyperdrive/docs'
 require 'hyperdrive/dsl'
 require 'hyperdrive/errors'
+require 'hyperdrive/middleware'
+require 'hyperdrive/utils'
+
 require 'hyperdrive/resource'
 require 'hyperdrive/response'
 require 'hyperdrive/request_handler'

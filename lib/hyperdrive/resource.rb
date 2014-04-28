@@ -31,7 +31,7 @@ module Hyperdrive
     end
 
     def request_handler(http_request_method)
-      request_method = Hyperdrive::Values.request_methods_string_map[http_request_method]
+      request_method = Hyperdrive::Values.http_request_methods[http_request_method]
       request_handlers[request_method]
     end
 
@@ -40,7 +40,7 @@ module Hyperdrive
     end
 
     def allowed_methods
-      Hyperdrive::Values.request_methods_symbol_map.values_at(*request_handlers.keys)
+      Hyperdrive::Values.request_methods.values_at(*request_handlers.keys)
     end
 
     private

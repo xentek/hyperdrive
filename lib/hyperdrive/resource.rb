@@ -46,9 +46,17 @@ module Hyperdrive
     def allowed_methods
       Hyperdrive::Values.request_methods.values_at(*request_handlers.keys)
     end
-    
+
     def required_param?(param, http_request_method)
-      allowed_params.key?(param) and allowed_params[param][:required].include? http_request_method
+      allowed_params.key?(param) and allowed_params[param][:required].include?(http_request_method)
+    end
+    
+    def required_filter?(param, http_request_method)
+      filters.key?(param) and filters[param][:required].include?(http_request_method)
+    end
+
+    def required?(param, http_request_method)
+      required_param?(param, http_request_method) or required_filter?(param, http_request_method)
     end
 
     private
@@ -65,7 +73,7 @@ module Hyperdrive
 
     def default_filters
       {
-        id: default_filter_options.merge(desc: 'Resource Identifier')
+        id: { desc: 'Resource Identifier', required: []  }
       }
     end
 

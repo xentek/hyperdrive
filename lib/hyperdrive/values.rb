@@ -1,10 +1,10 @@
 module Hyperdrive
   module Values
-    def self.request_methods
+    def self.supported_request_methods
       %w(GET HEAD OPTIONS POST PUT PATCH DELETE).freeze
     end
 
-    def self.request_methods_symbol_map
+    def self.request_methods
       {
         get:     'GET',
         head:    'HEAD',
@@ -16,7 +16,7 @@ module Hyperdrive
       }.freeze
     end
 
-    def self.request_methods_string_map
+    def self.http_request_methods
       {
         'GET'     => :get,
         'HEAD'    => :head,

@@ -28,7 +28,7 @@ include Rack::Test::Methods
 module Hyperdrive
   module TestData
     def default_rack_env
-      { 
+      {
         "rack.version" => Rack::VERSION,
         "rack.input" => StringIO.new,
         "rack.errors" => StringIO.new,
@@ -47,10 +47,10 @@ module Hyperdrive
           desc 'Description of Thing Resource'
 
           param :name, '50 Chars or less', required: true
-          
+
           filter :parent_id, 'Parent ID of Thing', required: true
         end
-      end 
+      end
     end
   end
 end

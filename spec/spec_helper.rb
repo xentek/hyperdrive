@@ -46,12 +46,8 @@ module Hyperdrive
           name 'Thing Resource'
           desc 'Description of Thing Resource'
 
-          param :name, '50 Chars or less' 
-          param :start_date, 'Format: YYYY-MM-DD', required: false
-          param :end_date, 'Format: YYYY-MM-DD', required: false
-
-          filter :start_date, 'Format: YYYY-MM-DD'
-          filter :end_date, 'Format: YYYY-MM-DD'
+          param :name, '50 Chars or less', required: true
+          
           filter :parent_id, 'Parent ID of Thing', required: true
         end
       end 

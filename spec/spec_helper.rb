@@ -1,5 +1,8 @@
 # encoding: utf-8
 
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
+
 # bootstrap the environment
 ENV['RACK_ENV'] = 'test'
 lib_path = File.expand_path('../lib', __FILE__)

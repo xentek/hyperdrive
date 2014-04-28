@@ -19,4 +19,5 @@ group :test do
   gem 'minitest-spec-context', require: false
   gem 'minitest-reporters', require: false
   gem 'rack-test', require: false
+  gem 'codeclimate-test-reporter', require: false
 end

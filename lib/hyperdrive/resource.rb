@@ -50,7 +50,7 @@ module Hyperdrive
     def required_param?(param, http_request_method)
       allowed_params.key?(param) and allowed_params[param][:required].include?(http_request_method)
     end
-    
+
     def required_filter?(param, http_request_method)
       filters.key?(param) and filters[param][:required].include?(http_request_method)
     end

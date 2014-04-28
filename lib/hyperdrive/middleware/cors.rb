@@ -4,9 +4,12 @@ module Hyperdrive
   module Middleware
     class CORS
       def initialize(app, options = {})
+        @app = app
       end
 
       def call(env)
+        status, headers, body = @app.call(env)
+        [status, headers, body]
       end
 
       def cross_origin_headers

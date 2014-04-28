@@ -27,6 +27,7 @@ module Hyperdrive
 
         hyperdrive.resources.each do |key, resource|
           use Hyperdrive::Middleware::Resource, resource
+          use Hyperdrive::Middleware::CORS
           use Hyperdrive::Middleware::SanitizeParams
           use Hyperdrive::Middleware::RequiredParams
           map resource.endpoint do

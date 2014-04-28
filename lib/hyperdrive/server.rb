@@ -21,15 +21,17 @@ module Hyperdrive
           end
 
           run ->(env) {
-            [200, { 'Content-Type' => 'application/json', 'Allow' => Hyperdrive::Values.request_methods.join(",") }, ["[#{info}]"]]
+            [200, { 'Content-Type' => 'application/json', 'Allow' => Hyperdrive::Values.supported_request_methods.join(",") }, ["[#{info}]"]]
           }
         end
 
         hyperdrive.resources.each do |key, resource|
+          use Hyperdrive::Middleware::Resource, resource
+          use Hyperdrive::Middleware::SanitizeParams
           map resource.endpoint do
             run ->(env) {
               begin
-                Hyperdrive::Response.new(env, resource).response
+                Hyperdrive::Response.new(env).response
               rescue Hyperdrive::Errors::HTTPError => error
                 [error.http_status_code, { 'Allow' => resource.allowed_methods.join(',') }, [error.message]]
               end

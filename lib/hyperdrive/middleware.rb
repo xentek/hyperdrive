@@ -2,3 +2,4 @@
 
 require 'hyperdrive/middleware/resource'
 require 'hyperdrive/middleware/sanitize_params'
+require 'hyperdrive/middleware/required_params'

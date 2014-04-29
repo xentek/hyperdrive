@@ -1,9 +1,12 @@
 language: ruby
 rvm:
-- 2.1.0
+- 2.1.1
 - 1.9.3
 - jruby-head
 - rbx-2.1.1
+matrix:
+  allow_failures:
+    - rvm: 2.1.1
 env:
   global:
     secure: Tl3oBsBZRI5bMrtNH5mtTDvSTlTxNbsKaAnQ7KQ2KMyiH/eHolOSIbUYB9NB3GRMC6XSyFShRCaYPA/ET36HI+Jw3PFT/XADdiOdFqlk6VyJEUPznNQ1nlp8AsyNn+IexZXIl8DdqmZxGHlY6YKDbQV/U1v+FeW8X5j3TLN1mcw=

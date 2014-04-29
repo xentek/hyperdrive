@@ -2,12 +2,12 @@
 
 module Hyperdrive
   class Resource
-    attr_reader :endpoint, :allowed_params, :filters, :request_handlers, :version
+    attr_reader :namespace, :endpoint, :allowed_params, :filters, :request_handlers, :version
     attr_accessor :name, :desc
 
-    def initialize(key)
-      @key = key
-      @endpoint = "/#{@key.to_s.en.plural}"
+    def initialize(resource)
+      @namespace = resource.to_s.en.plural
+      @endpoint = "/#{namespace}"
       @allowed_params = default_allowed_params
       @filters = default_filters
       @request_handlers = default_request_handlers
@@ -34,9 +34,30 @@ module Hyperdrive
       end
     end
 
-    def request_handler(http_request_method, version = 'v1')
+    def request_handler(http_request_method, version = nil)
+      version ||= latest_version(http_request_method)
       request_method = Hyperdrive::Values.http_request_methods[http_request_method]
       request_handlers[request_method][version]
+    end
+
+    def acceptable_content_types(http_request_method)
+      content_types = []
+      available_versions(http_request_method).each do |version|
+        hyperdrive.config[:media_types].each do |media_type|
+          content_types << "application/vnd.#{hyperdrive.config[:vendor]}.#{namespace}.#{version}+#{media_type}"
+          content_types << "application/vnd.#{hyperdrive.config[:vendor]}.#{namespace}+#{media_type}"
+        end
+      end
+      content_types
+    end
+
+    def available_versions(http_request_method)
+      request_method = Hyperdrive::Values.http_request_methods[http_request_method]
+      @request_handlers[request_method].keys.sort.reverse
+    end
+
+    def latest_version(http_request_method)
+      available_versions(http_request_method).first
     end
 
     def request_method_allowed?(http_request_method)

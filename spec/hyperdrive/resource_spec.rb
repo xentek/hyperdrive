@@ -70,5 +70,17 @@ describe Hyperdrive::Resource do
       @resource.register_request_handler(:get, Proc.new { |env| 'v2' }, 'v2')
       @resource.request_handler('GET', 'v2').call(default_rack_env).must_equal 'v2'
     end
+
+    it "returns the acceptable content types" do
+      @resource.acceptable_content_types('GET').must_equal ["application/vnd.hyperdrive.things.v1+hal+json", "application/vnd.hyperdrive.things+hal+json", "application/vnd.hyperdrive.things.v1+json", "application/vnd.hyperdrive.things+json"]
+    end
+
+    it "returns the available versions for this resource" do
+      @resource.available_versions('GET').must_equal ['v1']
+    end
+
+    it "returns the latest available version for this resource" do
+      @resource.latest_version('GET').must_equal 'v1'
+    end
   end
 end

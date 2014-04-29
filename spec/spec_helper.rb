@@ -39,25 +39,25 @@ module Hyperdrive
         'HTTP_ACCEPT' => 'application/vnd.hyperdrive.things+hal+json;q=0.8, application/json;q=1',
         'HTTP_ACCEPT_LANGUAGE' => 'en',
         'REQUEST_METHOD' => 'GET',
-        'QUERY_STRING' => 'id=player'
+        'QUERY_STRING' => 'id=1001'
       }
     end
 
-    def sample_api
-      hyperdrive do
-        resource(:thing) do
-          name 'Thing Resource'
-          desc 'Description of Thing Resource'
+    #def sample_api
+      #hyperdrive do
+        #resource(:thing) do
+          #name 'Thing Resource'
+          #desc 'Description of Thing Resource'
 
-          param :name, '50 Chars or less', required: true
-          filter :parent_id, 'Parent ID of Thing', required: true
+          #param :name, '50 Chars or less', required: true
+          #filter :parent_id, 'Parent ID of Thing', required: true
           
-          request(:get) do
-            'ok'
-          end
-        end
-      end
-    end
+          #request(:get) do
+            #'ok'
+          #end
+        #end
+      #end
+    #end
   end
 end
 include Hyperdrive::TestData

@@ -19,6 +19,9 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   
   gem.add_dependency 'rack'
+  gem.add_dependency 'rack-cache'
+  gem.add_dependency 'rack-ssl'
+  gem.add_dependency 'rack-accept'
   gem.add_dependency 'linguistics'
   gem.add_dependency 'thor'
 end

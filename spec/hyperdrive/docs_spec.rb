@@ -4,17 +4,20 @@ require 'spec_helper'
 
 describe Hyperdrive::Docs do
   before do
-    sample_api
-    @docs = Hyperdrive::Docs.new(hyperdrive.resources)
+    @resources = { :thing => Hyperdrive::Resource.new(:thing) }
+    @docs = Hyperdrive::Docs.new(@resources)
   end
 
   it 'generates a header with size 1 as default' do
     @docs.header('Thing Resource').must_equal "\n\n# Thing Resource\n\n"
   end
 
-  it 'generates a header only between size 1 and 6' do
-    proc {@docs.header('Thing Resource', 0)}.must_raise ArgumentError
-    proc {@docs.header('Thing Resource', 8)}.must_raise ArgumentError
+  it 'raises an error if header size is less than 1' do
+    proc { @docs.header('Thing Resource', 0) }.must_raise ArgumentError
+  end
+
+  it 'raises an error if header size is greater than 6' do
+    proc { @docs.header('Thing Resource', 8) }.must_raise ArgumentError    
   end
 
   it 'generates a paragraph' do

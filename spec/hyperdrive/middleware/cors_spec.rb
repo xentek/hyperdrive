@@ -3,12 +3,7 @@
 require 'spec_helper'
 
 describe Hyperdrive::Middleware::CORS do
-  def app
-    inner_app = lambda { |env|
-      [200, {'Content-Type' => 'text/plain'}, ['cors okay']]
-    }
-    Hyperdrive::Middleware::CORS.new(inner_app)
-  end
+  
 
   before do
     hyperdrive_env = {
@@ -19,6 +14,13 @@ describe Hyperdrive::Middleware::CORS do
   end
 
   context 'Default CORS options' do
+    def app
+      inner_app = lambda { |env|
+        [200, {'Content-Type' => 'text/plain'}, ['cors okay']]
+      }
+      Hyperdrive::Middleware::CORS.new(inner_app)
+    end
+    
     it "allows origins" do
       @headers['Access-Control-Allow-Origin'].must_equal '*'
     end
@@ -45,38 +47,67 @@ describe Hyperdrive::Middleware::CORS do
   end
 
   context 'Custom CORS options' do
-    def app
-      inner_app = lambda { |env|
-        [200, {'Content-Type' => 'text/plain'}, ['cors okay']]
-      }
-      options = {'Access-Control-Allow-Credentials' => 'false',
-                 'Access-Control-Allow-Origin' => 'http://example.com',
-                 'Access-Control-Max-Age' => 123,
-                 'Access-Control-Expose-Headers' => 'Cache-Control, Content-Language',
-                 'Access-Control-Allow-Headers' => '*, Content-Type'}
-      Hyperdrive::Middleware::CORS.new(inner_app, options) 
+    context 'Sets custom CORS options' do
+      def app
+        inner_app = lambda { |env|
+          [200, {'Content-Type' => 'text/plain'}, ['cors okay']]
+        }
+        options = {'Access-Control-Allow-Credentials' => 'false',
+                   'Access-Control-Allow-Origin' => 'http://example.com',
+                   'Access-Control-Max-Age' => 123,
+                   'Access-Control-Expose-Headers' => 'Cache-Control, Content-Language',
+                   'Access-Control-Allow-Headers' => '*, Content-Type'}
+        Hyperdrive::Middleware::CORS.new(inner_app, options) 
+      end
+
+      it "sets custom Origin" do
+        @headers['Access-Control-Allow-Origin'].must_equal 'http://example.com'
+      end
+
+      it "sets custom Credentials" do
+        @headers['Access-Control-Allow-Credentials'].must_equal 'false'
+      end
+
+      it "sets custom Max-Age" do
+        @headers['Access-Control-Max-Age'].must_equal '123'
+      end
+
+      it "sets custom Expose-Headers" do
+        @headers['Access-Control-Expose-Headers'].must_equal 'Cache-Control, Content-Language'
+      end
+
+      it "sets custom Headers" do
+        @headers['Access-Control-Allow-Headers'].must_equal '*, Content-Type'
+      end
     end
 
-    it "sets custom Origin" do
-      @headers['Access-Control-Allow-Origin'].must_equal 'http://example.com'
-    end
+    context '#formats_options' do
+      def app
+        inner_app = lambda { |env|
+          [200, {'Content-Type' => 'text/plain'}, ['cors okay']]
+        }
+        options = {'Access-Control-Allow-Credentials' => false,
+                   'Access-Control-Allow-Origin' => 'http://example.com',
+                   'Access-Control-Max-Age' => 123,
+                   'Access-Control-Expose-Headers' => ['Cache-Control', 'Content-Language'],
+                   'Access-Control-Allow-Headers' => ['*', 'Content-Type']}
+        Hyperdrive::Middleware::CORS.new(inner_app, options)
+      end
 
-    it "sets custom Credentials" do
-      @headers['Access-Control-Allow-Credentials'].must_equal 'false'
-    end
 
-    it "sets custom Max-Age" do
-      @headers['Access-Control-Max-Age'].must_equal 123
-    end
+      it 'turns boolean into strings' do
+        @headers['Access-Control-Allow-Credentials'].must_equal 'false'
+      end
 
-    it "sets custom Expose-Headers" do
-      @headers['Access-Control-Expose-Headers'].must_equal 'Cache-Control, Content-Language'
-    end
+      it 'turns integers into strings' do
+        @headers['Access-Control-Max-Age'].must_equal '123'
+      end
 
-    it "sets custom Headers" do
-      @headers['Access-Control-Allow-Headers'].must_equal '*, Content-Type'
+      it 'joins arrays seperated by a comma and a space' do
+        @headers['Access-Control-Expose-Headers'].must_equal 'Cache-Control, Content-Language'
+        @headers['Access-Control-Allow-Headers'].must_equal '*, Content-Type'
+      end
     end
-
 
   end
 end

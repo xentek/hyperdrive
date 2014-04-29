@@ -36,7 +36,7 @@ module Hyperdrive
         "rack.multiprocess" => true,
         "rack.run_once" => false,
         'HTTP_ACCEPT_CHARSET' => 'UTF-8',
-        'HTTP_ACCEPT' => 'application/hal+json;q=1, application/json;q=0.5',
+        'HTTP_ACCEPT' => 'application/vnd.hyperdrive.things+hal+json;q=0.8, application/json;q=1',
         'HTTP_ACCEPT_LANGUAGE' => 'en',
         'REQUEST_METHOD' => 'GET',
         'QUERY_STRING' => 'id=player'
@@ -50,8 +50,11 @@ module Hyperdrive
           desc 'Description of Thing Resource'
 
           param :name, '50 Chars or less', required: true
-
           filter :parent_id, 'Parent ID of Thing', required: true
+          
+          request(:get) do
+            'ok'
+          end
         end
       end
     end

@@ -4,8 +4,8 @@ require 'spec_helper'
 
 describe Hyperdrive::RequestHandler do
   before do
-    @resource = sample_api.resources.values.first
-    @env = default_rack_env.merge('hyperdrive.resource' => @resource, 'hyperdrive.params' => { id: 'player' } )
+    @resource = Hyperdrive::Resource.new(:thing)
+    @env = default_rack_env.merge('hyperdrive.resource' => @resource, 'hyperdrive.params' => { id: '1001' } )
   end
 
   it "can access the rack environment" do
@@ -17,6 +17,6 @@ describe Hyperdrive::RequestHandler do
   end
 
   it "can access the sanitized params" do
-    Hyperdrive::RequestHandler.new(:get, Proc.new { params[:id] }).call(@env).must_equal 'player'
+    Hyperdrive::RequestHandler.new(:get, Proc.new { params[:id] }).call(@env).must_equal '1001'
   end
 end

@@ -43,11 +43,11 @@ describe Hyperdrive::Resource do
 
   context "Request Handlers" do
     before do
-      @resource.register_request_handler(:get, Proc.new {|env| 'ok' })
+      @resource.register_request_handler(:get, Proc.new { |env| 'ok' })
     end
 
     it "registers a request handler" do
-      @resource.request_handlers[:get].call(default_rack_env).must_equal 'ok'
+      @resource.request_handlers[:get]['v1'].call(default_rack_env).must_equal 'ok'
     end
 
     it "returns the specified request handler" do
@@ -64,6 +64,11 @@ describe Hyperdrive::Resource do
 
     it "returns the request methods that can handled" do
       @resource.allowed_methods.must_equal ['OPTIONS','GET','HEAD']
+    end
+
+    it "returns the request handler for the specified version" do
+      @resource.register_request_handler(:get, Proc.new { |env| 'v2' }, 'v2')
+      @resource.request_handler('GET', 'v2').call(default_rack_env).must_equal 'v2'
     end
   end
 end

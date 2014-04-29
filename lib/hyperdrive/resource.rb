@@ -2,7 +2,7 @@
 
 module Hyperdrive
   class Resource
-    attr_reader :endpoint, :allowed_params, :filters, :request_handlers
+    attr_reader :endpoint, :allowed_params, :filters, :request_handlers, :version
     attr_accessor :name, :desc
 
     def initialize(key)
@@ -27,16 +27,16 @@ module Hyperdrive
       @filters[key] = { desc: description }.merge(options)
     end
 
-    def register_request_handler(request_method, request_handler)
-      @request_handlers[request_method] = request_handler
+    def register_request_handler(request_method, request_handler, version = 'v1')
+      @request_handlers[request_method] = { version => request_handler }
       if request_method == :get
-        @request_handlers[:head] = request_handler
+        @request_handlers[:head] = @request_handlers[:get]
       end
     end
 
-    def request_handler(http_request_method)
+    def request_handler(http_request_method, version = 'v1')
       request_method = Hyperdrive::Values.http_request_methods[http_request_method]
-      request_handlers[request_method]
+      request_handlers[request_method][version]
     end
 
     def request_method_allowed?(http_request_method)
@@ -82,7 +82,7 @@ module Hyperdrive
     end
 
     def default_request_handlers
-      { options: proc { |env| '' } }
+      { options: { 'v1' => proc { |env| '' } } }
     end
   end
 end

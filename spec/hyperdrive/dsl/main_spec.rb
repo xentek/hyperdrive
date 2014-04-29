@@ -14,18 +14,30 @@ describe Hyperdrive::DSL::Main do
     end.resources[:thing].must_be_instance_of ::Hyperdrive::Resource
   end
 
-  it "keeps required CORS headers" do
+  it "strips off unallowed CORS headers" do
+    options = {
+                origins: '*', 
+                headers: ['Content-Type', 'Origin', 'Accept'], 
+                credentials: true,
+                expose: ['test'], 
+                test: 'test'
+              }
     hyperdrive do
-      cors(origins: '*', headers: ['Content-Type', 'Origin', 'Accept'], credentials: true, expose: ['test'], max_age: 1728000)
-    end.config[:cors].keys.must_equal [:origins, :headers, :credentials, :expose, :max_age]
-
+      cors(options)
+    end.config[:cors].key?(:test).must_equal false
   end
 
-  it "strips off unallowed CORS headers" do
+  it "keeps allowed CORS headers" do
+    options = { 
+                origins: '*',
+                headers: ['Content-Type', 'Origin', 'Accept'], 
+                credentials: true,
+                expose: ['test'],
+                test: 'test',
+                another_test: 'test'
+              }
     hyperdrive do
-      cors(origins: '*', headers: ['Content-Type', 'Origin', 'Accept'], 
-           credentials: true, expose: ['test'], test: 'test', another_test: 'test')
+      cors(options)
     end.config[:cors].keys.must_equal [:origins, :headers, :credentials, :expose]
-
   end
 end

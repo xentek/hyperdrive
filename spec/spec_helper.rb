@@ -35,6 +35,9 @@ module Hyperdrive
         "rack.multithread" => true,
         "rack.multiprocess" => true,
         "rack.run_once" => false,
+        'HTTP_ACCEPT_CHARSET' => 'UTF-8',
+        'HTTP_ACCEPT' => 'application/hal+json;q=1, application/json;q=0.5',
+        'HTTP_ACCEPT_LANGUAGE' => 'en',
         'REQUEST_METHOD' => 'GET',
         'QUERY_STRING' => 'id=player'
       }

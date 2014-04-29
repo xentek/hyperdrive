@@ -3,11 +3,14 @@
 require 'spec_helper'
 
 describe Hyperdrive::Middleware::SanitizeParams do
+  before do
+    @resource = Hyperdrive::Resource.new(:thing)
+    @resource.register_filter(:parent_id, '', required: true)
+  end
+
   def app
     Rack::Builder.new do
       map '/' do
-        @resource = sample_api.resources.values.first
-        use Hyperdrive::Middleware::Resource, @resource
         use Hyperdrive::Middleware::SanitizeParams
         run ->(env) {
           [200, {'Content-Type' => 'text/plain'}, [env['hyperdrive.params']]]
@@ -18,7 +21,7 @@ describe Hyperdrive::Middleware::SanitizeParams do
 
   context "GET" do
     before do
-      get '/', { 'id' => '1001', 'removed' => 'me' }
+      get '/', { 'id' => '1001', 'removed' => 'me' }, default_rack_env.merge('hyperdrive.resource' => @resource)
     end
 
     it "will sanitize params" do
@@ -28,7 +31,7 @@ describe Hyperdrive::Middleware::SanitizeParams do
 
   context "POST" do
     before do
-      post '/', { 'id' => '1001', 'removed' => 'me' }
+      post '/', { 'id' => '1001', 'removed' => 'me' }, default_rack_env.merge('hyperdrive.resource' => @resource)
     end
 
     it "will sanitize params" do

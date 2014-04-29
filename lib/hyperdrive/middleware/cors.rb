@@ -5,7 +5,7 @@ module Hyperdrive
     class CORS
       def initialize(app, options = {})
         @app = app
-        @options = options
+        @options = format_options(options)
       end
 
       def call(env)
@@ -26,6 +26,17 @@ module Hyperdrive
           'Access-Control-Max-Age' => 1728000,
           'Access-Control-Expose-Headers' => "Cache-Control, Content-Language, Content-Type, Expires, Last-Modified, Pragma"
         }
+      end
+
+      def format_options(options)
+        options.each do |key, value|
+          case value
+          when Array
+            options[key] = value.join(", ")
+          else
+            options[key] = value.to_s
+          end
+        end
       end
 
       # def cross_origin_headers

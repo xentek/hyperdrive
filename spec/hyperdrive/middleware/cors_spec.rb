@@ -3,115 +3,49 @@
 require 'spec_helper'
 
 describe Hyperdrive::Middleware::CORS do
-  
+  def app
+    cors_options = {
+      origins: '*',
+      allow_headers: '*, Content-Type, Accept, AUTHORIZATION, Cache-Control',
+      credentials: true,
+      expose_headers: 'Cache-Control, Content-Language, Content-Type, Expires, Last-Modified, Pragma',
+      max_age: 86400
+    }
+    inner_app = lambda { |env|
+      [200, {'Content-Type' => 'text/plain'}, ['cors okay']]
+    }
+    Hyperdrive::Middleware::CORS.new(inner_app, cors_options)
+  end
 
   before do
     hyperdrive_env = {
-      'hyperdrive.resource' => sample_api.resources.values.first
+      'hyperdrive.resource' => Hyperdrive::Resource.new(:thing)
     }
-    env = default_rack_env.merge(hyperdrive_env)
-    status, @headers, body = app.call(env)
+    get '/', {}, default_rack_env.merge(hyperdrive_env)
+    @headers = last_response.headers
   end
 
-  context 'Default CORS options' do
-    def app
-      inner_app = lambda { |env|
-        [200, {'Content-Type' => 'text/plain'}, ['cors okay']]
-      }
-      Hyperdrive::Middleware::CORS.new(inner_app)
-    end
-    
-    it "allows origins" do
-      @headers['Access-Control-Allow-Origin'].must_equal '*'
-    end
-
-    it "allows methods" do
-      @headers['Access-Control-Allow-Methods'].must_equal 'OPTIONS'
-    end
-
-    it "allows headers" do
-      @headers['Access-Control-Allow-Headers'].must_equal '*, Content-Type, Accept, AUTHORIZATION, Cache-Control'
-    end
-
-    it "allows credentials" do
-      @headers['Access-Control-Allow-Credentials'].must_equal "true"
-    end
-
-    it "has a max age" do
-      @headers['Access-Control-Max-Age'].must_equal '1728000'
-    end
-
-    it "exposes headers" do
-      @headers['Access-Control-Expose-Headers'].must_equal 'Cache-Control, Content-Language, Content-Type, Expires, Last-Modified, Pragma'
-    end
+  it "allows origins" do
+    @headers['Access-Control-Allow-Origin'].must_equal '*'
   end
 
-  context 'Sets custom CORS options' do
-    context 'formats keys' do
-      def app
-        inner_app = lambda { |env|
-          [200, {'Content-Type' => 'text/plain'}, ['cors okay']]
-        }
-        options = {
-                    credentials:  'false',
-                    origins:      'http://example.com',
-                    max_age:      '123',
-                    expose:       'Cache-Control, Content-Language',
-                    headers:      '*, Content-Type'
-                  }
-        Hyperdrive::Middleware::CORS.new(inner_app, options) 
-      end
+  it "allows methods" do
+    @headers['Access-Control-Allow-Methods'].must_equal 'OPTIONS'
+  end
 
-      it "sets custom Origin" do
-        @headers['Access-Control-Allow-Origin'].must_equal 'http://example.com'
-      end
+  it "allows headers" do
+    @headers['Access-Control-Allow-Headers'].must_equal '*, Content-Type, Accept, AUTHORIZATION, Cache-Control'
+  end
 
-      it "sets custom Credentials" do
-        @headers['Access-Control-Allow-Credentials'].must_equal 'false'
-      end
+  it "allows credentials" do
+    @headers['Access-Control-Allow-Credentials'].must_equal "true"
+  end
 
-      it "sets custom Max-Age" do
-        @headers['Access-Control-Max-Age'].must_equal '123'
-      end
+  it "has a max age" do
+    @headers['Access-Control-Max-Age'].must_equal 86400
+  end
 
-      it "sets custom Expose-Headers" do
-        @headers['Access-Control-Expose-Headers'].must_equal 'Cache-Control, Content-Language'
-      end
-
-      it "sets custom Headers" do
-        @headers['Access-Control-Allow-Headers'].must_equal '*, Content-Type'
-      end
-    end
-
-    context 'formats values' do
-      def app
-        inner_app = lambda { |env|
-          [200, {'Content-Type' => 'text/plain'}, ['cors okay']]
-        }
-        options = { 
-                    credentials: false,
-                    origins: 'http://example.com',
-                    max_age: 123,
-                    expose: ['Cache-Control', 'Content-Language'],
-                    headers: ['*', 'Content-Type']
-                  }
-        Hyperdrive::Middleware::CORS.new(inner_app, options)
-      end
-
-
-      it 'turns boolean into strings' do
-        @headers['Access-Control-Allow-Credentials'].must_equal 'false'
-      end
-
-      it 'turns integers into strings' do
-        @headers['Access-Control-Max-Age'].must_equal '123'
-      end
-
-      it 'joins arrays seperated by a comma and a space' do
-        @headers['Access-Control-Expose-Headers'].must_equal 'Cache-Control, Content-Language'
-        @headers['Access-Control-Allow-Headers'].must_equal '*, Content-Type'
-      end
-    end
-
+  it "exposes headers" do
+    @headers['Access-Control-Expose-Headers'].must_equal 'Cache-Control, Content-Language, Content-Type, Expires, Last-Modified, Pragma'
   end
 end

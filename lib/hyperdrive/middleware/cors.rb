@@ -23,20 +23,31 @@ module Hyperdrive
           'Access-Control-Allow-Methods' => env['hyperdrive.resource'].allowed_methods.join(", "),
           'Access-Control-Allow-Headers' => "*, Content-Type, Accept, AUTHORIZATION, Cache-Control",
           'Access-Control-Allow-Credentials' => "true",
-          'Access-Control-Max-Age' => 1728000,
+          'Access-Control-Max-Age' => '1728000',
           'Access-Control-Expose-Headers' => "Cache-Control, Content-Language, Content-Type, Expires, Last-Modified, Pragma"
         }
       end
 
       def format_options(options)
-        options.each do |key, value|
+        Hash[options.map do |key, value| 
           case value
           when Array
-            options[key] = value.join(", ")
+            formatted_value = value.join(", ")
           else
-            options[key] = value.to_s
+            formatted_value = value.to_s
           end
-        end
+          [cors_options[key], formatted_value] 
+        end]
+      end
+
+      def cors_options
+        {
+          origins: 'Access-Control-Allow-Origin',
+          headers: 'Access-Control-Allow-Headers',
+          credentials: 'Access-Control-Allow-Credentials',
+          expose: 'Access-Control-Expose-Headers',
+          max_age: 'Access-Control-Max-Age'
+        }.freeze
       end
 
       # def cross_origin_headers

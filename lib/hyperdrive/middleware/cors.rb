@@ -25,7 +25,7 @@ module Hyperdrive
           'Access-Control-Allow-Credentials' => "true",
           'Access-Control-Max-Age' => '1728000',
           'Access-Control-Expose-Headers' => "Cache-Control, Content-Language, Content-Type, Expires, Last-Modified, Pragma"
-        }
+        }.freeze
       end
 
       def format_options(options)

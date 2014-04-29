@@ -2,6 +2,7 @@
 
 # stdlib
 require 'rack'
+require 'rack/accept'
 require 'linguistics'
 Linguistics.use(:en)
 

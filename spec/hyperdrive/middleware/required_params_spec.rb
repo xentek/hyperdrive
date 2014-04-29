@@ -8,12 +8,18 @@ describe Hyperdrive::Middleware::RequiredParams do
     Hyperdrive::Middleware::RequiredParams.new(inner_app)
   end
 
+  before do
+    @resource = Hyperdrive::Resource.new(:thing)
+    @resource.register_request_handler(:get, Proc.new { |env| }, 'v1')
+    @resource.register_filter(:parent_id, '', required: true)
+  end
+
   context "with required" do
     context "GET" do
       before do
         hyperdrive_env = {
           'REQUEST_METHOD'      => 'GET',
-          'hyperdrive.resource' => sample_api.resources.values.first,
+          'hyperdrive.resource' => @resource,
           'hyperdrive.params'   => { parent_id: '1000' }
         }
         @env = default_rack_env.merge(hyperdrive_env)
@@ -28,7 +34,7 @@ describe Hyperdrive::Middleware::RequiredParams do
       before do
         hyperdrive_env = {
           'REQUEST_METHOD'      => 'PUT',
-          'hyperdrive.resource' => sample_api.resources.values.first,
+          'hyperdrive.resource' => @resource,
           'hyperdrive.params'   => { id: '1001', name: 'yoda' }
         }
         @env = default_rack_env.merge(hyperdrive_env)
@@ -45,7 +51,7 @@ describe Hyperdrive::Middleware::RequiredParams do
       before do
         hyperdrive_env = {
           'REQUEST_METHOD'      => 'GET',
-          'hyperdrive.resource' => sample_api.resources.values.first,
+          'hyperdrive.resource' => @resource,
           'hyperdrive.params'   => {}
         }
         @env = default_rack_env.merge(hyperdrive_env)
@@ -60,13 +66,13 @@ describe Hyperdrive::Middleware::RequiredParams do
       before do
         hyperdrive_env = {
           'REQUEST_METHOD'      => 'PUT',
-          'hyperdrive.resource' => sample_api.resources.values.first,
+          'hyperdrive.resource' => @resource,
           'hyperdrive.params'   => {}
         }
         @env = default_rack_env.merge(hyperdrive_env)
       end
 
-      it "raises if required param is missing" do
+      it "raises an error if required param is missing" do
         ->{ app.call(@env) }.must_raise Hyperdrive::Errors::MissingRequiredParam
       end
     end

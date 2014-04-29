@@ -16,8 +16,8 @@ module Hyperdrive
         @config[:cors] = Hyperdrive::Utils.sanitize_keys(allowed_cors_options, options)
       end
 
-      def resource(name)
-        @resources[name] = Resource.new(name, &Proc.new).resource
+      def resource(key)
+        @resources[key] = Resource.new(key, &Proc.new).resource
       end
 
       private

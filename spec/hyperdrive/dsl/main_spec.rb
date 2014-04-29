@@ -14,30 +14,25 @@ describe Hyperdrive::DSL::Main do
     end.resources[:thing].must_be_instance_of ::Hyperdrive::Resource
   end
 
-  it "strips off unallowed CORS headers" do
-    options = {
-                origins: '*', 
-                headers: ['Content-Type', 'Origin', 'Accept'], 
-                credentials: true,
-                expose: ['test'], 
-                test: 'test'
-              }
-    hyperdrive do
-      cors(options)
-    end.config[:cors].key?(:test).must_equal false
-  end
+  context "cors" do
+    before do
+      @cors = hyperdrive do
+        cors({ origins: '*',
+               allow_headers: ['Content-Type', 'Origin', 'Accept'],
+               test: 'test'})
+      end.config[:cors]
+    end
 
-  it "keeps allowed CORS headers" do
-    options = { 
-                origins: '*',
-                headers: ['Content-Type', 'Origin', 'Accept'], 
-                credentials: true,
-                expose: ['test'],
-                test: 'test',
-                another_test: 'test'
-              }
-    hyperdrive do
-      cors(options)
-    end.config[:cors].keys.must_equal [:origins, :headers, :credentials, :expose]
+    it "can configure cors options" do
+      @cors[:allow_headers].must_equal ['Content-Type', 'Origin', 'Accept']
+    end
+
+    it "ensures missing options have default values" do
+      @cors[:credentials].must_equal true
+    end
+
+    it "removes unsupported cors options" do
+      @cors.key?(:test).must_equal false
+    end
   end
 end

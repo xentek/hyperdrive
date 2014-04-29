@@ -38,7 +38,7 @@ describe Hyperdrive::Middleware::CORS do
     end
 
     it "has a max age" do
-      @headers['Access-Control-Max-Age'].must_equal 1728000
+      @headers['Access-Control-Max-Age'].must_equal '1728000'
     end
 
     it "exposes headers" do
@@ -46,17 +46,19 @@ describe Hyperdrive::Middleware::CORS do
     end
   end
 
-  context 'Custom CORS options' do
-    context 'Sets custom CORS options' do
+  context 'Sets custom CORS options' do
+    context 'formats keys' do
       def app
         inner_app = lambda { |env|
           [200, {'Content-Type' => 'text/plain'}, ['cors okay']]
         }
-        options = {'Access-Control-Allow-Credentials' => 'false',
-                   'Access-Control-Allow-Origin' => 'http://example.com',
-                   'Access-Control-Max-Age' => 123,
-                   'Access-Control-Expose-Headers' => 'Cache-Control, Content-Language',
-                   'Access-Control-Allow-Headers' => '*, Content-Type'}
+        options = {
+                    credentials:  'false',
+                    origins:      'http://example.com',
+                    max_age:      '123',
+                    expose:       'Cache-Control, Content-Language',
+                    headers:      '*, Content-Type'
+                  }
         Hyperdrive::Middleware::CORS.new(inner_app, options) 
       end
 
@@ -81,16 +83,18 @@ describe Hyperdrive::Middleware::CORS do
       end
     end
 
-    context '#formats_options' do
+    context 'formats values' do
       def app
         inner_app = lambda { |env|
           [200, {'Content-Type' => 'text/plain'}, ['cors okay']]
         }
-        options = {'Access-Control-Allow-Credentials' => false,
-                   'Access-Control-Allow-Origin' => 'http://example.com',
-                   'Access-Control-Max-Age' => 123,
-                   'Access-Control-Expose-Headers' => ['Cache-Control', 'Content-Language'],
-                   'Access-Control-Allow-Headers' => ['*', 'Content-Type']}
+        options = { 
+                    credentials: false,
+                    origins: 'http://example.com',
+                    max_age: 123,
+                    expose: ['Cache-Control', 'Content-Language'],
+                    headers: ['*', 'Content-Type']
+                  }
         Hyperdrive::Middleware::CORS.new(inner_app, options)
       end
 

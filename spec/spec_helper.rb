@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+require 'rubinius/coverage' if RUBY_ENBGINE == 'rubinius'
 require "codeclimate-test-reporter"
 CodeClimate::TestReporter.start
 

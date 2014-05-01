@@ -49,6 +49,7 @@ module Hyperdrive
     def default_resource
       resource = Hyperdrive::Resource.new(:thing)
       resource.register_request_handler(:get, Proc.new { |env| }, 'v1')
+      resource.register_filter(:parent_id, '', required: true)      
       resource
     end
 

@@ -4,11 +4,12 @@
 require 'hyperdrive/errors/dsl/unknown_argument'
 
 # HTTP Errors
-require 'hyperdrive/errors/http_error'
-require 'hyperdrive/errors/bad_request'
-require 'hyperdrive/errors/internal_server_error'
-require 'hyperdrive/errors/method_not_allowed'
-require 'hyperdrive/errors/missing_required_param'
-require 'hyperdrive/errors/not_found'
-require 'hyperdrive/errors/not_implemented'
-require 'hyperdrive/errors/unauthorized'
+require 'hyperdrive/errors/http_error' # 500 (Catch All)
+require 'hyperdrive/errors/bad_request' # 400 (Generic)
+require 'hyperdrive/errors/internal_server_error' # 500 (Generic)
+require 'hyperdrive/errors/method_not_allowed' # 405
+require 'hyperdrive/errors/missing_required_param' # 400 (Specific)
+require 'hyperdrive/errors/not_acceptable' # 406
+require 'hyperdrive/errors/not_found' # 404
+require 'hyperdrive/errors/not_implemented' # 501
+require 'hyperdrive/errors/unauthorized' # 401

@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 gemspec
+gem 'rubysl-bundler', platforms: :rbx
 
 group :development do
   gem 'gem-release', require: false
@@ -15,7 +16,6 @@ group :rake do
 end
 
 group :test do
-  gem 'rubysl-bundler', require: false, platforms: :rbx
   gem 'minitest', require: false
   gem 'minitest-spec-context', require: false
   gem 'minitest-reporters', require: false

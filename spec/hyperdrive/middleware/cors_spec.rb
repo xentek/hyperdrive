@@ -11,17 +11,13 @@ describe Hyperdrive::Middleware::CORS do
       expose_headers: 'Cache-Control, Content-Language, Content-Type, Expires, Last-Modified, Pragma',
       max_age: 86400
     }
-    inner_app = lambda { |env|
-      [200, {'Content-Type' => 'text/plain'}, ['cors okay']]
-    }
+    inner_app = ->(env) { [200, {}, ['']] }
     Hyperdrive::Middleware::CORS.new(inner_app, cors_options)
   end
 
   before do
-    hyperdrive_env = {
-      'hyperdrive.resource' => Hyperdrive::Resource.new(:thing)
-    }
-    get '/', {}, default_rack_env.merge(hyperdrive_env)
+    env = default_rack_env(default_resource)
+    get '/', {}, env
     @headers = last_response.headers
   end
 
@@ -30,7 +26,7 @@ describe Hyperdrive::Middleware::CORS do
   end
 
   it "allows methods" do
-    @headers['Access-Control-Allow-Methods'].must_equal 'OPTIONS'
+    @headers['Access-Control-Allow-Methods'].must_equal 'OPTIONS, GET, HEAD'
   end
 
   it "allows headers" do

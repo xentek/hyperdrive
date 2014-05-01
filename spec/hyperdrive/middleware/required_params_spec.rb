@@ -9,73 +9,35 @@ describe Hyperdrive::Middleware::RequiredParams do
   end
 
   before do
-    @resource = Hyperdrive::Resource.new(:thing)
-    @resource.register_request_handler(:get, Proc.new { |env| }, 'v1')
-    @resource.register_filter(:parent_id, '', required: true)
+    @resource = default_resource
+    @env = default_rack_env(@resource).merge('hyperdrive.params' => {})
+    @filters = { parent_id: '1000' }
   end
 
-  context "with required" do
-    context "GET" do
-      before do
-        hyperdrive_env = {
-          'REQUEST_METHOD'      => 'GET',
-          'hyperdrive.resource' => @resource,
-          'hyperdrive.params'   => { parent_id: '1000' }
-        }
-        @env = default_rack_env.merge(hyperdrive_env)
-      end
-
-      it "responds successfully if required is present" do
-        status, headers, body = app.call(@env)
-        status.must_equal 200
-      end
+  context "Filters" do
+    it "responds successfully if required filter is present" do
+      get '/', @filters, @env.merge('hyperdrive.params' => @filters)
+      last_response.successful?.must_equal true
     end
 
-    context "non-GET" do
-      before do
-        hyperdrive_env = {
-          'REQUEST_METHOD'      => 'PUT',
-          'hyperdrive.resource' => @resource,
-          'hyperdrive.params'   => { id: '1001', name: 'yoda' }
-        }
-        @env = default_rack_env.merge(hyperdrive_env)
-      end
-
-      it "responds successfully if required params are present" do
-        app.call(@env).first.must_equal 200
-      end
+    it "raises an error if required filter is missing" do
+      ->{ get '/', {}, @env }.must_raise Hyperdrive::Errors::MissingRequiredParam
     end
   end
 
-  context "without required" do
-    context "GET" do
-      before do
-        hyperdrive_env = {
-          'REQUEST_METHOD'      => 'GET',
-          'hyperdrive.resource' => @resource,
-          'hyperdrive.params'   => {}
-        }
-        @env = default_rack_env.merge(hyperdrive_env)
-      end
-
-      it "raises an error if required filter is missing" do
-        ->{ app.call(@env) }.must_raise Hyperdrive::Errors::MissingRequiredParam
-      end
+  context "Params" do
+    before do
+      @env.merge!('REQUEST_METHOD' => 'PUT')
+      @params = { id: '1001', name: 'yoda' }
     end
 
-    context "non-GET" do
-      before do
-        hyperdrive_env = {
-          'REQUEST_METHOD'      => 'PUT',
-          'hyperdrive.resource' => @resource,
-          'hyperdrive.params'   => {}
-        }
-        @env = default_rack_env.merge(hyperdrive_env)
-      end
+    it "responds successfully if required params are present" do
+      put '/', @params, @env.merge('hyperdrive.params' => @params)
+      last_response.successful?.must_equal true
+    end
 
-      it "raises an error if required param is missing" do
-        ->{ app.call(@env) }.must_raise Hyperdrive::Errors::MissingRequiredParam
-      end
+    it "raises an error if required param is missing" do
+      ->{ put '/', {}, @env }.must_raise Hyperdrive::Errors::MissingRequiredParam
     end
   end
 end

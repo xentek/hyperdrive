@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 gemspec
-gem 'rubysl-bundler', platforms: :rbx
 
 group :development do
   gem 'gem-release', require: false

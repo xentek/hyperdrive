@@ -12,10 +12,18 @@ describe Hyperdrive::Middleware::ContentNegotiation do
     end
   end
 
-  it "returns the best supported media type" do
+  before do
     @resource = Hyperdrive::Resource.new(:thing)
     @resource.register_request_handler(:get, Proc.new { |env| }, 'v1')
-    get '/', {}, default_rack_env.merge('hyperdrive.resource' => @resource)
+    @env = default_rack_env.merge('hyperdrive.resource' => @resource)  
+  end
+
+  it "returns the best supported media type" do
+    get '/', {}, @env
     last_response.body.must_equal 'application/vnd.hyperdrive.things+hal+json'
+  end
+
+  it "throws an error if the media type requested is not supported" do
+    -> { get '/', {}, @env.merge('HTTP_ACCEPT' => 'application/xml') }.must_raise Hyperdrive::Errors::NotAcceptable
   end
 end

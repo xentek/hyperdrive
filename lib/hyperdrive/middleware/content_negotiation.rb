@@ -11,6 +11,7 @@ module Hyperdrive
         accept = Rack::Accept::MediaType.new(env['HTTP_ACCEPT'])
         acceptable_content_types = env['hyperdrive.resource'].acceptable_content_types(env['REQUEST_METHOD'])
         env['hyperdrive.media_type'] = accept.best_of(acceptable_content_types)
+        raise Hyperdrive::Errors::NotAcceptable.new(env['HTTP_ACCEPT']) unless env['hyperdrive.media_type']
         @app.call(env)
       end
     end

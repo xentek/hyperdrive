@@ -47,6 +47,5 @@ describe Hyperdrive::Middleware::CORS do
 
   it "exposes headers" do
     @headers['Access-Control-Expose-Headers'].must_equal 'Cache-Control, Content-Language, Content-Type, Expires, Last-Modified, Pragma'
->>>>>>> master
   end
 end

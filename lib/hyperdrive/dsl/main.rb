@@ -48,7 +48,7 @@ module Hyperdrive
 
       def default_config
         {
-          cors: default_cors_options
+          cors: default_cors_options, 
           vendor: 'hyperdrive',
           media_types: %w(hal+json json)
         }

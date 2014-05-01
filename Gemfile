@@ -15,6 +15,7 @@ group :rake do
 end
 
 group :test do
+  gem 'rubysl-bundler', require: false, platforms: :rbx
   gem 'minitest', require: false
   gem 'minitest-spec-context', require: false
   gem 'minitest-reporters', require: false

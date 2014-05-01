@@ -60,7 +60,7 @@ module Hyperdrive
 
           #param :name, '50 Chars or less', required: true
           #filter :parent_id, 'Parent ID of Thing', required: true
-          
+
           #request(:get) do
             #'ok'
           #end

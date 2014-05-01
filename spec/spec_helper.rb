@@ -28,8 +28,8 @@ include Rack::Test::Methods
 
 module Hyperdrive
   module TestData
-    def default_rack_env
-      {
+    def default_rack_env(resource = nil)
+      default_env = {
         "rack.version" => Rack::VERSION,
         "rack.input" => StringIO.new,
         "rack.errors" => StringIO.new,
@@ -42,6 +42,14 @@ module Hyperdrive
         'REQUEST_METHOD' => 'GET',
         'QUERY_STRING' => 'id=1001'
       }
+      default_env.merge!('hyperdrive.resource' => resource) if resource
+      default_env
+    end
+
+    def default_resource
+      resource = Hyperdrive::Resource.new(:thing)
+      resource.register_request_handler(:get, Proc.new { |env| }, 'v1')
+      resource
     end
 
     #def sample_api

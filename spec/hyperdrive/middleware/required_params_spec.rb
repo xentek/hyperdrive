@@ -26,7 +26,8 @@ describe Hyperdrive::Middleware::RequiredParams do
       end
 
       it "responds successfully if required is present" do
-        app.call(@env).first.must_equal 200
+        status, headers, body = app.call(@env)
+        status.must_equal 200
       end
     end
 

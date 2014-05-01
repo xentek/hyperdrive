@@ -4,38 +4,21 @@ require 'spec_helper'
 
 describe Hyperdrive::Middleware::SanitizeParams do
   before do
-    @resource = Hyperdrive::Resource.new(:thing)
-    @resource.register_filter(:parent_id, '', required: true)
+    @env = default_rack_env(default_resource)
   end
 
   def app
-    Rack::Builder.new do
-      map '/' do
-        use Hyperdrive::Middleware::SanitizeParams
-        run ->(env) {
-          [200, {'Content-Type' => 'text/plain'}, [env['hyperdrive.params']]]
-        }
-      end
-    end
+    inner_app = ->(env) { [200, {}, [env['hyperdrive.params']]] }
+    Hyperdrive::Middleware::SanitizeParams.new(inner_app)
   end
 
-  context "GET" do
-    before do
-      get '/', { 'id' => '1001', 'removed' => 'me' }, default_rack_env.merge('hyperdrive.resource' => @resource)
-    end
-
-    it "will sanitize params" do
-      last_response.body.must_equal "{:id=>\"1001\"}"
-    end
+  it "will sanitize filters" do
+    get '/', { 'id' => '1001', 'removed' => 'me' }, @env
+    last_response.body.must_equal "{:id=>\"1001\"}"
   end
 
-  context "POST" do
-    before do
-      post '/', { 'id' => '1001', 'removed' => 'me' }, default_rack_env.merge('hyperdrive.resource' => @resource)
-    end
-
-    it "will sanitize params" do
-      last_response.body.must_equal "{:id=>\"1001\"}"
-    end
+  it "will sanitize params" do
+    post '/', { 'id' => '1001', 'removed' => 'me' }, @env
+    last_response.body.must_equal "{:id=>\"1001\"}"
   end
 end

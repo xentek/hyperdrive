@@ -13,9 +13,8 @@ describe Hyperdrive::Middleware::ContentNegotiation do
   end
 
   before do
-    @resource = Hyperdrive::Resource.new(:thing)
-    @resource.register_request_handler(:get, Proc.new { |env| }, 'v1')
-    @env = default_rack_env.merge('hyperdrive.resource' => @resource)
+    @resource = default_resource
+    @env = default_rack_env(@resource)
   end
 
   it "returns the best supported media type" do

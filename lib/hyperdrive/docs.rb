@@ -16,9 +16,9 @@ module Hyperdrive
         out += header("Endpoint URL", 2)
         out += paragraph(bullet(code(resource.endpoint), 1))
         out += header("Params", 2)
-        out += list(resource.allowed_params)
+        out += list(resource.params.map { |_,param| param.to_hash })
         out += header("Filters", 2)
-        out += list(resource.filters)
+        out += list(resource.filters.map { |_,filter| filter.to_hash })
       end
       out
     end
@@ -53,16 +53,15 @@ module Hyperdrive
 
     def list(items)
       list = ""
-      items.each do |key, value|
-        list += bullet(bold(key), 1)
+      items.each do |item|
+        list += bullet(bold(item[:name]), 1)
+        item.each do |key, value|
+          list += bullet(italics(key), 2)
 
-        value.each do |subkey, subvalue|
-          list += bullet(italics(subkey), 2)
-
-          if subvalue.kind_of? Array
-            list += bullet(code_options(subvalue), 3)
+          if value.kind_of? Array
+            list += bullet(code_options(value), 3)
           else
-            list += bullet(subvalue, 3)
+            list += bullet(value, 3)
           end
         end
       end

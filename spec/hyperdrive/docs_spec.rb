@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe Hyperdrive::Docs do
   before do
-    @resources = { :thing => Hyperdrive::Resource.new(:thing) }
+    @resources = { :thing => default_resource }
     @docs = Hyperdrive::Docs.new(@resources)
   end
 
@@ -36,9 +36,12 @@ describe Hyperdrive::Docs do
     @docs.bullet('test').must_equal "  - test\n"
   end
 
-  it 'generates a bullet with nest level between 1 and 3' do
-    proc {@docs.bullet('test', 4)}.must_raise ArgumentError
+  it 'raises an error if bullet indention size is less than 1' do
     proc {@docs.bullet('test', 0)}.must_raise ArgumentError
+  end
+
+  it 'raises an error if bullet indention size is greater than 3' do
+    proc {@docs.bullet('test', 4)}.must_raise ArgumentError
   end
 
   it 'generates a nested bulleted list' do

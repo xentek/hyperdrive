@@ -68,7 +68,7 @@ describe Hyperdrive::Resource do
     end
 
     it "returns the acceptable content types" do
-      @resource.acceptable_content_types('GET').must_equal ["application/vnd.hyperdrive.things.v1+hal+json", "application/vnd.hyperdrive.things+hal+json", "application/vnd.hyperdrive.things.v1+json", "application/vnd.hyperdrive.things+json"]
+      @resource.acceptable_content_types('GET').must_equal ["application/vnd.hyperdrive.things.v1+hal+json", "application/vnd.hyperdrive.things+hal+json", "application/vnd.hyperdrive+hal+json", "application/vnd.hyperdrive.things.v1+json", "application/vnd.hyperdrive.things+json", "application/vnd.hyperdrive+json"]
     end
 
     it "returns the available versions for this resource" do

@@ -40,6 +40,7 @@ module Hyperdrive
         hyperdrive.config[:media_types].each do |media_type|
           content_types << "application/vnd.#{hyperdrive.config[:vendor]}.#{namespace}.#{version}+#{media_type}"
           content_types << "application/vnd.#{hyperdrive.config[:vendor]}.#{namespace}+#{media_type}"
+          content_types << "application/vnd.#{hyperdrive.config[:vendor]}+#{media_type}"
         end
       end
       content_types

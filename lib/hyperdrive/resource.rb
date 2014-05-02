@@ -8,16 +8,13 @@ module Hyperdrive
     def initialize(resource)
       @namespace = resource.to_s.en.plural
       @endpoint = "/#{namespace}"
-      @allowed_params = default_allowed_params
+      @allowed_params = default_params
       @filters = default_filters
       @request_handlers = default_request_handlers
     end
 
-    def register_param(key, description, options = {})
-      options[:required] = [] if options[:required] == false
-      options[:required] = default_param_options if options[:required] == true
-      options = default_param_options.merge(options)
-      @allowed_params[key] = { desc: description }.merge(options)
+    def register_param(param, description, options = {})
+      @allowed_params[param] = Param.new(param, description, options)
     end
 
     def register_filter(key, description, options = {})
@@ -69,7 +66,7 @@ module Hyperdrive
     end
 
     def required_param?(param, http_request_method)
-      allowed_params.key?(param) and allowed_params[param][:required].include?(http_request_method)
+      allowed_params.key?(param) and allowed_params[param].required?(http_request_method)
     end
 
     def required_filter?(param, http_request_method)
@@ -82,14 +79,10 @@ module Hyperdrive
 
     private
 
-    def default_allowed_params
+    def default_params
       {
-        id: { desc: 'Resource Identifier', required: %w(PUT PATCH DELETE) }
+        id: Param.new(:id, 'Identifier', required: %w(PUT PATCH DELETE))
       }
-    end
-
-    def default_param_options
-      { required: %w(POST PUT PATCH) }.freeze
     end
 
     def default_filters

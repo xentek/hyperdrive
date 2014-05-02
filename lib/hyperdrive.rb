@@ -12,6 +12,7 @@ require 'hyperdrive/dsl'
 require 'hyperdrive/errors'
 require 'hyperdrive/middleware'
 require 'hyperdrive/param'
+require 'hyperdrive/filter' # must come after param
 require 'hyperdrive/utils'
 
 require 'hyperdrive/resource'

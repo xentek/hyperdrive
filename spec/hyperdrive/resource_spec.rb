@@ -29,14 +29,12 @@ describe Hyperdrive::Resource do
   end
 
   it "auto-registers the :id filter" do
-    @resource.filters[:id][:desc].must_equal 'Resource Identifier'
-    @resource.filters[:id][:required].must_equal []
+    @resource.filters[:id].description.must_equal 'Resource Identifier'
   end
 
   it "registers a filter" do
     @resource.register_filter(:parent_id, 'Parent ID of Thing', required: true)
-    @resource.filters[:parent_id][:desc].must_equal 'Parent ID of Thing'
-    @resource.filters[:parent_id][:required].must_equal %w(GET HEAD)
+    @resource.filters[:parent_id].description.must_equal 'Parent ID of Thing'
   end
 
   context "Request Handlers" do

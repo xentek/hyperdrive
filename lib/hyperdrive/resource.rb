@@ -17,11 +17,8 @@ module Hyperdrive
       @allowed_params[param] = Param.new(param, description, options)
     end
 
-    def register_filter(key, description, options = {})
-      options[:required] = [] if options[:required] == false
-      options[:required] = %w(GET HEAD) if options[:required] == true
-      options = default_filter_options.merge(options)
-      @filters[key] = { desc: description }.merge(options)
+    def register_filter(filter, description, options = {})
+      @filters[filter] = Filter.new(filter, description, options)
     end
 
     def register_request_handler(request_method, request_handler, version = 'v1')
@@ -87,12 +84,8 @@ module Hyperdrive
 
     def default_filters
       {
-        id: { desc: 'Resource Identifier', required: []  }
+        id: Filter.new(:id, 'Resource Identifier', required: false)
       }
-    end
-
-    def default_filter_options
-      { required: [] }.freeze
     end
 
     def default_request_handlers

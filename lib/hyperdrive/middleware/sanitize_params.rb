@@ -12,9 +12,9 @@ module Hyperdrive
           request = Rack::Request.new(env)
           params = Hyperdrive::Utils.symbolize_keys(request.params)        
           if %w(GET HEAD).include? env['REQUEST_METHOD']
-            params_to_keep = env['hyperdrive.resource'].allowed_params.keys
-          else
             params_to_keep = env['hyperdrive.resource'].filters.keys
+          else
+            params_to_keep = env['hyperdrive.resource'].params.keys
           end
           env['hyperdrive.params'] = Hyperdrive::Utils.sanitize_keys(params_to_keep, params)
         end

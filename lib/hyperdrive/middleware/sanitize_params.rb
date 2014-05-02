@@ -10,7 +10,7 @@ module Hyperdrive
       def call(env)
         unless %w(OPTIONS TRACE).include? env['REQUEST_METHOD']
           request = Rack::Request.new(env)
-          params = Hyperdrive::Utils.symbolize_keys(request.params)        
+          params = Hyperdrive::Utils.symbolize_keys(request.params)
           if %w(GET HEAD).include? env['REQUEST_METHOD']
             params_to_keep = env['hyperdrive.resource'].filters.keys
           else

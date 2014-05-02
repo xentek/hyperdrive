@@ -5,12 +5,13 @@ module Hyperdrive
     attr_reader :namespace, :endpoint, :params, :filters, :request_handlers, :version
     attr_accessor :name, :desc
 
-    def initialize(resource)
+    def initialize(resource, hyperdrive_config)
       @namespace = resource.to_s.en.plural
       @endpoint = "/#{namespace}"
       @params = default_params
       @filters = default_filters
       @request_handlers = default_request_handlers
+      @config = hyperdrive_config
     end
 
     def register_param(param, description, options = {})
@@ -37,10 +38,10 @@ module Hyperdrive
     def acceptable_content_types(http_request_method)
       content_types = []
       available_versions(http_request_method).each do |version|
-        hyperdrive.config[:media_types].each do |media_type|
-          content_types << "application/vnd.#{hyperdrive.config[:vendor]}.#{namespace}.#{version}+#{media_type}"
-          content_types << "application/vnd.#{hyperdrive.config[:vendor]}.#{namespace}+#{media_type}"
-          content_types << "application/vnd.#{hyperdrive.config[:vendor]}+#{media_type}"
+        @config[:media_types].each do |media_type|
+          content_types << "application/vnd.#{@config[:vendor]}.#{namespace}.#{version}+#{media_type}"
+          content_types << "application/vnd.#{@config[:vendor]}.#{namespace}+#{media_type}"
+          content_types << "application/vnd.#{@config[:vendor]}+#{media_type}"
         end
       end
       content_types

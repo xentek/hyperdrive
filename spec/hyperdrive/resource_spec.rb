@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Hyperdrive::Resource do
   before do
-    @resource = Hyperdrive::Resource.new(:thing)
+    @resource = Hyperdrive::Resource.new(:thing, { vendor: 'hyperdrive', media_types: ['hal+json', 'json'] })
   end
 
   it "has a name" do

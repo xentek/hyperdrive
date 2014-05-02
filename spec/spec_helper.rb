@@ -47,7 +47,7 @@ module Hyperdrive
     end
 
     def default_resource
-      resource = Hyperdrive::Resource.new(:thing)
+      resource = Hyperdrive::Resource.new(:thing, { vendor: 'hyperdrive', media_types: ['hal+json', 'json'] })
       resource.register_request_handler(:get, Proc.new { |env| }, 'v1')
       resource.register_filter(:parent_id, '', required: true)
       resource

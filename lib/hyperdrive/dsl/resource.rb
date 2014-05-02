@@ -14,7 +14,7 @@ module Hyperdrive
       end
 
       def desc(description)
-        resource.desc = description
+        resource.description = description
       end
 
       def param(*args)

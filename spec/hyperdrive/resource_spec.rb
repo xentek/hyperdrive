@@ -20,12 +20,12 @@ describe Hyperdrive::Resource do
   end
 
   it "auto-registers the :id param" do
-    @resource.allowed_params[:id].description.must_equal 'Identifier'
+    @resource.params[:id].description.must_equal 'Identifier'
   end
 
-  it "registers an allowed param" do
+  it "registers a param" do
     @resource.register_param(:name, "Thing's Name")
-    @resource.allowed_params[:name].description.must_equal "Thing's Name"
+    @resource.params[:name].description.must_equal "Thing's Name"
   end
 
   it "auto-registers the :id filter" do

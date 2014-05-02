@@ -2,19 +2,19 @@
 
 module Hyperdrive
   class Resource
-    attr_reader :namespace, :endpoint, :allowed_params, :filters, :request_handlers, :version
+    attr_reader :namespace, :endpoint, :params, :filters, :request_handlers, :version
     attr_accessor :name, :desc
 
     def initialize(resource)
       @namespace = resource.to_s.en.plural
       @endpoint = "/#{namespace}"
-      @allowed_params = default_params
+      @params = default_params
       @filters = default_filters
       @request_handlers = default_request_handlers
     end
 
     def register_param(param, description, options = {})
-      @allowed_params[param] = Param.new(param, description, options)
+      @params[param] = Param.new(param, description, options)
     end
 
     def register_filter(filter, description, options = {})
@@ -63,11 +63,11 @@ module Hyperdrive
     end
 
     def required_param?(param, http_request_method)
-      allowed_params.key?(param) and allowed_params[param].required?(http_request_method)
+      params.key?(param) and params[param].required?(http_request_method)
     end
 
-    def required_filter?(param, http_request_method)
-      filters.key?(param) and filters[param][:required].include?(http_request_method)
+    def required_filter?(filter, http_request_method)
+      filters.key?(filter) and filters[filter].required?(http_request_method)
     end
 
     def required?(param, http_request_method)

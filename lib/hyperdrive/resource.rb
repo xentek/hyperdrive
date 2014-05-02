@@ -80,6 +80,7 @@ module Hyperdrive
       {
         _links: { 'self' => { href: endpoint } },
         id: [@config[:vendor], namespace].join(':'),
+        name: name,
         description: description,
         methods: allowed_methods,
         params: params.map { |_,param| param.to_hash },

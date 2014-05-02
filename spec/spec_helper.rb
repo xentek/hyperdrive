@@ -49,8 +49,16 @@ module Hyperdrive
     def default_resource
       resource = Hyperdrive::Resource.new(:thing)
       resource.register_request_handler(:get, Proc.new { |env| }, 'v1')
-      resource.register_filter(:parent_id, '', required: true)      
+      resource.register_filter(:parent_id, '', required: true)
       resource
+    end
+
+    def default_filter
+      Hyperdrive::Filter.new(:parent_id, 'Parent Identifier', required: true, constraints: 'Must be a valid BSON Object ID.')
+    end
+
+    def default_param
+      Hyperdrive::Param.new(:id, 'Identifier', required: %w(PUT PATCH DELETE), constraints: 'Must be a valid BSON Object ID.')
     end
 
     #def sample_api

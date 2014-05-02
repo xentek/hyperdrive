@@ -42,6 +42,7 @@ module Hyperdrive
         'REQUEST_METHOD' => 'GET',
         'QUERY_STRING' => 'id=1001'
       }
+      default_env.merge!('hyperdrive.accept' => Rack::Accept::MediaType.new(default_env['HTTP_ACCEPT']))
       default_env.merge!('hyperdrive.resource' => resource) if resource
       default_env
     end

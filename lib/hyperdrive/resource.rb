@@ -3,10 +3,10 @@
 module Hyperdrive
   class Resource
     attr_reader :namespace, :endpoint, :params, :filters, :request_handlers, :version
-    attr_accessor :name, :desc
+    attr_accessor :name, :description
 
-    def initialize(resource, hyperdrive_config)
-      @namespace = resource.to_s.en.plural
+    def initialize(name, hyperdrive_config)
+      @namespace = name.to_s.en.plural
       @endpoint = "/#{namespace}"
       @params = default_params
       @filters = default_filters
@@ -74,6 +74,17 @@ module Hyperdrive
 
     def required?(param, http_request_method)
       required_param?(param, http_request_method) or required_filter?(param, http_request_method)
+    end
+
+    def to_hash
+      {
+        _links: { 'self' => { href: endpoint } },
+        id: [@config[:vendor], namespace].join(':'),
+        description: description,
+        methods: allowed_methods,
+        params: params.map { |_,param| param.to_hash },
+        filters: filters.map { |_,filter| filter.to_hash },
+      }
     end
 
     private

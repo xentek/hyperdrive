@@ -3,6 +3,7 @@
 require 'hyperdrive/middleware/accept'
 require 'hyperdrive/middleware/cors'
 require 'hyperdrive/middleware/content_negotiation'
+require 'hyperdrive/middleware/error'
 require 'hyperdrive/middleware/hateoas'
 require 'hyperdrive/middleware/resource'
 require 'hyperdrive/middleware/request_method'

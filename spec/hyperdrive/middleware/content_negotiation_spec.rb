@@ -23,6 +23,7 @@ describe Hyperdrive::Middleware::ContentNegotiation do
   end
 
   it "throws an error if the media type requested is not supported" do
-    -> { get '/', {}, @env.merge('HTTP_ACCEPT' => 'application/xml') }.must_raise Hyperdrive::Errors::NotAcceptable
+    bad_env = @env.merge('hyperdrive.accept' => Rack::Accept::MediaType.new('application/xml'), 'HTTP_ACCEPT' => 'application/xml')
+    -> { get '/', {}, bad_env }.must_raise Hyperdrive::Errors::NotAcceptable
   end
 end

@@ -21,7 +21,11 @@ module Hyperdrive
               resources: endpoints
             }
 
-      media_types = %w(application/hal+json application/json)
+      media_types = %w(hal+json json).map do |media_type|
+        "application/vnd.#{hyperdrive.config[:vendor]}+#{media_type}"
+      end
+
+      media_types += %w(application/hal+json application/json)
       content_type = env['hyperdrive.accept'].best_of(media_types)
       body = if content_type =~ /json$/
                 Oj.dump(api, mode: :compat)

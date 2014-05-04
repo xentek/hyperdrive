@@ -91,6 +91,7 @@ module Hyperdrive
         methods: allowed_methods,
         params: params.map { |_,param| param.to_hash },
         filters: filters.map { |_,filter| filter.to_hash },
+        media_types: allowed_methods.map { |method| acceptable_content_types(method) }.uniq
       }
     end
 

@@ -3,9 +3,10 @@
 module Hyperdrive
   module DSL
     class Resource
+      include Values
       attr_reader :resource
-      def initialize(key)
-        @resource = ::Hyperdrive::Resource.new(key)
+      def initialize(name, hyperdrive_config)
+        @resource = ::Hyperdrive::Resource.new(name, hyperdrive_config)
         instance_eval(&Proc.new) if block_given?
       end
 
@@ -13,7 +14,7 @@ module Hyperdrive
         resource.name = name
       end
 
-      def desc(description)
+      def description(description)
         resource.description = description
       end
 
@@ -31,12 +32,6 @@ module Hyperdrive
         end
         request_handler = Hyperdrive::RequestHandler.new(request_method, Proc.new)
         resource.register_request_handler(request_method, request_handler)
-      end
-
-      private
-
-      def definable_request_methods
-        [:get, :post, :put, :patch, :delete].freeze
       end
     end
   end

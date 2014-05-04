@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require 'spec_helper'
+
 describe Hyperdrive::Server do
   it "handles GET requests successfully"
   it "handles HEAD requests successfully"

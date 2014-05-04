@@ -33,8 +33,8 @@ module Hyperdrive
         status = 200
         headers = {}
         headers['Access-Control-Allow-Origin'] = '*'
-        headers['Access-Control-Allow-Methods'] = 'GET, HEAD, OPTIONS' 
-        headers['Allow'] = 'GET, HEAD, OPTIONS' 
+        headers['Access-Control-Allow-Methods'] = 'GET, HEAD, OPTIONS'
+        headers['Allow'] = 'GET, HEAD, OPTIONS'
         headers['Content-Type'] = content_type
         [status, headers, [body]]
       end

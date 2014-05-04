@@ -10,17 +10,18 @@ module Hyperdrive
 
     def self.server
       Rack::Builder.new do
-        use Rack::Runtime
         use Rack::Lint
+        use Rack::Runtime
+        use Rack::MethodOverride
         use Rack::Head
+        use Rack::ConditionalGet
+        use Hyperdrive::Middleware::Error
         use Hyperdrive::Middleware::Accept
+        use Rack::Deflater
+        use Rack::ETag, "max-age=0,private,must-revalidate", "public,max-age=86400,s-maxage=86400"
+        
         map '/' do
-          begin
-            inner_app = ->(env) { [404, {}, ['']] }
-            run Hyperdrive::Middleware::HATEOAS.new inner_app, hyperdrive.resources
-          rescue Hyperdrive::Errors::HTTPError => error
-            [error.http_status_code, { 'Allow' => 'GET' }, [error.message]]
-          end
+          run Hyperdrive::Middleware::HATEOAS
         end
 
         #hyperdrive.resources.each do |key, resource|

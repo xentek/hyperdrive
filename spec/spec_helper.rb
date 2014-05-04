@@ -74,6 +74,22 @@ module Hyperdrive
           request(:get) do
             'ok'
           end
+
+          request(:post) do
+            'ok'
+          end
+
+          request(:put) do
+            'ok'
+          end
+
+          request(:patch) do
+            'ok'
+          end
+
+          request(:delete) do
+            ''
+          end
         end
       end
     end

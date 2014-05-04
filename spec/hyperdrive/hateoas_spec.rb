@@ -2,9 +2,9 @@
 
 require 'spec_helper'
 
-describe Hyperdrive::Middleware::HATEOAS do
+describe Hyperdrive::HATEOAS do
   def app
-    Hyperdrive::Middleware::HATEOAS
+    Hyperdrive::HATEOAS
   end
 
   context 'without Resources' do

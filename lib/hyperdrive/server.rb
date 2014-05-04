@@ -21,25 +21,20 @@ module Hyperdrive
         use Rack::ETag, "max-age=0,private,must-revalidate", "public,max-age=86400,s-maxage=86400"
 
         map '/' do
-          run Hyperdrive::Middleware::HATEOAS
+          run Hyperdrive::HATEOAS
         end
 
-        #hyperdrive.resources.each do |key, resource|
-          #use Hyperdrive::Middleware::Resource, resource
-          #use Hyperdrive::Middleware::RequestMethod
-          #use Hyperdrive::Middleware::CORS, hyperdrive.config[:cors]
-          #use Hyperdrive::Middleware::SanitizeParams
-          #use Hyperdrive::Middleware::RequiredParams
-          #map resource.endpoint do
-            #run ->(env) {
-              #begin
-                #Hyperdrive::Response.new(env).response
-              #rescue Hyperdrive::Errors::HTTPError => error
-                #[error.http_status_code, { 'Allow' => resource.allowed_methods.join(',') }, [error.message]]
-              #end
-            #}
-          #end
-        #end
+        hyperdrive.resources.each do |key, resource| 
+          map resource.endpoint do
+            use Hyperdrive::Middleware::Resource, resource
+            use Hyperdrive::Middleware::RequestMethod
+            use Hyperdrive::Middleware::SanitizeParams
+            use Hyperdrive::Middleware::RequiredParams
+            use Hyperdrive::Middleware::CORS, hyperdrive.config[:cors]
+            use Hyperdrive::Middleware::ContentNegotiation
+            run Hyperdrive::Endpoint
+          end
+        end
       end.to_app
     end
   end

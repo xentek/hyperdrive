@@ -2,16 +2,18 @@
 
 module Hyperdrive
   class Resource
-    attr_reader :namespace, :endpoint, :params, :filters, :request_handlers, :version
+    include Hyperdrive::Values
+    attr_reader :id, :namespace, :endpoint, :params, :filters, :request_handlers, :version
     attr_accessor :name, :description
 
-    def initialize(name, hyperdrive_config)
+    def initialize(name, hyperdrive_config = hyperdrive.config)
       @namespace = name.to_s.en.plural
       @endpoint = "/#{namespace}"
       @params = default_params
       @filters = default_filters
       @request_handlers = default_request_handlers
       @config = hyperdrive_config
+      @id = [@config[:vendor], @namespace].join(':')
     end
 
     def register_param(param, description, options = {})
@@ -23,32 +25,34 @@ module Hyperdrive
     end
 
     def register_request_handler(request_method, request_handler, version = 'v1')
-      @request_handlers[request_method] = { version => request_handler }
+      @request_handlers[request_method] ||= {}
+      @request_handlers[request_method].merge!({ version => request_handler })
       if request_method == :get
-        @request_handlers[:head] = @request_handlers[:get]
+        @request_handlers[:head] ||= {}
+        @request_handlers[:head].merge!({ version => @request_handlers[:get][version] })
       end
     end
 
     def request_handler(http_request_method, version = nil)
       version ||= latest_version(http_request_method)
-      request_method = Hyperdrive::Values.http_request_methods[http_request_method]
+      request_method = http_request_methods[http_request_method]
       request_handlers[request_method][version]
     end
 
     def acceptable_content_types(http_request_method)
       content_types = []
-      available_versions(http_request_method).each do |version|
-        @config[:media_types].each do |media_type|
+      @config[:media_types].each do |media_type|
+        available_versions(http_request_method).each do |version|
           content_types << "application/vnd.#{@config[:vendor]}.#{namespace}.#{version}+#{media_type}"
-          content_types << "application/vnd.#{@config[:vendor]}.#{namespace}+#{media_type}"
-          content_types << "application/vnd.#{@config[:vendor]}+#{media_type}"
         end
+        content_types << "application/vnd.#{@config[:vendor]}.#{namespace}+#{media_type}"
+        content_types << "application/vnd.#{@config[:vendor]}+#{media_type}"
       end
       content_types
     end
 
     def available_versions(http_request_method)
-      request_method = Hyperdrive::Values.http_request_methods[http_request_method]
+      request_method = http_request_methods[http_request_method]
       @request_handlers[request_method].keys.sort.reverse
     end
 
@@ -61,14 +65,16 @@ module Hyperdrive
     end
 
     def allowed_methods
-      Hyperdrive::Values.request_methods.values_at(*request_handlers.keys)
+      request_methods.values_at(*request_handlers.keys)
     end
 
     def required_param?(param, http_request_method)
+      return false if %w(GET HEAD OPTIONS).include? http_request_method
       params.key?(param) and params[param].required?(http_request_method)
     end
 
     def required_filter?(filter, http_request_method)
+      return false unless %w(GET HEAD OPTIONS).include? http_request_method
       filters.key?(filter) and filters[filter].required?(http_request_method)
     end
 
@@ -79,7 +85,7 @@ module Hyperdrive
     def to_hash
       {
         _links: { 'self' => { href: endpoint } },
-        id: [@config[:vendor], namespace].join(':'),
+        id: id,
         name: name,
         description: description,
         methods: allowed_methods,

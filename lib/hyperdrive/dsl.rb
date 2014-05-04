@@ -24,12 +24,6 @@ module Hyperdrive
       @config[:description] = description
     end
 
-    def cors(options = {})
-      allowed_options = default_cors_options.keys
-      options = Utils.sanitize_keys(allowed_options, options)
-      @config[:cors] = config[:cors].merge(options)
-    end
-
     def vendor(vendor)
       @config[:vendor] = vendor
     end
@@ -38,8 +32,19 @@ module Hyperdrive
       @config[:media_types] = media_types
     end
 
+    def cors(options = {})
+      allowed_options = default_cors_options.keys
+      options = Utils.sanitize_keys(allowed_options, options)
+      @config[:cors] = config[:cors].merge(options)
+    end
+
     def resource(name)
       @resources[name] = Resource.new(name, @config, &Proc.new).resource
+    end
+
+    def reset! # not terribly useful outside of a test environment :(
+      @config = default_config.dup
+      @resources = {}
     end
   end
 end

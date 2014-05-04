@@ -12,21 +12,19 @@ require 'oj'
 require 'hyperdrive/values'
 require 'hyperdrive/version'
 
-## sugar and state
-require 'hyperdrive/dsl'
-require 'hyperdrive/errors'
-require 'hyperdrive/resource'
-require 'hyperdrive/param'
-require 'hyperdrive/filter' # must come after param
-
-## rack apps and middleware
-require 'hyperdrive/hateoas'
-require 'hyperdrive/middleware'
-
-## tools
+## helpers
 require 'hyperdrive/docs'
 require 'hyperdrive/utils'
 
-require 'hyperdrive/response'
-require 'hyperdrive/request_handler'
+## sugary syntax and state mangagement
+require 'hyperdrive/dsl'
+require 'hyperdrive/errors'
+require 'hyperdrive/param'
+require 'hyperdrive/filter' # must come after param
+require 'hyperdrive/resource'
+
+## rack apps and middleware
+require 'hyperdrive/endpoint'
+require 'hyperdrive/hateoas'
+require 'hyperdrive/middleware'
 require 'hyperdrive/server'

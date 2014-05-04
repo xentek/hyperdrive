@@ -30,8 +30,7 @@ module Hyperdrive
         unless definable_request_methods.include? request_method
           raise Errors::DSL::UnknownArgument.new(request_method, 'request')
         end
-        request_handler = Hyperdrive::RequestHandler.new(request_method, Proc.new)
-        resource.register_request_handler(request_method, request_handler)
+        resource.register_request_handler(request_method, Proc.new)
       end
     end
   end

@@ -38,7 +38,7 @@ describe Hyperdrive::DSL::Resource do
   end
 
   it "defines how requests are handled" do
-    hyperdrive.resources[:thing].request_handlers[:get]['v1'].must_be_instance_of Hyperdrive::RequestHandler
+    hyperdrive.resources[:thing].request_handlers[:get]['v1'].must_be :===, Proc
   end
 
   it "throws an error if request method is unknown" do 

@@ -30,4 +30,8 @@ describe Hyperdrive::Values do
   it "returns a map of default config options" do
     @values.default_cors_options.must_be_kind_of Hash
   end
+
+  it "returns a map of default headers" do
+    @values.default_cors_options.must_be_kind_of Hash
+  end
 end

@@ -55,5 +55,11 @@ module Hyperdrive
         media_types: %w(hal+json json)
       }.freeze
     end
+
+    def default_headers
+      {
+        'X-Powered-By' => "Hyperdrive (v#{Hyperdrive::VERSION})"
+      }
+    end
   end
 end

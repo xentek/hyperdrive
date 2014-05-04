@@ -62,21 +62,21 @@ module Hyperdrive
       Hyperdrive::Param.new(:id, 'Identifier', required: %w(PUT PATCH DELETE), constraints: 'Must be a valid BSON Object ID.')
     end
 
-    #def sample_api
-      #hyperdrive do
-        #resource(:thing) do
-          #name 'Thing Resource'
-          #desc 'Description of Thing Resource'
+    def sample_api
+      hyperdrive do
+        resource(:thing) do
+          name 'Thing Resource'
+          description 'Description of Thing Resource'
 
-          #param :name, '50 Chars or less', required: true
-          #filter :parent_id, 'Parent ID of Thing', required: true
+          param :name, '50 Chars or less', required: true
+          filter :parent_id, 'Parent ID of Thing', required: true
 
-          #request(:get) do
-            #'ok'
-          #end
-        #end
-      #end
-    #end
+          request(:get) do
+            'ok'
+          end
+        end
+      end
+    end
   end
 end
 include Hyperdrive::TestData

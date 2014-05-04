@@ -3,25 +3,24 @@
 require 'spec_helper'
 
 describe Hyperdrive::Middleware::HATEOAS do
-  context 'without Resources' do
-    def app
-      inner_app = ->(env) { [200, {}, ['']] }
-      Hyperdrive::Middleware::HATEOAS.new(inner_app)
-    end
+  def app
+    Hyperdrive::Middleware::HATEOAS
+  end
 
+  context 'without Resources' do
     it "throws a Not Found error" do
       ->{ get '/' }.must_raise Hyperdrive::Errors::NotFound
     end
   end
 
   context 'with Resources' do
-    def app
-      inner_app = ->(env) { [200, {}, ['']] }
-      Hyperdrive::Middleware::HATEOAS.new(inner_app, { thing: default_resource })
+    before do
+      sample_api
+      get '/', {}, default_rack_env
     end
 
-    before do
-      get '/', {}, default_rack_env
+    after do
+      hyperdrive.send(:reset!)
     end
 
     it "responds successfully" do
@@ -33,11 +32,11 @@ describe Hyperdrive::Middleware::HATEOAS do
     end
 
     it "sets the allow header" do
-      last_response['Allow'].must_equal 'GET,HEAD,OPTIONS,POST,PUT,PATCH,DELETE'
+      last_response['Allow'].must_equal 'GET, HEAD, OPTIONS'
     end
 
     it "returns an arry of resources" do
-      last_response.body.must_equal "[{\"_links\":{\"self\":{\"href\":\"/things\"}},\"id\":\"hyperdrive:things\",\"description\":null,\"methods\":[\"OPTIONS\",\"GET\",\"HEAD\"],\"params\":[{\"name\":\"id\",\"description\":\"Identifier\",\"type\":\"String\",\"constraints\":\"Required for: PUT, PATCH, DELETE. \"}],\"filters\":[{\"name\":\"id\",\"description\":\"Resource Identifier\",\"type\":\"String\",\"constraints\":\" \"},{\"name\":\"parent_id\",\"description\":\"\",\"type\":\"String\",\"constraints\":\"Required for: GET, HEAD. \"}]}]"
+      last_response.body.must_equal %Q({"_links":{"self":{"href":"/"}},"name":"Hyperdrive API","description":"v0.0.5","vendor":"hyperdrive","resources":[{"_links":{"self":{"href":"/things"}},"id":"hyperdrive:things","name":"Thing Resource","description":"Description of Thing Resource","methods":["OPTIONS","GET","HEAD"],"params":[{"name":"id","description":"Identifier","type":"String","constraints":"Required for: PUT, PATCH, DELETE. "},{"name":"name","description":"50 Chars or less","type":"String","constraints":"Required for: POST, PUT, PATCH. "}],"filters":[{"name":"id","description":"Resource Identifier","type":"String","constraints":" "},{"name":"parent_id","description":"Parent ID of Thing","type":"String","constraints":"Required for: GET, HEAD. "}]}]})
     end
   end
 end

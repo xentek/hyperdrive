@@ -19,7 +19,7 @@ module Hyperdrive
         use Hyperdrive::Middleware::Accept
         use Rack::Deflater
         use Rack::ETag, "max-age=0,private,must-revalidate", "public,max-age=86400,s-maxage=86400"
-        
+
         map '/' do
           run Hyperdrive::Middleware::HATEOAS
         end

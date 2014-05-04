@@ -12,7 +12,7 @@ module Hyperdrive
       out = ""
       resources.each_value do |resource|
         out += header(resource.name)
-        out += paragraph(resource.desc)
+        out += paragraph(resource.description)
         out += header("Endpoint URL", 2)
         out += paragraph(bullet(code(resource.endpoint), 1))
         out += header("Params", 2)

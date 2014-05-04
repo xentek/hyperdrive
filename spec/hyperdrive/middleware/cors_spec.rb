@@ -38,7 +38,7 @@ describe Hyperdrive::Middleware::CORS do
   end
 
   it "has a max age" do
-    @headers['Access-Control-Max-Age'].must_equal 86400
+    @headers['Access-Control-Max-Age'].must_equal "86400"
   end
 
   it "exposes headers" do

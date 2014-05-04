@@ -11,7 +11,7 @@ describe Hyperdrive::Middleware::Error do
   end
 
   before do
-    @response = %Q({"_links":{"root":{"href":"/","title":"API Root"}},"error":"HTTPError: Hyperdrive::Errors::HTTPError"})
+    @response = %Q({"_links":{"root":{"href":"/","title":"API Root"}},"error":{"type":"HTTPError","message":"Hyperdrive::Errors::HTTPError"}})
     get '/'
   end
 
@@ -20,6 +20,6 @@ describe Hyperdrive::Middleware::Error do
   end
 
   it "returns a formatted error message" do
-    last_response.body.must_equal response
+    last_response.body.must_equal @response
   end
 end

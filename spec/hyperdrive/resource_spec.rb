@@ -15,7 +15,7 @@ describe Hyperdrive::Resource do
 
   it "has an ID" do
     @resource.id.must_equal "hyperdrive:things"
-  end  
+  end
 
   it "has a namespace" do
     @resource.namespace.must_equal 'things'

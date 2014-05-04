@@ -9,7 +9,6 @@ module Hyperdrive
       @media_type = env['hyperdrive.media_type']
       @params = env['hyperdrive.params']
       @resource = env['hyperdrive.resource']
-
       @headers = Hyperdrive::Values.default_headers.dup
       @headers.merge!('Allow' => resource.allowed_methods, 'Content-Type' => @media_type)
 

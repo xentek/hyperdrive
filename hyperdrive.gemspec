@@ -20,7 +20,6 @@ Gem::Specification.new do |gem|
   
   gem.add_dependency 'linguistics'
   gem.add_dependency 'oj'
-  gem.add_dependency 'ox'
   gem.add_dependency 'rack'
   gem.add_dependency 'rack-cache'
   gem.add_dependency 'rack-ssl'

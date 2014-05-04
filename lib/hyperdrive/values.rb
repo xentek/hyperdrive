@@ -3,7 +3,7 @@
 module Hyperdrive
   module Values
     module_function
-    
+
     def definable_request_methods
       [:get, :post, :put, :patch, :delete].freeze
     end

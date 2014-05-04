@@ -12,7 +12,7 @@ module Hyperdrive
       %w(GET HEAD OPTIONS POST PUT PATCH DELETE).freeze
     end
 
-    def self.request_methods
+    def request_methods
       {
         get:     'GET',
         head:    'HEAD',
@@ -50,7 +50,7 @@ module Hyperdrive
       {
         cors: default_cors_options,
         name: 'Hyperdrive API',
-        description: Hyperdrive::VERSION,
+        description: "v#{Hyperdrive::VERSION}",
         vendor: 'hyperdrive',
         media_types: %w(hal+json json)
       }.freeze

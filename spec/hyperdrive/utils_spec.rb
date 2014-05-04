@@ -26,13 +26,13 @@ describe Hyperdrive::Utils do
     it "can symbolize the keys of a hash" do
       @subject[:string].must_equal 'cheese'
     end
-    
+
     it "can symbolize the keys of nested hashes" do
       @subject[:map][:oceans].must_equal 'blue'
     end
 
     it "can symbolize the keys of arrays of hashes" do
       @subject[:collection].first[:skylanders].must_equal 155
-    end    
+    end
   end
 end

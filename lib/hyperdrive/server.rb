@@ -10,34 +10,29 @@ module Hyperdrive
 
     def self.server
       Rack::Builder.new do
-        use Rack::Runtime
         use Rack::Lint
+        use Rack::Runtime
+        use Rack::MethodOverride
         use Rack::Head
+        use Rack::ConditionalGet
+        use Hyperdrive::Middleware::Error
+        use Hyperdrive::Middleware::Accept
+        use Rack::Deflater
+        use Rack::ETag, "max-age=0,private,must-revalidate", "public,max-age=86400,s-maxage=86400"
 
         map '/' do
-          info = ''
-          hyperdrive.resources.each do |type, resource|
-            info += %Q({"id":"#{resource.endpoint}","name":"#{resource.name}","desc":"#{resource.desc}","type":"#{type}"})
-          end
-
-          run ->(env) {
-            [200, { 'Content-Type' => 'application/json', 'Allow' => Hyperdrive::Values.supported_request_methods.join(",") }, ["[#{info}]"]]
-          }
+          run Hyperdrive::HATEOAS
         end
 
-        hyperdrive.resources.each do |key, resource|
-          use Hyperdrive::Middleware::Resource, resource
-          use Hyperdrive::Middleware::CORS, hyperdrive.config[:cors]
-          use Hyperdrive::Middleware::SanitizeParams
-          use Hyperdrive::Middleware::RequiredParams
+        hyperdrive.resources.each do |key, resource| 
           map resource.endpoint do
-            run ->(env) {
-              begin
-                Hyperdrive::Response.new(env).response
-              rescue Hyperdrive::Errors::HTTPError => error
-                [error.http_status_code, { 'Allow' => resource.allowed_methods.join(',') }, [error.message]]
-              end
-            }
+            use Hyperdrive::Middleware::Resource, resource
+            use Hyperdrive::Middleware::RequestMethod
+            use Hyperdrive::Middleware::SanitizeParams
+            use Hyperdrive::Middleware::RequiredParams
+            use Hyperdrive::Middleware::CORS, hyperdrive.config[:cors]
+            use Hyperdrive::Middleware::ContentNegotiation
+            run Hyperdrive::Endpoint
           end
         end
       end.to_app

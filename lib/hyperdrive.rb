@@ -1,20 +1,30 @@
 # encoding: utf-8
 
-# stdlib
-require 'rack'
-require 'linguistics'
-Linguistics.use(:en)
-
 # prepare for hyperspace!
-require 'hyperdrive/docs'
-require 'hyperdrive/dsl'
-require 'hyperdrive/errors'
-require 'hyperdrive/middleware'
-require 'hyperdrive/utils'
 
-require 'hyperdrive/resource'
-require 'hyperdrive/response'
-require 'hyperdrive/request_handler'
-require 'hyperdrive/server'
+## stdlib
+require 'rack'
+require 'rack/accept'
+require 'linguistics'; Linguistics.use(:en)
+require 'oj'
+
+## immutable values
 require 'hyperdrive/values'
 require 'hyperdrive/version'
+
+## helpers
+require 'hyperdrive/docs'
+require 'hyperdrive/utils'
+
+## sugary syntax and state mangagement
+require 'hyperdrive/dsl'
+require 'hyperdrive/errors'
+require 'hyperdrive/param'
+require 'hyperdrive/filter' # must come after param
+require 'hyperdrive/resource'
+
+## rack apps and middleware
+require 'hyperdrive/endpoint'
+require 'hyperdrive/hateoas'
+require 'hyperdrive/middleware'
+require 'hyperdrive/server'

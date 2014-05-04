@@ -1,10 +1,18 @@
+# encoding: utf-8
+
 module Hyperdrive
   module Values
-    def self.supported_request_methods
+    module_function
+
+    def definable_request_methods
+      [:get, :post, :put, :patch, :delete].freeze
+    end
+
+    def supported_request_methods
       %w(GET HEAD OPTIONS POST PUT PATCH DELETE).freeze
     end
 
-    def self.request_methods
+    def request_methods
       {
         get:     'GET',
         head:    'HEAD',
@@ -16,7 +24,7 @@ module Hyperdrive
       }.freeze
     end
 
-    def self.http_request_methods
+    def http_request_methods
       {
         'GET'     => :get,
         'HEAD'    => :head,
@@ -26,6 +34,32 @@ module Hyperdrive
         'PATCH'   => :patch,
         'DELETE'  => :delete
       }.freeze
+    end
+
+    def default_cors_options
+      {
+          origins: '*',
+          allow_headers: 'Content-Type, Accept, Authorization, If-None-Match',
+          credentials: 'false',
+          expose_headers: 'Allow, Cache-Control, Content-Language, Content-Type, ETag',
+          max_age: 86400
+      }.freeze
+    end
+
+    def default_config
+      {
+        cors: default_cors_options,
+        name: 'Hyperdrive API',
+        description: "v#{Hyperdrive::VERSION}",
+        vendor: 'hyperdrive',
+        media_types: %w(hal+json json)
+      }.freeze
+    end
+
+    def default_headers
+      {
+        'X-Powered-By' => "Hyperdrive (v#{Hyperdrive::VERSION})"
+      }
     end
   end
 end

@@ -10,7 +10,11 @@ module Hyperdrive
 
       def call(env)
         status, headers, body = @app.call(env)
-        cors = cors_headers(env['hyperdrive.resource'].allowed_methods)
+        allowed_methods = '*'
+        unless env['hyperdrive.resource'].nil?
+          allowed_methods = env['hyperdrive.resource'].allowed_methods
+        end
+        cors = cors_headers(allowed_methods)
         headers.merge!(cors)
         [status, headers, body]
       end
@@ -19,12 +23,12 @@ module Hyperdrive
 
       def cors_headers(allowed_methods = '*')
         {
-          'Access-Control-Allow-Origin' => [@options[:origins]].flatten.join(", "),
-          'Access-Control-Allow-Methods' => [allowed_methods].flatten.join(", "),
-          'Access-Control-Allow-Headers' => [@options[:allow_headers]].flatten.join(", "),
-          'Access-Control-Allow-Credentials' => "#{@options[:credentials]}",
-          'Access-Control-Max-Age' => @options[:max_age].to_i,
-          'Access-Control-Expose-Headers' => [@options[:expose_headers]].flatten.join(", ")
+          'Access-Control-Allow-Origin'      => Array(@options[:origins]).join(", "),
+          'Access-Control-Allow-Methods'     => Array(allowed_methods).join(", "),
+          'Access-Control-Allow-Headers'     => Array(@options[:allow_headers]).join(", "),
+          'Access-Control-Allow-Credentials' => (@options[:credentials] || false).to_s,
+          'Access-Control-Max-Age'           => @options[:max_age].to_i.to_s,
+          'Access-Control-Expose-Headers'    => Array(@options[:expose_headers]).join(", ")
         }
       end
     end

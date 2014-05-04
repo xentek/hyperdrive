@@ -12,7 +12,7 @@ module Hyperdrive
         if %w(GET HEAD).include? env['REQUEST_METHOD']
           check_required_params(env['hyperdrive.resource'].filters)
         elsif %W(POST PUT PATCH DELETE).include? env['REQUEST_METHOD']
-          check_required_params(env['hyperdrive.resource'].allowed_params)
+          check_required_params(env['hyperdrive.resource'].params)
         end
         @app.call(env)
       end

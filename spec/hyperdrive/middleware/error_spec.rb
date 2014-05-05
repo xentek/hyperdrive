@@ -6,7 +6,7 @@ describe Hyperdrive::Middleware::Error do
   before do
     get '/'
   end
- 
+
   context "Known Error" do
     def app
       Rack::Builder.new do

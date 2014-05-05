@@ -33,7 +33,11 @@ module Hyperdrive
     def self.render(body)
       case body
       when Array, Hash
-        Oj.dump(body, mode: :compat) if json?
+        if json?
+          MultiJson.dump(body)
+        else
+          $stderr.puts "can't serialize response automatically"
+        end
       when String
         body
       else

@@ -28,9 +28,9 @@ module Hyperdrive
       media_types += %w(application/hal+json application/json)
       content_type = env['hyperdrive.accept'].best_of(media_types)
       body = if content_type =~ /json$/
-                Oj.dump(api, mode: :compat)
+                MultiJson.dump(api)
               else
-                raise Hyperdrive::Errors::NotAcceptable.new(env['HTTP_ACCEPT'])
+                raise Errors::NotAcceptable.new(env['HTTP_ACCEPT'])
               end
 
       status = 200

@@ -30,6 +30,14 @@ module Hyperdrive
       media_type =~ /xml$/
     end
 
+    def self.page
+      env['hyperdrive.page']
+    end
+
+    def self.per_page
+      env['hyperdrive.per_page']
+    end
+
     def self.render(body)
       case body
       when Array, Hash

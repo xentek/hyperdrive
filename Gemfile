@@ -1,6 +1,10 @@
 source 'https://rubygems.org'
 gemspec
 
+group :development, :test do
+  gem 'oj' unless defined?(JRUBY_VERSION)
+end
+
 group :development do
   gem 'gem-release', require: false
   gem 'pry', require: false

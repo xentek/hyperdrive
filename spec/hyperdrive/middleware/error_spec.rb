@@ -3,23 +3,41 @@
 require 'spec_helper'
 
 describe Hyperdrive::Middleware::Error do
-  def app
-    Rack::Builder.new do
-      use Hyperdrive::Middleware::Error
-      run ->(env) { raise Hyperdrive::Errors::HTTPError }
+  before do
+    get '/'
+  end
+ 
+  context "Known Error" do
+    def app
+      Rack::Builder.new do
+        use Hyperdrive::Middleware::Error
+        run ->(env) { raise Hyperdrive::Errors::MethodNotAllowed.new('GET') }
+      end
+    end
+
+    it "traps errors" do
+      last_response.status.must_equal 405
+    end
+
+    it "returns a formatted error message" do
+      last_response.body.must_match(/error/)
     end
   end
 
-  before do
-    @response = %Q({"_links":{"root":{"href":"/","title":"API Root"}},"error":{"type":"HTTPError","message":"Hyperdrive::Errors::HTTPError"}})
-    get '/'
-  end
+  context "Unknown Error" do
+    def app
+      Rack::Builder.new do
+        use Hyperdrive::Middleware::Error
+        run ->(env) { raise 'Woah there, fella!' }
+      end
+    end
 
-  it "traps errors" do
-    last_response.status.must_equal 500
-  end
+    it "traps errors" do
+      last_response.status.must_equal 500
+    end
 
-  it "returns a formatted error message" do
-    last_response.body.must_equal @response
+    it "returns a formatted error message" do
+      last_response.body.must_match(/Unknown Error/)
+    end
   end
 end

@@ -12,9 +12,16 @@ module Hyperdrive
       def call(env)
         @app.call(env)
       rescue => e
-        status = e.respond_to?(:http_status_code) ? e.http_status_code : 500
         headers = { 'Content-Type' => 'application/json' }
-        [status, headers, [json_error(e)]]
+        if e.respond_to?(:http_status_code)
+          status = e.http_status_code
+          body = [json_error(e)]
+        else
+          env['rack.errors'] << e
+          status = 500
+          body = json_error(Hyperdrive::Errors::HTTPError.new)
+        end
+        [status, headers, body]
       end
 
       private

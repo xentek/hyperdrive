@@ -1,5 +1,8 @@
 # Hyperdrive
 
+[![Gem Version](https://badge.fury.io/rb/hyperdrive.png)](http://badge.fury.io/rb/hyperdrive)[![Build Status](https://secure.travis-ci.org/styleseek/hyperdrive.png?branch=master)](https://travis-ci.org/styleseek/hyperdrive)[![Code Climate](https://codeclimate.com/github/styleseek/hyperdrive.png)](https://codeclimate.com/github/styleseek/hyperdrive)[![Test Coverage](https://codeclimate.com/github/styleseek/hyperdrive/coverage.png)](https://codeclimate.com/github/styleseek/hyperdrive)[![Dependency Status](https://gemnasium.com/styleseek/hyperdrive.png)](https://gemnasium.com/styleseek/hyperdrive)
+
+
 Ruby DSL for defining self-documenting, HATEOAS™ complaint, Hypermedia endpoints.
 
 ## Installation
@@ -119,10 +122,6 @@ If the `--output` option is not provided the generated documentation will be wri
 
 ## Project Status
 
-- Version: [![Gem Version](https://badge.fury.io/rb/hyperdrive.png)](http://badge.fury.io/rb/hyperdrive)
-- Build: [![Build Status](https://secure.travis-ci.org/styleseek/hyperdrive.png?branch=master)](https://travis-ci.org/styleseek/hyperdrive)
-- Code Quality: [![Code Climate](https://codeclimate.com/github/styleseek/hyperdrive.png)](https://codeclimate.com/github/styleseek/hyperdrive)
-- Dependencies: [![Dependency Status](https://gemnasium.com/styleseek/hyperdrive.png)](https://gemnasium.com/styleseek/hyperdrive)
 
 ## Contributing
 

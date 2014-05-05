@@ -29,6 +29,7 @@ module Hyperdrive
             use Hyperdrive::Middleware::Resource, resource
             use Hyperdrive::Middleware::RequestMethod
             use Hyperdrive::Middleware::SanitizeParams
+            use Hyperdrive::Middleware::Pagination
             use Hyperdrive::Middleware::RequiredParams
             use Hyperdrive::Middleware::CORS, hyperdrive.config[:cors]
             use Hyperdrive::Middleware::ContentNegotiation

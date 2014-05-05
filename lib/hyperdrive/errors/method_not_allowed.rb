@@ -6,7 +6,7 @@ module Hyperdrive
       end
 
       def message
-        "A request was made using a request method (#{@request_method}) not supported by this resource."
+        "#{@request_method.upcase} requests are not supported by this resource."
       end
 
       def http_status_code

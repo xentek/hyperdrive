@@ -120,9 +120,6 @@ You can also provide a `--output` option and specify a destination for your docu
 
 If the `--output` option is not provided the generated documentation will be written to `docs/doc.md` by default. 
 
-## Project Status
-
-
 ## Contributing
 
 1. Fork it ( http://github.com/styleseek/hyperdrive/fork )

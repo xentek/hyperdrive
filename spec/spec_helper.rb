@@ -18,6 +18,7 @@ require 'hyperdrive'
 
 # Fire up the BDD Stack
 require 'rack/test'
+require 'mocha/mini_test'
 require 'minitest/autorun'
 require "minitest-spec-context"
 require 'minitest/reporters'

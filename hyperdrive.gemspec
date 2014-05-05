@@ -17,9 +17,9 @@ Gem::Specification.new do |gem|
   gem.executables   = ['hyperdrive']
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
-  
+
   gem.add_dependency 'linguistics'
-  gem.add_dependency 'oj'
+  gem.add_dependency 'multi_json'
   gem.add_dependency 'rack'
   gem.add_dependency 'rack-cache'
   gem.add_dependency 'rack-ssl'

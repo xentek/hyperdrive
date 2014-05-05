@@ -6,7 +6,7 @@
 require 'rack'
 require 'rack/accept'
 require 'linguistics'; Linguistics.use(:en)
-require 'oj'
+require 'multi_json'
 
 ## immutable values
 require 'hyperdrive/values'

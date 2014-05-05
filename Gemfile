@@ -25,4 +25,5 @@ group :test do
   gem 'rack-test', require: false
   gem 'rubinius-coverage', require: false, platforms: :rbx
   gem 'codeclimate-test-reporter', require: false
+  gem 'mocha', require: false
 end

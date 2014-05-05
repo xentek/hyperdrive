@@ -38,6 +38,10 @@ module Hyperdrive
       @config[:cors] = config[:cors].merge(options)
     end
 
+    def per_page(per_page)
+      @config[:per_page] = per_page.to_i
+    end
+
     def resource(name)
       @resources[name] = Resource.new(name, @config, &Proc.new).resource
     end

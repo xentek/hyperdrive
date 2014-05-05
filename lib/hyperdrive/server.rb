@@ -24,11 +24,12 @@ module Hyperdrive
           run Hyperdrive::HATEOAS
         end
 
-        hyperdrive.resources.each do |key, resource| 
+        hyperdrive.resources.each do |key, resource|
           map resource.endpoint do
             use Hyperdrive::Middleware::Resource, resource
             use Hyperdrive::Middleware::RequestMethod
             use Hyperdrive::Middleware::SanitizeParams
+            use Hyperdrive::Middleware::Pagination
             use Hyperdrive::Middleware::RequiredParams
             use Hyperdrive::Middleware::CORS, hyperdrive.config[:cors]
             use Hyperdrive::Middleware::ContentNegotiation

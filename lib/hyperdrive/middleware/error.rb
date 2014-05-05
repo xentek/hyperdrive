@@ -4,31 +4,29 @@ module Hyperdrive
   module Middleware
     class Error
       include Hyperdrive::Values
-      
+
       def initialize(app)
         @app = app
       end
 
       def call(env)
         @app.call(env)
-      rescue Hyperdrive::Errors::HTTPError => e
-        status = e.http_status_code
-        headers = { 'Content-Type' => 'application/json',
-                    'Allow' => supported_request_methods.join(', ') }
-        body = Oj.dump(error_message(e), mode: :compat)
-        [status, headers, [body]]
+      rescue => e
+        status = e.respond_to?(:http_status_code) ? e.http_status_code : 500
+        headers = { 'Content-Type' => 'application/json' }
+        [status, headers, [json_error(e)]]
       end
 
       private
-      
-      def error_message(e)
-        {
+
+      def json_error(e)
+        MultiJson.dump({
           _links: { root: { href: '/', title: 'API Root' } },
-          error: { 
+          error: {
             type: "#{e.class.to_s.split('::').last}",
             message: e.message
           }
-        }
+        })
       end
     end
   end

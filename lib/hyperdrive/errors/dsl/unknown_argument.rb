@@ -13,7 +13,7 @@ module Hyperdrive
         end
 
         def message
-          "#{@argument} is not supported by `#{@method_name}'."
+          "DSL Error: The argument you supplied (#{@argument}) is not supported by the `#{@method_name}' method."
         end
       end
     end

@@ -24,7 +24,7 @@ module Hyperdrive
           run Hyperdrive::HATEOAS
         end
 
-        hyperdrive.resources.each do |key, resource| 
+        hyperdrive.resources.each do |key, resource|
           map resource.endpoint do
             use Hyperdrive::Middleware::Resource, resource
             use Hyperdrive::Middleware::RequestMethod

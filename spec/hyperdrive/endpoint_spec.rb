@@ -19,4 +19,15 @@ describe Hyperdrive::Endpoint do
     get '/', {}, default_rack_env(hyperdrive.resources[:thing])
     last_response.successful?.must_equal true
   end
+
+  it "can raise an HTTPError" do
+    hyperdrive do
+      resource(:thing) do
+        request(:get) do
+          error(418, "I'M A TEAPOT")
+        end
+      end
+    end
+    ->{ get '/', {}, default_rack_env(hyperdrive.resources[:thing]) }.must_raise Hyperdrive::Errors::HTTPError
+  end
 end

@@ -54,7 +54,7 @@ module Hyperdrive
     end
 
     def self.error(status, message)
-      raise Errors::HTTPError.new(status, message)
+      raise Errors::HTTPError.new(message, status)
     end
 
     def self.status

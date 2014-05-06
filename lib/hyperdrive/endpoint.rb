@@ -44,7 +44,7 @@ module Hyperdrive
         if json?
           MultiJson.dump(body)
         else
-          $stderr.puts "can't serialize response automatically"
+          env['rack.errors'] << "ENDPOINT: Can't serialize response automatically"
         end
       when String
         body

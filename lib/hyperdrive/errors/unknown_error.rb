@@ -2,7 +2,7 @@
 
 module Hyperdrive
   module Errors 
-    class HTTPError < RuntimeError
+    class UnknownError < RuntimeError
       def message
         'Unknown Error.'
       end

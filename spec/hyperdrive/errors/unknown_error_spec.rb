@@ -2,9 +2,9 @@
 
 require 'spec_helper'
 
-describe Hyperdrive::Errors::HTTPError do
+describe Hyperdrive::Errors::UnknownError do
   before do
-    @error = Hyperdrive::Errors::HTTPError.new
+    @error = Hyperdrive::Errors::UnknownError.new
   end
 
   it "returns a 500 status code" do

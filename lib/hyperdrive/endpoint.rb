@@ -53,6 +53,10 @@ module Hyperdrive
       end
     end
 
+    def self.error(status, message)
+      raise Errors::HTTPError.new(status, message)
+    end
+
     def self.status
       case env['REQUEST_METHOD']
       when 'POST'

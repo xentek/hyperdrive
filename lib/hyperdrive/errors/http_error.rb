@@ -3,18 +3,10 @@
 module Hyperdrive
   module Errors 
     class HTTPError < RuntimeError
-
-      def initialize(http_status_code, message)
-        @http_status_code = http_status_code
+      attr_reader :http_status_code, :message
+      def initialize(message, http_status_code = 500)
         @message = message
-      end
-
-      def message
-        @message
-      end
-
-      def http_status_code
-        @http_status_code
+        @http_status_code = http_status_code
       end
     end
   end

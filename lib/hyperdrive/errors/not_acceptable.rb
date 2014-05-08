@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module Hyperdrive
   module Errors
     class NotAcceptable < HTTPError
@@ -8,4 +10,3 @@ module Hyperdrive
     end
   end
 end
-

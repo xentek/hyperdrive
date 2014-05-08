@@ -10,7 +10,7 @@ module Hyperdrive
       @params = env['hyperdrive.params']
       @resource = env['hyperdrive.resource']
       @headers = Hyperdrive::Values.default_headers.dup
-      @headers.merge!('Allow' => resource.allowed_methods, 'Content-Type' => @media_type)
+      @headers.merge!('Allow' => resource.allowed_methods.join(', '), 'Content-Type' => @media_type)
 
       response.finish
     end
@@ -44,11 +44,13 @@ module Hyperdrive
         if json?
           MultiJson.dump(body)
         else
-          env['rack.errors'] << "ENDPOINT: Can't serialize response automatically"
+          env.logger.error "ENDPOINT: Can't serialize response automatically"
+          raise Errors::NoResponse.new
         end
       when String
         body
       else
+        env.logger.debug "ENDPOINT: Coerceing response to string. Probably not what you want"
         body.to_s
       end
     end
@@ -75,7 +77,7 @@ module Hyperdrive
     end
 
     def self.response
-      ::Rack::Response.new(body, status, headers)
+      ::Rack::Response.new(render(body), status, headers)
     end
   end
 end

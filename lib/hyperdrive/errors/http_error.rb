@@ -3,13 +3,12 @@
 module Hyperdrive
   module Errors 
     class HTTPError < RuntimeError
-      def message
-        'Unknown Error.'
-      end
-
-      def http_status_code
-        500
+      attr_reader :http_status_code, :message
+      def initialize(message, http_status_code = 500)
+        @message = message
+        @http_status_code = http_status_code
       end
     end
   end
 end
+

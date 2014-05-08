@@ -44,13 +44,17 @@ module Hyperdrive
         if json?
           MultiJson.dump(body)
         else
-          $stderr.puts "can't serialize response automatically"
+          env['rack.errors'] << "ENDPOINT: Can't serialize response automatically"
         end
       when String
         body
       else
         body.to_s
       end
+    end
+
+    def self.error(status, message)
+      raise Errors::HTTPError.new(message, status)
     end
 
     def self.status

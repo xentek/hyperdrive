@@ -19,7 +19,7 @@ module Hyperdrive
         else
           env['rack.errors'] << e
           status = 500
-          body = json_error(Hyperdrive::Errors::HTTPError.new)
+          body = json_error(Hyperdrive::Errors::UnknownError.new)
         end
         [status, headers, body]
       end

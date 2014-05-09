@@ -39,7 +39,7 @@ module Hyperdrive
     def default_cors_options
       {
           origins: '*',
-          allow_headers: 'Content-Type, Accept, Authorization, If-None-Match',
+          allow_headers: 'Content-Type, Accept, Accept-Encoding, Authorization, If-None-Match',
           credentials: 'false',
           expose_headers: 'Allow, Cache-Control, Content-Language, Content-Type, ETag',
           max_age: 86400

@@ -21,7 +21,7 @@ module Hyperdrive
           status = 500
           body = json_error(Hyperdrive::Errors::UnknownError.new)
         end
-        [status, headers, body]
+        [status, headers, [body]]
       end
 
       private

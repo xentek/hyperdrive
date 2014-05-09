@@ -17,7 +17,7 @@ module Hyperdrive
           status = e.http_status_code
           body = [json_error(e)]
         else
-          env['rack.errors'] << e
+          puts e.message
           status = 500
           body = json_error(Hyperdrive::Errors::UnknownError.new)
         end

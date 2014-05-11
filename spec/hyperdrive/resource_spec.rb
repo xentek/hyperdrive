@@ -2,12 +2,16 @@ require 'spec_helper'
 
 describe Hyperdrive::Resource do
   before do
-    @resource = Hyperdrive::Resource.new(:thing, { vendor: 'hyperdrive', media_types: ['json'] })
+    @resource = Hyperdrive::Resource.new(:thing)
     @resource.register_param(:name, 'Thing Name')
     @resource.register_filter(:parent_id, 'Parent ID', required: true)
     @resource.register_request_handler(:get, Proc.new { |env| 'v1' })
     @resource.register_request_handler(:get, Proc.new { |env| 'v2' }, 'v2')
-    @media_types = ["application/vnd.hyperdrive.things.v2+json",
+    @media_types = ["application/vnd.hyperdrive.things.v2+hal+json",
+                    "application/vnd.hyperdrive.things.v1+hal+json",
+                    "application/vnd.hyperdrive.things+hal+json",
+                    "application/vnd.hyperdrive+hal+json",
+                    "application/vnd.hyperdrive.things.v2+json",
                     "application/vnd.hyperdrive.things.v1+json",
                     "application/vnd.hyperdrive.things+json",
                     "application/vnd.hyperdrive+json"]
@@ -125,5 +129,41 @@ describe Hyperdrive::Resource do
 
   it "returns a hash representation of the resource" do
     @resource.to_hash.must_be_kind_of Hash
+  end
+
+  context "compound namspaces" do
+    before do
+      @compound_resource = Hyperdrive::Resource.new(:goof_ball)
+    end
+
+    it "has an ID" do
+      @compound_resource.id.must_equal "hyperdrive:goof:balls"
+    end
+
+    it "has a namespace" do
+      @compound_resource.namespace.must_equal 'goof:balls'
+    end
+
+    it "has an endpoint" do
+      @compound_resource.endpoint.must_equal '/goof/balls'
+    end
+  end
+
+  context "options" do
+    before do
+      @resource_with_options = Hyperdrive::Resource.new(:great_thing, endpoint: '/great-things')
+    end
+
+    it "has an ID" do
+      @resource_with_options.id.must_equal "hyperdrive:great:things"
+    end
+
+    it "has a namespace" do
+      @resource_with_options.namespace.must_equal 'great:things'
+    end
+
+    it "has an endpoint" do
+      @resource_with_options.endpoint.must_equal '/great-things'
+    end
   end
 end

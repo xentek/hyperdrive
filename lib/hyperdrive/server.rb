@@ -28,6 +28,7 @@ module Hyperdrive
           map resource.endpoint do
             use Hyperdrive::Middleware::Resource, resource
             use Hyperdrive::Middleware::RequestMethod
+            use Hyperdrive::Middleware::ParseJSONBody
             use Hyperdrive::Middleware::SanitizeParams
             use Hyperdrive::Middleware::Pagination
             use Hyperdrive::Middleware::RequiredParams

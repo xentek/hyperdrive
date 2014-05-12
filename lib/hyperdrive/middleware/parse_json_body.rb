@@ -20,6 +20,7 @@ module Hyperdrive
           env['rack.request.form_hash'] ||= {}
           env['rack.request.form_hash'].merge!(json_body)
           env['rack.request.form_input'] = Rack::Utils.build_query(env['rack.request.form_hash'])
+          env['rack.input'] = env['rack.request.form_input']
         end
         @app.call(env)
       end

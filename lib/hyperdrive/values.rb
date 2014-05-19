@@ -53,7 +53,8 @@ module Hyperdrive
         description: "v#{Hyperdrive::VERSION}",
         vendor: 'hyperdrive',
         media_types: %w(hal+json json),
-        per_page: 20
+        per_page: 20,
+        ssl: false
       }.freeze
     end
 

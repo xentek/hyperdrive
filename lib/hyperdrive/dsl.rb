@@ -15,7 +15,7 @@ module Hyperdrive
     end
 
     private
-    
+
     def name(name)
       @config[:name] = name
     end
@@ -40,6 +40,10 @@ module Hyperdrive
 
     def per_page(per_page)
       @config[:per_page] = per_page.to_i
+    end
+
+    def ssl(force_ssl)
+      @config[:ssl] = force_ssl
     end
 
     def resource(name)

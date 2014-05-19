@@ -11,6 +11,7 @@ describe Hyperdrive::DSL do
       media_types %w(json)
       cors({ origins: '*', allow_headers: %w(Accept), test: 'test'})
       resource(:thing) {}
+      ssl true
     end
   end
 
@@ -38,7 +39,7 @@ describe Hyperdrive::DSL do
     hyperdrive.resources[:thing].must_be_instance_of ::Hyperdrive::Resource
   end
 
-  it "can configure cors options" do
+  it "configures cors options" do
     hyperdrive.config[:cors][:allow_headers].must_equal ['Accept']
   end
 
@@ -48,5 +49,9 @@ describe Hyperdrive::DSL do
 
   it "removes unsupported cors options" do
     hyperdrive.config[:cors].key?(:test).must_equal false
+  end
+
+  it "configures ssl options" do
+    hyperdrive.config[:ssl].must_equal true
   end
 end

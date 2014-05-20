@@ -11,9 +11,7 @@ module Hyperdrive
       @resource = env['hyperdrive.resource']
       @headers = Hyperdrive::Values.default_headers.dup
       @headers.merge!('Allow' => resource.allowed_methods.join(', '), 'Content-Type' => @media_type)
-      if @resource.has_callback?(:before, env['REQUEST_METHOD'], requested_version)
-        instance_eval(&@resource.callback(:before, env['REQUEST_METHOD'], requested_version))
-      end
+      before_response
       response.finish
     end
 
@@ -67,6 +65,12 @@ module Hyperdrive
     def self.error(status, message)
       raise Errors::HTTPError.new(message, status)
     end
+
+    def self.before_response
+      if @resource.has_callback?(:before, env['REQUEST_METHOD'], requested_version)
+        instance_eval(&@resource.callback(:before, env['REQUEST_METHOD'], requested_version))
+      end
+    end      
 
     def self.status
       case env['REQUEST_METHOD']

@@ -3,7 +3,7 @@
 module Hyperdrive
   class Resource
     include Hyperdrive::Values
-    attr_reader :id, :namespace, :endpoint, :params, :filters, :request_handlers, :version
+    attr_reader :id, :namespace, :endpoint, :params, :filters, :request_handlers, :callbacks, :version
     attr_accessor :name, :description
 
     def initialize(resource, options = {})
@@ -14,6 +14,7 @@ module Hyperdrive
       @params = default_params
       @filters = default_filters
       @request_handlers = default_request_handlers
+      @callbacks = { before: {} }
       @config = hyperdrive.config
       @id = [@config[:vendor], @namespace].join(':')
     end
@@ -25,6 +26,29 @@ module Hyperdrive
     def register_filter(filter, description, options = {})
       @filters[filter] = Filter.new(filter, description, options)
     end
+
+    def register_callback(callback_type, request_method, callback, version = 'v1')
+      @callbacks[callback_type] ||={}
+      @callbacks[callback_type][request_method] ||= {}
+      @callbacks[callback_type][request_method].merge!({ version => callback })
+      if request_method == :get
+        @callbacks[callback_type][:head] ||= {}
+        @callbacks[callback_type][:head].merge!({ version => @callbacks[callback_type][:get][version] })
+      end
+    end
+
+    def callback(callback_type, http_request_method, version = nil)
+      version ||= latest_version(http_request_method)
+      request_method = http_request_methods[http_request_method]
+      callbacks[callback_type][request_method][version]
+    end
+
+    def has_callback?(callback_type, http_request_method, version = nil)
+      version ||= latest_version(http_request_method)
+      request_method = http_request_methods[http_request_method]
+      callbacks.has_key?(callback_type) and callbacks[callback_type].has_key?(request_method) and callbacks[callback_type][request_method].has_key?(version)
+    end
+
 
     def register_request_handler(request_method, request_handler, version = 'v1')
       @request_handlers[request_method] ||= {}
@@ -43,12 +67,12 @@ module Hyperdrive
 
     def acceptable_content_types(http_request_method)
       content_types = []
-      media_type_namepace = @resource.join('.')
+      media_type_namespace = @resource.join('-')
       @config[:media_types].each do |media_type|
         available_versions(http_request_method).each do |version|
-          content_types << "application/vnd.#{@config[:vendor]}.#{media_type_namepace}.#{version}+#{media_type}"
+          content_types << "application/vnd.#{@config[:vendor]}.#{media_type_namespace}.#{version}+#{media_type}"
         end
-        content_types << "application/vnd.#{@config[:vendor]}.#{media_type_namepace}+#{media_type}"
+        content_types << "application/vnd.#{@config[:vendor]}.#{media_type_namespace}+#{media_type}"
         content_types << "application/vnd.#{@config[:vendor]}+#{media_type}"
       end
       content_types

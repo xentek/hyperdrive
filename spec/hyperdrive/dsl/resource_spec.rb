@@ -10,6 +10,9 @@ describe Hyperdrive::DSL::Resource do
         description 'Thing Description'
         param :name, 'Thing Name'
         filter :parent_id, "Parent ID"
+        before do
+          'before'
+        end
         request(:get) do
           'ok'
         end
@@ -37,12 +40,16 @@ describe Hyperdrive::DSL::Resource do
     hyperdrive.resources[:thing].filters[:parent_id].description.must_equal "Parent ID"
   end
 
-  it "defines how requests are handled" do
+  it "registers requests handlers" do
     hyperdrive.resources[:thing].request_handlers[:get]['v1'].must_be :===, Proc
   end
 
-  it "throws an error if request method is unknown" do 
+  it "throws an error if request method is unknown" do
     bad_resource = -> { hyperdrive { resource(:thing) { request(:verb) } } }
-    bad_resource.must_raise Hyperdrive::Errors::DSL::UnknownArgument
+   bad_resource.must_raise Hyperdrive::Errors::DSL::UnknownArgument
+  end
+
+  it "registers a before request callback" do
+    hyperdrive.resources[:thing].callbacks[:before][:get]['v1'].must_be :===, Proc
   end
 end

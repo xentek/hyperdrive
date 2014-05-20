@@ -29,6 +29,15 @@ include Rack::Test::Methods
 
 module Hyperdrive
   module TestData
+    def default_hyperdrive_env
+      {
+        'HTTP_ACCEPT' => 'application/vnd.hyperdrive.things+hal+json',
+        'hyperdrive.accept' => Rack::Accept::MediaType.new('HTTP_ACCEPT' => 'application/vnd.hyperdrive.things+hal+json;q=0.8'),
+        'hyperdrive.resource' => hyperdrive.resources[:things],
+        'hyperdrive.media_type' => 'application/vnd.hyperdrive.things+hal+json'
+      }
+    end
+
     def default_rack_env(resource = nil)
       default_env = {
         "rack.version" => Rack::VERSION,
@@ -41,7 +50,8 @@ module Hyperdrive
         'HTTP_ACCEPT' => 'application/vnd.hyperdrive.things+hal+json;q=0.8, application/json;q=1',
         'HTTP_ACCEPT_LANGUAGE' => 'en',
         'REQUEST_METHOD' => 'GET',
-        'QUERY_STRING' => 'id=1001'
+        'QUERY_STRING' => 'id=1001',
+        'hyperdrive.media_type' => 'application/vnd.hyperdrive.things+hal+json'
       }
       default_env.merge!('hyperdrive.accept' => Rack::Accept::MediaType.new(default_env['HTTP_ACCEPT']))
       default_env.merge!('hyperdrive.resource' => resource) if resource
@@ -72,6 +82,10 @@ module Hyperdrive
           param :name, '50 Chars or less', required: true
           filter :parent_id, 'Parent ID of Thing', required: true
 
+          before(:get) do
+            @headers.merge!('X-Resource' => resource.name)
+          end
+
           request(:get) do
             'ok'
           end
@@ -89,7 +103,7 @@ module Hyperdrive
           end
 
           request(:delete) do
-            ''
+            'ok'
           end
         end
       end

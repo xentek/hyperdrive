@@ -19,6 +19,10 @@ describe Hyperdrive::Filter do
     @filter.required.must_equal %w(GET HEAD)
   end
 
+  it "returns an array if only a single HTTP method is required" do
+    Hyperdrive::Filter.new(:filter, '', required: 'GET').required.must_equal ['GET']
+  end
+
   it "returns true if the param is required for the given HTTP method" do
     @filter.required?('GET').must_equal true
   end
@@ -27,7 +31,7 @@ describe Hyperdrive::Filter do
     @filter.required?('OPTIONS').must_equal false
   end
 
-  it "converts itself as a hash" do
+  it "converts itself to a hash" do
     constraints = { name: 'parent_id', description: 'Parent Identifier', type: 'String', constraints: 'Required for: GET, HEAD. Must be a valid BSON Object ID.' }
     @filter.to_hash.must_equal constraints
   end

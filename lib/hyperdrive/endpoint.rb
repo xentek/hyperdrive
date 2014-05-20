@@ -33,9 +33,10 @@ module Hyperdrive
     end
 
     def self.requested_version
-      version = /.*\/vnd.#{hyperdrive.config[:vendor]}\..*\.(.*)\+.*?\+.*$/.match(media_type)
+      regex = /.*\/vnd.#{hyperdrive.config[:vendor]}\..*\.(.*)\+.*?\+.*$/
+      version = regex.match(media_type)
       return if version.nil?
-      version.first
+      version.captures.first
     end
 
     def self.page

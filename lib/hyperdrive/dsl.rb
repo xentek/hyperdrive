@@ -15,6 +15,7 @@ module Hyperdrive
     end
 
     def instrument(*args)
+      @config[:instrumenter] = @config[:instrumenter] || Hyperdrive::Instrumenters::Noop
       @config[:instrumenter].instrument(*args)
     end
 

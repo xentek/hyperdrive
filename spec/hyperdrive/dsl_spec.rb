@@ -11,6 +11,7 @@ describe Hyperdrive::DSL do
       media_types %w(json)
       cors({ origins: '*', allow_headers: %w(Accept), test: 'test'})
       resource(:thing) {}
+      per_page '0'
       ssl true
     end
   end

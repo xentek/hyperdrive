@@ -19,6 +19,10 @@ describe Hyperdrive::Param do
     @param.required.must_equal %w(PUT PATCH DELETE)
   end
 
+ it "returns an array if only a single HTTP method is required" do
+    Hyperdrive::Filter.new(:param, '', required: 'GET').required.must_equal ['GET']
+  end
+
   it "returns true if the param is required for the given HTTP method" do
     @param.required?('PUT').must_equal true
   end
@@ -27,7 +31,7 @@ describe Hyperdrive::Param do
     @param.required?('POST').must_equal false
   end
 
-  it "converts itself as a hash" do
+  it "converts itself to a hash" do
     constraints = { name: 'id', description: 'Identifier', type: 'String', constraints: 'Required for: PUT, PATCH, DELETE. Must be a valid BSON Object ID.' }
     @param.to_hash.must_equal constraints
   end

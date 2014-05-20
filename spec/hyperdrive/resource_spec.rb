@@ -5,6 +5,8 @@ describe Hyperdrive::Resource do
     @resource = Hyperdrive::Resource.new(:thing)
     @resource.register_param(:name, 'Thing Name')
     @resource.register_filter(:parent_id, 'Parent ID', required: true)
+    @resource.register_callback(:before, :get, Proc.new { |env| 'before v1' })
+    @resource.register_callback(:before, :get, Proc.new { |env| 'before v2' }, 'v2')
     @resource.register_request_handler(:get, Proc.new { |env| 'v1' })
     @resource.register_request_handler(:get, Proc.new { |env| 'v2' }, 'v2')
     @media_types = ["application/vnd.hyperdrive.things.v2+hal+json",
@@ -89,6 +91,26 @@ describe Hyperdrive::Resource do
 
   it "returns false if the filter (or param) is not required" do
     @resource.required?(:parent_id, 'DELETE').must_equal false
+  end
+
+  it "registers a before callback" do
+    @resource.callbacks[:before][:get]['v1'].must_be :===, Proc
+  end
+
+  it "auto-registers HEAD before callback when GET before callback is registered" do
+    @resource.callbacks[:before][:head]['v1'].must_be :===, Proc
+  end
+
+  it "returns the specified before callback" do
+    @resource.callback(:before, 'GET').must_be :===, Proc
+  end
+
+  it "returns true if the specified before callback exists" do
+    @resource.has_callback?(:before, 'GET').must_equal true
+  end
+
+  it "returns false if the specified before callback does not exist" do
+    @resource.has_callback?(:before, 'GET', 'v3').must_equal false
   end
 
   it "registers a request handler" do

@@ -26,11 +26,17 @@ module Hyperdrive
         resource.register_filter(*args)
       end
 
-      def request(request_method)
+      def request(request_method, version = 'v1')
         unless definable_request_methods.include? request_method
           raise Errors::DSL::UnknownArgument.new(request_method, 'request')
         end
-        resource.register_request_handler(request_method, Proc.new)
+        resource.register_request_handler(request_method, Proc.new, version)
+      end
+
+      def before(request_methods = [:get, :post, :put, :patch, :delete], version = 'v1')
+        Array(request_methods).each do |request_method|
+          resource.register_callback(:before, request_method, Proc.new, version)
+        end
       end
     end
   end

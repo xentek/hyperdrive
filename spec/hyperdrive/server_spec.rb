@@ -16,37 +16,37 @@ describe Hyperdrive::Server do
   end
 
   it "responds to GET requests successfully" do
-    get '/things', { parent_id: 42 }
+    get '/things', { parent_id: 42 }, default_hyperdrive_env
     last_response.successful?.must_equal true
   end
 
   it "responds to HEAD requests successfully" do
-    head '/things', { parent_id: 42 }
+    head '/things', { parent_id: 42 }, default_hyperdrive_env
     last_response.successful?.must_equal true
   end
 
   it "responds to OPTIONS requests successfully" do
-    options '/things'
+    options '/things', {}, default_hyperdrive_env
     last_response.successful?.must_equal true
   end
 
   it "responds to POST requests successfully" do
-    post '/things', { name: 'bender' }
+    post '/things', { name: 'bender' }, default_hyperdrive_env
     last_response.successful?.must_equal true
   end
 
   it "responds to PUT requests successfully" do
-    put '/things', { id: 1, name: 'bender' }
+    put '/things', { id: 1, name: 'bender' }, default_hyperdrive_env
     last_response.successful?.must_equal true
   end
 
   it "responds to PATCH requests successfully" do
-    patch '/things', { id: 1, name: 'bender' }
+    patch '/things', { id: 1, name: 'bender' }, default_hyperdrive_env
     last_response.successful?.must_equal true
   end
 
   it "responds to DELETE requests successfully" do
-    delete '/things', { id: 1 }
+    delete '/things', { id: 1 }, default_hyperdrive_env
     last_response.successful?.must_equal true
   end
 end

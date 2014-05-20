@@ -23,6 +23,10 @@ describe Hyperdrive::Middleware::RequiredParams do
     it "raises an error if required filter is missing" do
       ->{ get '/', {}, @env }.must_raise Hyperdrive::Errors::MissingRequiredParam
     end
+
+    it "raises an error if required filter is missing" do
+      ->{ get '/', {}, @env.merge('hyperdrive.params' => { parent_id: '' }) }.must_raise Hyperdrive::Errors::MissingRequiredParam
+    end
   end
 
   context "Params" do

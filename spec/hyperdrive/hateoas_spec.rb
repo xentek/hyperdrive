@@ -38,5 +38,9 @@ describe Hyperdrive::HATEOAS do
     it "responds with a description of all resources" do
       last_response.body.must_equal %Q({"_links":{"self":{"href":"/"}},"name":"Hyperdrive API","description":"v#{Hyperdrive::VERSION}","vendor":"hyperdrive","resources":[{"_links":{"self":{"href":"/things"}},"id":"hyperdrive:things","name":"Thing Resource","description":"Description of Thing Resource","methods":["OPTIONS","GET","HEAD","POST","PUT","PATCH","DELETE"],"params":[{"name":"id","description":"Identifier","type":"String","constraints":"Required for: PUT, PATCH, DELETE. "},{"name":"name","description":"50 Chars or less","type":"String","constraints":"Required for: POST, PUT, PATCH. "}],"filters":[{"name":"id","description":"Resource Identifier","type":"String","constraints":" "},{"name":"parent_id","description":"Parent ID of Thing","type":"String","constraints":"Required for: GET, HEAD. "}],"media_types":[["application/vnd.hyperdrive.things.v1+hal+json","application/vnd.hyperdrive.things+hal+json","application/vnd.hyperdrive+hal+json","application/vnd.hyperdrive.things.v1+json","application/vnd.hyperdrive.things+json","application/vnd.hyperdrive+json","application/vnd.hyperdrive.things.v1+text/html","application/vnd.hyperdrive.things+text/html","application/vnd.hyperdrive+text/html"]]}]})
     end
+
+    it "throws an error if request doesn't accept json" do
+      ->{ get '/', {}, default_hyperdrive_env.merge({ 'Accept' => 'application/xml' }) }.must_raise Hyperdrive::Errors::NotAcceptable
+    end
   end
 end

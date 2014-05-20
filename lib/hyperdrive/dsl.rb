@@ -14,8 +14,13 @@ module Hyperdrive
       self
     end
 
+    def instrument(*args)
+      @config[:instrumenter] = @config[:instrumenter] || Hyperdrive::Instrumenters::Noop
+      @config[:instrumenter].instrument(*args)
+    end
+
     private
-    
+
     def name(name)
       @config[:name] = name
     end
@@ -39,7 +44,17 @@ module Hyperdrive
     end
 
     def per_page(per_page)
-      @config[:per_page] = per_page.to_i
+      per_page = per_page.to_i
+      per_page = default_config[:per_page] if per_page == 0
+      @config[:per_page] = per_page
+    end
+
+    def ssl(force_ssl)
+      @config[:ssl] = force_ssl
+    end
+
+    def instrumenter(instrumenter)
+      @config[:instrumenter] = instrumenter || Hyperdrive::Instrumenters::Noop
     end
 
     def resource(name)

@@ -11,7 +11,7 @@ module Hyperdrive
       @resource = env['hyperdrive.resource']
       @headers = Hyperdrive::Values.default_headers.dup
       @headers.merge!('Allow' => resource.allowed_methods.join(', '), 'Content-Type' => @media_type)
-
+      before_response
       response.finish
     end
 
@@ -23,11 +23,16 @@ module Hyperdrive
     end
 
     def self.json?
-      media_type =~ /json$/
+      media_type =~ /json$/ ? true : false
     end
 
     def self.xml?
-      media_type =~ /xml$/
+      media_type =~ /xml$/ ? true : false
+    end
+
+    def self.requested_version
+      regex = /.*\/vnd.#{hyperdrive.config[:vendor]}\..*\.(.*)\+.*$/
+      regex.match(media_type) { |version| version.captures.first } or resource.latest_version(env['REQUEST_METHOD'])
     end
 
     def self.page
@@ -44,19 +49,29 @@ module Hyperdrive
         if json?
           MultiJson.dump(body)
         else
-          env.logger.error "ENDPOINT: Can't serialize response automatically"
+          puts "Hyperdrive::Endpoint: Can't serialize response automatically"
           raise Errors::NoResponse.new
         end
       when String
         body
       else
-        env.logger.debug "ENDPOINT: Coerceing response to string. Probably not what you want"
+        puts "Hyperdrive::Endpoint: Coerceing response to string. Probably not what you want"
         body.to_s
       end
     end
 
     def self.error(status, message)
       raise Errors::HTTPError.new(message, status)
+    end
+
+    def self.instrument(*args)
+      hyperdrive.instrument(*args)
+    end
+
+    def self.before_response
+      if @resource.has_callback?(:before, env['REQUEST_METHOD'], requested_version)
+        instance_eval(&@resource.callback(:before, env['REQUEST_METHOD'], requested_version))
+      end
     end
 
     def self.status
@@ -71,7 +86,7 @@ module Hyperdrive
     end
 
     def self.body
-      body = instance_eval(&resource.request_handler(env['REQUEST_METHOD']))
+      body = instance_eval(&resource.request_handler(env['REQUEST_METHOD'], requested_version))
       body = '' if env['REQUEST_METHOD'] == 'DELETE'
       body
     end

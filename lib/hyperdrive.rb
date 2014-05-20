@@ -16,6 +16,10 @@ require 'hyperdrive/version'
 require 'hyperdrive/docs'
 require 'hyperdrive/utils'
 
+## instrumenters
+require 'hyperdrive/instrumenters/memory'
+require 'hyperdrive/instrumenters/noop'
+
 ## sugary syntax and state mangagement
 require 'hyperdrive/dsl'
 require 'hyperdrive/errors'

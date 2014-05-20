@@ -52,8 +52,10 @@ module Hyperdrive
         name: 'Hyperdrive API',
         description: "v#{Hyperdrive::VERSION}",
         vendor: 'hyperdrive',
-        media_types: %w(hal+json json text/html),
-        per_page: 20
+        media_types: %w(hal+json json),
+        per_page: 20,
+        ssl: false,
+        instrumenter: Hyperdrive::Instrumenters::Noop
       }.freeze
     end
 

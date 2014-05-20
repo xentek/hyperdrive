@@ -39,7 +39,9 @@ module Hyperdrive
     end
 
     def per_page(per_page)
-      @config[:per_page] = per_page.to_i
+      per_page = per_page.to_i
+      per_page = default_config[:per_page] if per_page == 0
+      @config[:per_page] = per_page
     end
 
     def ssl(force_ssl)

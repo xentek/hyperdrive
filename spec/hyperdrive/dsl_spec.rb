@@ -51,7 +51,11 @@ describe Hyperdrive::DSL do
     hyperdrive.config[:cors].key?(:test).must_equal false
   end
 
-  it "configures ssl options" do
+  it "configures the default per_page option" do
+    hyperdrive.config[:per_page].must_equal 20
+  end
+
+  it "configures ssl option" do
     hyperdrive.config[:ssl].must_equal true
   end
 end

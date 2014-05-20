@@ -14,6 +14,25 @@ module Hyperdrive
     end
 
     private
+
+    def self.media_types
+      %w(hal+json json).map do |media_type|
+        "application/vnd.#{hyperdrive.config[:vendor]}+#{media_type}"
+      end + %w(application/hal+json application/json)
+    end
+
+    def self.content_type
+      @env['hyperdrive.accept'].best_of(media_types)
+    end
+
+    def self.headers
+      {
+        'Access-Control-Allow-Origin' => '*',
+        'Access-Control-Allow-Methods' => 'GET, HEAD, OPTIONS',
+        'Allow' => 'GET, HEAD, OPTIONS',
+        'Content-Type' => content_type
+      }
+    end
   
     def self.endpoints
       hyperdrive.resources.map do |_,resource|
@@ -37,25 +56,6 @@ module Hyperdrive
       else
         raise Errors::NotAcceptable.new(@env['HTTP_ACCEPT'])
       end
-    end
-
-    def self.media_types
-      %w(hal+json json).map do |media_type|
-        "application/vnd.#{hyperdrive.config[:vendor]}+#{media_type}"
-      end + %w(application/hal+json application/json)
-    end
-
-    def self.content_type
-      @env['hyperdrive.accept'].best_of(media_types)
-    end
-
-    def self.headers
-      {
-        'Access-Control-Allow-Origin' => '*',
-        'Access-Control-Allow-Methods' => 'GET, HEAD, OPTIONS',
-        'Allow' => 'GET, HEAD, OPTIONS',
-        'Content-Type' => content_type
-      }
     end
   end
 end

@@ -33,7 +33,7 @@ module Hyperdrive
         'Content-Type' => content_type
       }
     end
-  
+
     def self.endpoints
       hyperdrive.resources.map do |_,resource|
         resource.to_hash
@@ -49,7 +49,7 @@ module Hyperdrive
         resources: endpoints
       }
     end
-    
+
     def self.body
       if content_type =~ /json$/
         MultiJson.dump(response)

@@ -20,6 +20,11 @@ describe Hyperdrive::Endpoint do
     last_response.successful?.must_equal true
   end
 
+  it "runs before callbacks" do
+    get '/', {}, default_rack_env(hyperdrive.resources[:thing])
+    last_response.headers['X-Resource'].must_equal 'Thing Resource'
+  end
+
   it "can raise an HTTPError" do
     hyperdrive do
       resource(:thing) do

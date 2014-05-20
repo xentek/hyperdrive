@@ -11,7 +11,9 @@ module Hyperdrive
       @resource = env['hyperdrive.resource']
       @headers = Hyperdrive::Values.default_headers.dup
       @headers.merge!('Allow' => resource.allowed_methods.join(', '), 'Content-Type' => @media_type)
-
+      if @resource.has_callback?(:before, env['REQUEST_METHOD'], requested_version)
+        instance_eval(&@resource.callback(:before, env['REQUEST_METHOD'], requested_version))
+      end
       response.finish
     end
 
@@ -28,6 +30,12 @@ module Hyperdrive
 
     def self.xml?
       media_type =~ /xml$/
+    end
+
+    def self.requested_version
+      version = /.*\/vnd.#{hyperdrive.config[:vendor]}\..*\.(.*)\+.*?\+.*$/.match(media_type)
+      return if version.nil?
+      version.first
     end
 
     def self.page
@@ -71,7 +79,7 @@ module Hyperdrive
     end
 
     def self.body
-      body = instance_eval(&resource.request_handler(env['REQUEST_METHOD']))
+      body = instance_eval(&resource.request_handler(env['REQUEST_METHOD'], requested_version))
       body = '' if env['REQUEST_METHOD'] == 'DELETE'
       body
     end

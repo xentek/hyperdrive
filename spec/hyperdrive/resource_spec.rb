@@ -14,7 +14,11 @@ describe Hyperdrive::Resource do
                     "application/vnd.hyperdrive.things.v2+json",
                     "application/vnd.hyperdrive.things.v1+json",
                     "application/vnd.hyperdrive.things+json",
-                    "application/vnd.hyperdrive+json"]
+                    "application/vnd.hyperdrive+json",
+                    "application/vnd.hyperdrive.things.v2+text/html", 
+                    "application/vnd.hyperdrive.things.v1+text/html", 
+                    "application/vnd.hyperdrive.things+text/html", 
+                    "application/vnd.hyperdrive+text/html"]
   end
 
   it "has an ID" do

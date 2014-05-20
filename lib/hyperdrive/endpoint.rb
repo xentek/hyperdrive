@@ -23,18 +23,16 @@ module Hyperdrive
     end
 
     def self.json?
-      media_type =~ /json$/
+      media_type =~ /json$/ ? true : false
     end
 
     def self.xml?
-      media_type =~ /xml$/
+      media_type =~ /xml$/ ? true : false
     end
 
     def self.requested_version
-      regex = /.*\/vnd.#{hyperdrive.config[:vendor]}\..*\.(.*)\+.*?\+.*$/
-      version = regex.match(media_type)
-      return if version.nil?
-      version.captures.first
+      regex = /.*\/vnd.#{hyperdrive.config[:vendor]}\..*\.(.*)\+.*$/
+      regex.match(media_type) { |version| version.captures.first } or resource.latest_version(env['REQUEST_METHOD'])
     end
 
     def self.page
@@ -51,13 +49,13 @@ module Hyperdrive
         if json?
           MultiJson.dump(body)
         else
-          env.logger.error "ENDPOINT: Can't serialize response automatically"
+          puts "Hyperdrive::Endpoint: Can't serialize response automatically"
           raise Errors::NoResponse.new
         end
       when String
         body
       else
-        env.logger.debug "ENDPOINT: Coerceing response to string. Probably not what you want"
+        puts "Hyperdrive::Endpoint: Coerceing response to string. Probably not what you want"
         body.to_s
       end
     end
@@ -70,7 +68,7 @@ module Hyperdrive
       if @resource.has_callback?(:before, env['REQUEST_METHOD'], requested_version)
         instance_eval(&@resource.callback(:before, env['REQUEST_METHOD'], requested_version))
       end
-    end      
+    end
 
     def self.status
       case env['REQUEST_METHOD']

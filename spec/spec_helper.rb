@@ -93,7 +93,7 @@ module Hyperdrive
           end
 
           request(:delete) do
-            ''
+            'ok'
           end
         end
       end

@@ -19,12 +19,16 @@ describe Hyperdrive::Utils do
 
   context '.symbolize_keys' do
     before do
-      @hash = { 'string' => 'cheese', 'collection' => [{'skylanders' => 155}], 'map' => { 'oceans' => 'blue' } }
+      @hash = { :symbol => 'symbol', 'string' => 'cheese', 'collection' => [{'skylanders' => 155}], 'map' => { 'oceans' => 'blue' } }
       @subject = Hyperdrive::Utils.symbolize_keys(@hash)
     end
 
     it "can symbolize the keys of a hash" do
       @subject[:string].must_equal 'cheese'
+    end
+
+    it "doesn't symbolize keys that aren't a string" do
+      @subject[:symbol].must_equal 'symbol'
     end
 
     it "can symbolize the keys of nested hashes" do

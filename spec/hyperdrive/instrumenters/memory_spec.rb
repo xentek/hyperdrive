@@ -21,7 +21,9 @@ describe Hyperdrive::Instrumenters::Memory do
 
   it "returns events that have been instrumented" do
     @instrumenter.instrument('instrumentation', 'measurement')
-    event = @instrumenter.events.first.to_h
-    event.must_equal({ name: 'instrumentation', payload: 'measurement', result: 'measurement' })
+    event = @instrumenter.events.first
+    event.name.must_equal 'instrumentation'
+    event.payload.must_equal 'measurement'
+    event.result.must_equal 'measurement'
   end
 end

@@ -6,13 +6,16 @@ module Hyperdrive
   module DSL
     include Values
     extend self
-    attr_reader :config, :resources, :instrumenter
+    attr_reader :config, :resources
 
     def instance
       @config ||= default_config.dup
       @resources ||= {}
-      @instrumenter = Hyperdrive::Instrumenters::Noop
       self
+    end
+
+    def instrument(*args)
+      @config[:instrumenter].instrument(*args)
     end
 
     private
@@ -50,7 +53,7 @@ module Hyperdrive
     end
 
     def instrumenter(instrumenter)
-      @instrumenter = instrumenter || Hyperdrive::Instrumenters::Noop
+      @config[:instrumenter] = instrumenter || Hyperdrive::Instrumenters::Noop
     end
 
     def resource(name)
@@ -60,7 +63,6 @@ module Hyperdrive
     def reset! # not terribly useful outside of a test environment :(
       @config = default_config.dup
       @resources = {}
-      @instrumenter = Hyperdrive::Instrumenters::Noop
     end
   end
 end

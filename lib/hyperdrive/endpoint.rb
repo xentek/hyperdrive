@@ -64,6 +64,10 @@ module Hyperdrive
       raise Errors::HTTPError.new(message, status)
     end
 
+    def self.instrument(*args)
+      hyperdrive.instrument(*args)
+    end
+
     def self.before_response
       if @resource.has_callback?(:before, env['REQUEST_METHOD'], requested_version)
         instance_eval(&@resource.callback(:before, env['REQUEST_METHOD'], requested_version))

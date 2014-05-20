@@ -13,6 +13,7 @@ describe Hyperdrive::DSL do
       resource(:thing) {}
       per_page '0'
       ssl true
+      instrumenter Hyperdrive::Instrumenters::Memory.new
     end
   end
 
@@ -58,5 +59,14 @@ describe Hyperdrive::DSL do
 
   it "configures ssl option" do
     hyperdrive.config[:ssl].must_equal true
+  end
+
+  it "configures instrumenter option" do
+    hyperdrive.config[:instrumenter].must_be_instance_of Hyperdrive::Instrumenters::Memory
+  end
+
+  it "can call the instrumenter" do
+    hyperdrive.instrument('instrumentation', 'measurement') { |payload| payload + '1' }
+    hyperdrive.config[:instrumenter].events.size.must_be :>, 0
   end
 end

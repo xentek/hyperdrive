@@ -36,6 +36,19 @@ describe Hyperdrive::Endpoint do
     ->{ get '/', {}, default_rack_env(hyperdrive.resources[:thing]) }.must_raise Hyperdrive::Errors::HTTPError
   end
 
+  it "can call the instrumenter" do
+    hyperdrive do
+      instrumenter Hyperdrive::Instrumenters::Memory.new
+      resource(:thing) do
+        request(:get) do
+          instrument('requests.GET', '1')
+        end
+      end
+    end
+    get '/', {}, default_rack_env(hyperdrive.resources[:thing])
+    hyperdrive.config[:instrumenter].events.size.must_be :>, 0
+  end
+
   it "returns true if media type ends in json" do
     hyperdrive do
       resource(:thing) do

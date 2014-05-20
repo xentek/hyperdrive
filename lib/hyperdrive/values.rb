@@ -54,7 +54,8 @@ module Hyperdrive
         vendor: 'hyperdrive',
         media_types: %w(hal+json json),
         per_page: 20,
-        ssl: false
+        ssl: false,
+        instrumenter: Hyperdrive::Instrumenters::Noop
       }.freeze
     end
 

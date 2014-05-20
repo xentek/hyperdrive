@@ -14,6 +14,11 @@ module Hyperdrive
       self
     end
 
+    def instrument(*args)
+      @config[:instrumenter] = @config[:instrumenter] || Hyperdrive::Instrumenters::Noop
+      @config[:instrumenter].instrument(*args)
+    end
+
     private
 
     def name(name)
@@ -46,6 +51,10 @@ module Hyperdrive
 
     def ssl(force_ssl)
       @config[:ssl] = force_ssl
+    end
+
+    def instrumenter(instrumenter)
+      @config[:instrumenter] = instrumenter || Hyperdrive::Instrumenters::Noop
     end
 
     def resource(name)

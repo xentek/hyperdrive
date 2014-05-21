@@ -30,6 +30,10 @@ module Hyperdrive
       media_type =~ /xml$/ ? true : false
     end
 
+    def self.html?
+      media_type =~ /html$/ ? true : false
+    end
+
     def self.requested_version
       regex = /.*\/vnd.#{hyperdrive.config[:vendor]}\..*\.(.*)\+.*$/
       regex.match(media_type) { |version| version.captures.first } or resource.latest_version(env['REQUEST_METHOD'])

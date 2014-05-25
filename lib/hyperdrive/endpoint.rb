@@ -31,7 +31,7 @@ module Hyperdrive
     end
 
     def self.requested_version
-      regex = /.*\/vnd.#{hyperdrive.config[:vendor]}\..*\.(.*)\+.*$/
+      regex = /.*\/vnd.#{hyperdrive.config[:vendor]}\..*\.(.*?)\+.*$/
       regex.match(media_type) { |version| version.captures.first } or resource.latest_version(env['REQUEST_METHOD'])
     end
 
@@ -69,8 +69,8 @@ module Hyperdrive
     end
 
     def self.before_response
-      if @resource.has_callback?(:before, env['REQUEST_METHOD'], requested_version)
-        instance_eval(&@resource.callback(:before, env['REQUEST_METHOD'], requested_version))
+      if resource.has_callback?(:before, env['REQUEST_METHOD'], requested_version)
+        instance_eval(&resource.callback(:before, env['REQUEST_METHOD'], requested_version))
       end
     end
 

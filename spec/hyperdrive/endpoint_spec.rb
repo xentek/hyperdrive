@@ -105,7 +105,7 @@ describe Hyperdrive::Endpoint do
         end
       end
     end
-    get '/', {}, default_rack_env(hyperdrive.resources[:thing]).merge('hyperdrive.media_type' => 'application/vnd.hyperdrive.things.v2+json')
+    get '/', {}, default_rack_env(hyperdrive.resources[:thing]).merge('hyperdrive.media_type' => 'application/vnd.hyperdrive.things.v2+hal+json')
     last_response.body.must_equal 'v2'
   end
 

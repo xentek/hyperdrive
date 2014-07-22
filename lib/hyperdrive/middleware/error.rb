@@ -19,7 +19,7 @@ module Hyperdrive
         else
           puts e.message
           status = 500
-          body = json_error(Hyperdrive::Errors::UnknownError.new)
+          body = [json_error(Hyperdrive::Errors::UnknownError.new)]
         end
         [status, headers, body]
       end

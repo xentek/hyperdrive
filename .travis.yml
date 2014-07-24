@@ -1,14 +1,18 @@
 language: ruby
 cache: bundler
 rvm:
-  - 2.1.1
-  - 1.9.3
-  - jruby-head
-  - rbx-2
+- 2.1.2
+- 1.9.3
+- jruby-head
+- rbx-2
 matrix:
   allow_failures:
-    - rvm: rbx-2
+  - rvm: rbx-2
 env:
   global:
     secure: Tl3oBsBZRI5bMrtNH5mtTDvSTlTxNbsKaAnQ7KQ2KMyiH/eHolOSIbUYB9NB3GRMC6XSyFShRCaYPA/ET36HI+Jw3PFT/XADdiOdFqlk6VyJEUPznNQ1nlp8AsyNn+IexZXIl8DdqmZxGHlY6YKDbQV/U1v+FeW8X5j3TLN1mcw=
 before_install: gem install bundler
+notifications:
+  slack:
+    rooms:
+      secure: iJbgfjVMSUb1+oTyMbQ5XPbNLcrgczXW06diPa1Q9NOsVO3XsAdNqt8bBRFYGKszJsXTV2XCxv7qf7Sf8uXfqWdWnqy1KyZ17aLTfpa7pSr1DwT4Q8lZ9tLFycIvyzl2gVU8k+ele35KN+J4OTTc1Mq3Gznabl5MINyElmA9zhU=

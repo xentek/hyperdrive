@@ -5,8 +5,8 @@ module Hyperdrive
     class Resource
       include Values
       attr_reader :resource
-      def initialize(name, hyperdrive_config)
-        @resource = ::Hyperdrive::Resource.new(name, hyperdrive_config)
+      def initialize(name, options = {})
+        @resource = ::Hyperdrive::Resource.new(name, options)
         instance_eval(&Proc.new) if block_given?
       end
 

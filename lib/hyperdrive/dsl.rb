@@ -57,8 +57,8 @@ module Hyperdrive
       @config[:instrumenter] = instrumenter || Hyperdrive::Instrumenters::Noop
     end
 
-    def resource(name)
-      @resources[name] = Resource.new(name, @config, &Proc.new).resource
+    def resource(name, options = {})
+      @resources[name] = Resource.new(name, options, &Proc.new).resource
     end
 
     def reset! # not terribly useful outside of a test environment :(

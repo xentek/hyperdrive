@@ -8,7 +8,7 @@ rvm:
 matrix:
   allow_failures:
     - rvm: rbx-2
-    - jruby-head
+    - jruby: jruby-head
 env:
   global:
     secure: Tl3oBsBZRI5bMrtNH5mtTDvSTlTxNbsKaAnQ7KQ2KMyiH/eHolOSIbUYB9NB3GRMC6XSyFShRCaYPA/ET36HI+Jw3PFT/XADdiOdFqlk6VyJEUPznNQ1nlp8AsyNn+IexZXIl8DdqmZxGHlY6YKDbQV/U1v+FeW8X5j3TLN1mcw=

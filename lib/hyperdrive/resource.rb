@@ -3,13 +3,14 @@
 module Hyperdrive
   class Resource
     include Hyperdrive::Values
-    attr_reader :id, :namespace, :endpoint, :params, :filters, :request_handlers, :callbacks, :version
+    attr_reader :id, :namespace, :media_type_namespace, :endpoint, :params, :filters, :request_handlers, :callbacks, :version
     attr_accessor :name, :description
 
     def initialize(resource, options = {})
       @resource = resource.to_s.split('_')
       @resource[-1] = @resource[-1].en.plural
-      @namespace = @resource.join(':')
+      @namespace = options.fetch(:namespace) { @resource.join(':') }
+      @media_type_namespace = options.fetch(:media_type_namespace) { @resource.join('-') }
       @endpoint = options.fetch(:endpoint) { "/#{@resource.join('/')}" }
       @params = default_params
       @filters = default_filters
@@ -67,7 +68,6 @@ module Hyperdrive
 
     def acceptable_content_types(http_request_method)
       content_types = []
-      media_type_namespace = @resource.join('-')
       @config[:media_types].each do |media_type|
         available_versions(http_request_method).each do |version|
           content_types << "application/vnd.#{@config[:vendor]}.#{media_type_namespace}.#{version}+#{media_type}"

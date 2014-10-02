@@ -23,5 +23,11 @@ module Hyperdrive
         ])
       end
     end
+
+    def self.enforce_utf8!(params)
+      params.each_value do |value|
+        value.encode!('UTF-8') if value.is_a? String
+      end
+    end
   end
 end

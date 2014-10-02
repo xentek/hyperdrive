@@ -1,9 +1,9 @@
 # encoding: utf-8
 
 require 'hyperdrive/middleware/accept'
+require 'hyperdrive/middleware/charset'
 require 'hyperdrive/middleware/cors'
 require 'hyperdrive/middleware/content_negotiation'
-require 'hyperdrive/middleware/enforce_encoding'
 require 'hyperdrive/middleware/error'
 require 'hyperdrive/middleware/pagination'
 require 'hyperdrive/middleware/parse_json_body'

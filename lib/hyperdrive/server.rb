@@ -30,6 +30,7 @@ module Hyperdrive
             use Hyperdrive::Middleware::RequestMethod
             use Hyperdrive::Middleware::ParseJSONBody
             use Hyperdrive::Middleware::SanitizeParams
+            use Hyperdrive::Middleware::EnforceEncoding
             use Hyperdrive::Middleware::Pagination
             use Hyperdrive::Middleware::RequiredParams
             use Hyperdrive::Middleware::CORS, hyperdrive.config[:cors]

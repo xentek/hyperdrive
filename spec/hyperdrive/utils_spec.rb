@@ -39,4 +39,28 @@ describe Hyperdrive::Utils do
       @subject[:collection].first[:skylanders].must_equal 155
     end
   end
+
+  context '.enfoce_charset!' do
+    before do
+      @params = { id: '1001', name: 'John Connor'.encode('ASCII-8BIT') }
+    end
+
+    it 'enforces a specific encoding' do
+      encoding = Rack::Accept::Charset.new('ISO-8859-1')
+      Hyperdrive::Utils.enforce_charset!(encoding, @params)
+      @params[:name].encoding.must_equal Encoding.find('ISO-8859-1')
+    end
+
+    it 'enforces a default encoding' do
+      encoding = Rack::Accept::Charset.new('*')
+      Hyperdrive::Utils.enforce_charset!(encoding, @params)
+      @params[:name].encoding.must_equal Encoding.find('UTF-8')
+    end
+
+    it 'raises an exception for an invalid encoding' do
+      encoding = Rack::Accept::Charset.new('nonsense')
+      -> { Hyperdrive::Utils.enforce_charset!(encoding, @params) }
+        .must_raise Hyperdrive::Errors::NotAcceptable
+    end
+  end
 end

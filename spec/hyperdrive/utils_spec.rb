@@ -40,7 +40,7 @@ describe Hyperdrive::Utils do
     end
   end
 
-  context '.enfoce_charset!' do
+  context '.enforce_charset!' do
     before do
       @params = { id: '1001', name: 'John Connor'.encode('ASCII-8BIT') }
     end

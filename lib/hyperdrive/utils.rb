@@ -23,5 +23,22 @@ module Hyperdrive
         ])
       end
     end
+
+    def self.enforce_charset!(charset, params)
+      encoding = charset.value == '*' ? 'UTF-8' : find_encoding(charset.value)
+      params.each_value do |value|
+        value.encode!(encoding) if value.is_a? String
+      end
+    end
+
+    private
+
+    def self.find_encoding(charset_value)
+      begin
+        Encoding.find(charset_value)
+      rescue
+        raise Hyperdrive::Errors::NotAcceptable.new(charset_value)
+      end
+    end
   end
 end

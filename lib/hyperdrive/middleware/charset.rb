@@ -1,5 +1,5 @@
 # encoding: utf-8
-
+require 'pry'
 module Hyperdrive
   module Middleware
     class Charset
@@ -9,7 +9,7 @@ module Hyperdrive
 
       def call(env)
         unless %w(OPTIONS TRACE).include? env['REQUEST_METHOD']
-          charset = Rack::Accept::Charset.new(env['HTTP_ACCEPT_CHARSET'])
+          charset = Rack::Accept::Charset.new(env['HTTP_ACCEPT_CHARSET'] || 'UTF-8')
           Hyperdrive::Utils.enforce_charset!(charset, env['hyperdrive.params'])
         end
         @app.call(env)

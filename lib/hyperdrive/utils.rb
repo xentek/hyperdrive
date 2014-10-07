@@ -37,7 +37,7 @@ module Hyperdrive
     def self.find_encoding(charset)
       return Encoding.find('UTF-8') if charset.value == '*'
       values = charset.sort(charset.values)
-      values.each do |value, index|
+      values.each do |value|
         begin
           break Encoding.find(value)
         rescue

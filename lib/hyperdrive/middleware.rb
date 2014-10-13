@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require 'hyperdrive/middleware/accept'
+require 'hyperdrive/middleware/charset'
 require 'hyperdrive/middleware/cors'
 require 'hyperdrive/middleware/content_negotiation'
 require 'hyperdrive/middleware/error'

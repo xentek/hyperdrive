@@ -32,7 +32,9 @@ module Hyperdrive
     def default_hyperdrive_env
       {
         'HTTP_ACCEPT' => 'application/vnd.hyperdrive.things+hal+json',
+        'HTTP_ACCEPT_CHARSET' => 'UTF-8',
         'hyperdrive.accept' => Rack::Accept::MediaType.new('HTTP_ACCEPT' => 'application/vnd.hyperdrive.things+hal+json;q=0.8'),
+        'hyperdrive.accept_charset' => Rack::Accept::Charset.new('HTTP_ACCEPT_CHARSET' => 'UTF-8'),
         'hyperdrive.resource' => hyperdrive.resources[:things],
         'hyperdrive.media_type' => 'application/vnd.hyperdrive.things+hal+json'
       }
@@ -54,6 +56,7 @@ module Hyperdrive
         'hyperdrive.media_type' => 'application/vnd.hyperdrive.things+hal+json'
       }
       default_env.merge!('hyperdrive.accept' => Rack::Accept::MediaType.new(default_env['HTTP_ACCEPT']))
+      default_env.merge!('hyperdrive.accept_charset' => Rack::Accept::Charset.new(default_env['HTTP_ACCEPT_CHARSET']))
       default_env.merge!('hyperdrive.resource' => resource) if resource
       default_env
     end

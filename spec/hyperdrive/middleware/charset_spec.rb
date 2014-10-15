@@ -3,7 +3,6 @@
 require 'spec_helper'
 
 describe Hyperdrive::Middleware::Charset do
-
   def app
     inner_app = ->(env) { [200, {}, [env['hyperdrive.params']]] }
     Hyperdrive::Middleware::Charset.new(inner_app)
@@ -16,6 +15,12 @@ describe Hyperdrive::Middleware::Charset do
   end
 
   it "will enforce accept-charset encoding on param values" do
+    post '/', @params, @env.merge('hyperdrive.params' => @params)
+    last_response.body.must_equal "{:id=>\"1001\", :name=>\"John Connor\"}"
+  end
+
+  it "will enforce a default charset if accept-charset is not present" do
+    @env.delete('HTTP_ACCEPT_CHARSET')
     post '/', @params, @env.merge('hyperdrive.params' => @params)
     last_response.body.must_equal "{:id=>\"1001\", :name=>\"John Connor\"}"
   end

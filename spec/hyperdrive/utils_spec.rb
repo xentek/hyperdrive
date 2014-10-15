@@ -58,9 +58,21 @@ describe Hyperdrive::Utils do
     end
 
     it 'raises an exception for an invalid encoding' do
-      encoding = Rack::Accept::Charset.new('nonsense')
+      encoding = Rack::Accept::Charset.new('nonsense, more-nonsense;q=0.8')
       -> { Hyperdrive::Utils.enforce_charset!(encoding, @params) }
         .must_raise Hyperdrive::Errors::NotAcceptable
+    end
+
+    it 'enforces the best charset' do
+      encoding = Rack::Accept::Charset.new('unicode-1-1;q=0.8, iso-8859-5')
+      Hyperdrive::Utils.enforce_charset!(encoding, @params)
+      @params[:name].encoding.must_equal Encoding.find('iso-8859-5')
+    end
+
+    it 'enforces the best, supported charset' do
+      encoding = Rack::Accept::Charset.new('nonsense, nonsense;q=0.9, utf-8;q=0.8')
+      Hyperdrive::Utils.enforce_charset!(encoding, @params)
+      @params[:name].encoding.must_equal Encoding.find('utf-8')
     end
   end
 end

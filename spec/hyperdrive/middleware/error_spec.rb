@@ -37,7 +37,7 @@ describe Hyperdrive::Middleware::Error do
     end
 
     it "returns a formatted error message" do
-      last_response.body.must_match(/Unknown Error/)
+      last_response.body.must_match(/UnknownError/)
     end
   end
 end

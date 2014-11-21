@@ -13,8 +13,8 @@ module Hyperdrive
         @app.call(env)
       rescue => e
         error_message = "#{e.class}: #{e.message}"
+        $stdout.sync = true
         $stdout.puts error_message
-        $stdout.puts "#{e.backtrace.inspect}"
         headers = { 'Content-Type' => 'application/json' }
         if e.respond_to?(:http_status_code)
           status = e.http_status_code

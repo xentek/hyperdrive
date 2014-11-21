@@ -3,9 +3,9 @@
 module Hyperdrive
   module Errors
     class UnknownError < HTTPError
-      def initialize
+      def initialize(message = 'Unknown Error.')
         @http_status_code = 500
-        @message = 'Unknown Error.'
+        @message = message
       end
     end
   end

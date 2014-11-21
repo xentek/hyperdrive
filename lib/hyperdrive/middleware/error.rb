@@ -12,14 +12,21 @@ module Hyperdrive
       def call(env)
         @app.call(env)
       rescue => e
+        error_message = "#{e.class}: #{e.message}"
+        $stdout.puts error_message
+        $stdout.puts "#{e.backtrace.inspect}"
         headers = { 'Content-Type' => 'application/json' }
         if e.respond_to?(:http_status_code)
           status = e.http_status_code
           body = [json_error(e)]
         else
-          puts e.message
           status = 500
-          body = [json_error(Hyperdrive::Errors::UnknownError.new)]
+          error = if ENV['RACK_ENV'] == 'production'
+                    Hyperdrive::Errors::UnknownError.new
+                  else
+                    Hyperdrive::Errors::UnknownError.new(error_message)
+                  end
+          body = [json_error(error)]
         end
         [status, headers, body]
       end
